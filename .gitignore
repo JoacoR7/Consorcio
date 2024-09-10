@@ -1,0 +1,11 @@
+/build/
+dist/
+/nbproject/private/
+/nbproject/nbproject.properties
+*.log
+*.class
+*.war
+*.ear
+*.jar
+.DS_Store
+Thumbs.db
