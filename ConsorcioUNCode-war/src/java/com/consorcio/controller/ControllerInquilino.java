@@ -18,7 +18,7 @@ import javax.faces.bean.RequestScoped;
  */
 @ManagedBean
 @RequestScoped
-public class NewJSFManagedBean {
+public class ControllerInquilino {
     private @EJB InquilinoServiceBean inquilinoService;
     /**
      * Creates a new instance of NewJSFManagedBean

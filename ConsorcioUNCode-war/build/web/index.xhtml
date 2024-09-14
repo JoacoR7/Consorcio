@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
-    
-    <h:head>
-        <title>TODO supply a title</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </h:head>
-    
-    <h:body>
-        <h:form>
-            <p:commandButton id="btnIngresar" value="INGRESAR" styleClass="BlueButton Wid60 Fs18 White RaisedButton"/>
-        </h:form>
-    </h:body>
-</html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form>
+        <div class="card">
+            <p:inputText value="#{paisController.nombrePais}" />
+            <p:commandButton value="Guardar" action="#{paisController.guardarPais}" />
+        </div>
+        <div class="card">
+        <p:dataTable var="pais" value="#{paisController.paises}">
+            <p:column headerText="Paises">
+                <h:outputText value="#{pais.nombre}" />
+            </p:column>
+
+        </p:dataTable>
+    </div>
+    </h:form>
+</ui:composition>
