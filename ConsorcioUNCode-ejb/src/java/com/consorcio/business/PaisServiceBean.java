@@ -24,93 +24,107 @@ public class PaisServiceBean {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
-    private @EJB DAOPais dao;
-    
-    public void crearPais(String nombre){
-    
+    private @EJB
+    DAOPais dao;
+
+    public void crearPais(String nombre) {
+
         try {
-            if (nombre == null || nombre.isEmpty()){
-                throw new  IllegalArgumentException("Ingrese el nombre del pais");
+            if (nombre == null || nombre.isEmpty()) {
+                throw new IllegalArgumentException("Ingrese el nombre del país");
             }
-            
-            // Chequear cuando ya existe el pais
-            Pais pais = new Pais(UUID.randomUUID().toString(),nombre,false);
-            dao.guardarPais(pais);
-            
-        } catch(IllegalArgumentException e){
-            throw e;
+
+            if (dao.buscarPaisPorNombre(nombre) != null) {
+                // Lanzar IllegalStateException si el país ya existe
+                throw new IllegalStateException("El país con el nombre '" + nombre + "' ya existe.");
+            } else {
+                Pais pais = new Pais(UUID.randomUUID().toString(), nombre, false);
+                dao.guardarPais(pais);
+            }
+
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            throw e; 
         }
-        
     }
-    
-    public Pais buscarPais(String id){
-        
+
+    public Pais buscarPais(String id) {
+
         try {
-            if (id == null){
+            if (id == null) {
                 throw new IllegalArgumentException("Seleccione un pais");
             }
-            
+
             Pais pais = dao.buscarPaisId(id);
-            
-            if (!pais.isEliminado()){
+
+            if (!pais.isEliminado()) {
                 return pais;
             }
-        }catch (IllegalArgumentException | NoResultException e){
+        } catch (IllegalArgumentException | NoResultException e) {
             e.getMessage();
             throw e;
         }
         return null;
     }
     
-    public void modificarPais(String id , String nombre){
-    
+    public Pais buscarPaisPorNombre(String nombre){
         try {
-        
+            if (nombre == null) {
+                throw new IllegalArgumentException("Seleccione un pais");
+            }
+            return dao.buscarPaisPorNombre(nombre);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    public void modificarPais(String id, String nombre) {
+
+        try {
+
             Pais pais = buscarPais(id); // Pais seleccionado
-            
-            if (nombre == null || nombre.isEmpty()){
+
+            if (nombre == null || nombre.isEmpty()) {
                 throw new IllegalArgumentException("Indique el nombre del pais");
             }
-            
+
             try {
                 Pais paisExistente = dao.buscarPaisPorNombre(nombre); // Verifico si ya hay un pais con ese nombre
 
-                if (!paisExistente.getId().equals(id)){
+                if (!paisExistente.getId().equals(id)) {
                     throw new IllegalArgumentException("Ya existe un pais con ese nombre");
                 }
-            }catch (NoResultException e){}
-            
-            
+            } catch (NoResultException e) {
+            }
+
             pais.setNombre(nombre);
             dao.actualizarPais(pais);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.getMessage();
             throw e;
         }
     }
-   
-    public void eliminarPais(String id){
-    
+
+    public void eliminarPais(String id) {
+
         try {
             Pais pais = dao.buscarPaisId(id);
             pais.setEliminado(true);
-            dao.actualizarPais(pais); 
-        }catch (Exception e){
+            dao.actualizarPais(pais);
+        } catch (Exception e) {
             e.getMessage();
             throw e;
         }
 
     }
-    
-    public Collection<Pais> listarPais(){
+
+    public Collection<Pais> listarPais() {
         try {
             return dao.listarPaisActivo();
-            
-        } catch (Exception e){
+
+        } catch (Exception e) {
             e.getMessage();
             throw e;
         }
     }
-    
-    
+
 }

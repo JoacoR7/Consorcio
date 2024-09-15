@@ -39,7 +39,7 @@ public class DAOInquilino {
     }
     
     public Inquilino buscarPorNombre(String nombre) {
-        TypedQuery<Inquilino> query = em.createQuery("SELECT i FROM Inquilino WHERE i.nombre = :nombre AND i.eliminado = FALSE", Inquilino.class);
+        TypedQuery<Inquilino> query = em.createQuery("SELECT i FROM Inquilino i WHERE i.nombre = :nombre AND i.eliminado = FALSE", Inquilino.class);
         query.setParameter("nombre", nombre);
         return query.getSingleResult();
     }

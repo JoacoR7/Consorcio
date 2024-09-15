@@ -7,6 +7,7 @@ package com.consorcio.persist;
 
 import com.consorcio.entity.Pais;
 import java.util.Collection;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
@@ -25,34 +26,38 @@ public class DAOPais {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
-    @PersistenceContext private EntityManager em;
-    
-    public void guardarPais(Pais pais){
+    @PersistenceContext
+    private EntityManager em;
+
+    public void guardarPais(Pais pais) {
         em.persist(pais);
     }
-    
-    public void actualizarPais(Pais pais){
+
+    public void actualizarPais(Pais pais) {
         em.setFlushMode(FlushModeType.COMMIT);
         em.merge(pais);
         em.flush();
     }
-    
-    public Pais buscarPaisId(String id) throws NoResultException{
+
+    public Pais buscarPaisId(String id) throws NoResultException {
         return em.find(Pais.class, id);
     }
-    
+
     public Pais buscarPaisPorNombre(String nombre) {
-        try {
-            TypedQuery<Pais> query = em.createQuery("SELECT p FROM Pais p WHERE p.nombre = :nombre AND p.eliminado = FALSE",Pais.class);
-            query.setParameter("nombre",nombre);
-            return query.getSingleResult();
-        }catch (NoResultException e){
-            throw e;
+        TypedQuery<Pais> query = em.createQuery("SELECT p FROM Pais p WHERE p.nombre = :nombre AND p.eliminado = FALSE", Pais.class);
+        query.setParameter("nombre", nombre);
+        List<Pais> resultados = query.getResultList();
+
+        if (resultados.isEmpty()) {
+            return null;  // Devuelve null si no hay resultados
+        } else {
+            return resultados.get(0);  // Devuelve el primer resultado
         }
     }
-    
-    public Collection<Pais> listarPaisActivo(){
-        TypedQuery<Pais> query = em.createQuery("SELECT p FROM Pais p WHERE p.eliminado = FALSE",Pais.class);
+
+    public Collection<Pais> listarPaisActivo() {
+        TypedQuery<Pais> query = em.createQuery("SELECT p FROM Pais p WHERE p.eliminado = FALSE", Pais.class
+        );
         return query.getResultList();
     }
 }
