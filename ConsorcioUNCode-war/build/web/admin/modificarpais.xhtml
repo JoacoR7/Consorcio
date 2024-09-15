@@ -7,7 +7,7 @@
                 xmlns:p="http://primefaces.org/ui">
 
     <h:form>
-        <!--
+        
         <div class="card">
             <p:panel header="Buscar País">
                 <h:outputLabel for="nombreBuscar" value="Nombre del País: " />
@@ -15,14 +15,14 @@
                 <p:commandButton value="Buscar" action="#{paisController.buscarPais}" update="@form" />
             </p:panel>
         </div>
-
+        
         <div class="card">
             <p:panel header="Modificar País">
-                <h:outputLabel for="nombreModificado" value="Modificar Nombre: " />
+                <h:outputLabel for="nombreModificado" value="Nuevo nombre" />
                 <p:inputText id="nombreModificado" value="#{paisController.nombrePaisModificado}" disabled="#{paisController.paisNoEncontrado}" />
             </p:panel>
         </div>
-
+        
         <div class="card">
             <p:panel header="Eliminar País">
                 <h:outputLabel for="eliminado" value="¿Eliminar? " />
@@ -31,12 +31,12 @@
             </p:panel>
         </div>
 
-
+        
         <div class="card">
             <p:commandButton value="Actualizar" action="#{paisController.actualizarPais}" update="@form" disabled="#{paisController.paisNoEncontrado}" />
             <p:commandButton value="Eliminar" action="#{paisController.eliminarPais}" update="@form" disabled="#{paisController.paisNoEncontrado}" />
         </div>
-        -->
-         <h:outputText value="Modificar" />
+        <!--
+         <h:outputText value="Modificar" /> -->
     </h:form>
 </ui:composition>

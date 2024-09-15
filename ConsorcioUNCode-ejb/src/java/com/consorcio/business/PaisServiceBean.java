@@ -43,7 +43,7 @@ public class PaisServiceBean {
             }
 
         } catch (IllegalArgumentException | IllegalStateException e) {
-            throw e; 
+            throw e;
         }
     }
 
@@ -65,8 +65,8 @@ public class PaisServiceBean {
         }
         return null;
     }
-    
-    public Pais buscarPaisPorNombre(String nombre){
+
+    public Pais buscarPaisPorNombre(String nombre) {
         try {
             if (nombre == null) {
                 throw new IllegalArgumentException("Seleccione un pais");
@@ -78,22 +78,25 @@ public class PaisServiceBean {
     }
 
     public void modificarPais(String id, String nombre) {
-
         try {
+            Pais pais = buscarPais(id); // País seleccionado
 
-            Pais pais = buscarPais(id); // Pais seleccionado
+            if (pais == null) {
+                throw new IllegalArgumentException("No se encontró el país con el ID proporcionado.");
+            }
 
             if (nombre == null || nombre.isEmpty()) {
-                throw new IllegalArgumentException("Indique el nombre del pais");
+                throw new IllegalArgumentException("Indique el nombre del país.");
             }
 
             try {
-                Pais paisExistente = dao.buscarPaisPorNombre(nombre); // Verifico si ya hay un pais con ese nombre
+                Pais paisExistente = dao.buscarPaisPorNombre(nombre);
 
-                if (!paisExistente.getId().equals(id)) {
-                    throw new IllegalArgumentException("Ya existe un pais con ese nombre");
+                if (paisExistente != null && !paisExistente.getId().equals(id)) {
+                    throw new IllegalArgumentException("Ya existe un país con ese nombre.");
                 }
             } catch (NoResultException e) {
+                // Si no se encuentra ningún país con el nombre, continúo con la modificación
             }
 
             pais.setNombre(nombre);

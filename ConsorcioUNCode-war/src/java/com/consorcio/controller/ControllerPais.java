@@ -13,11 +13,13 @@ import javax.faces.bean.SessionScoped;
 @ManagedBean(name = "paisController")
 @SessionScoped
 public class ControllerPais implements Serializable {
-    
-    private @EJB PaisServiceBean paisService;
+
+    private @EJB
+    PaisServiceBean paisService;
     private Collection<Pais> paises = new ArrayList<>();
     private String nombrePais;
     private String nombrePaisModificado;
+    private boolean paisNoEncontrado = true;
     private boolean eliminado; // Atributo eliminado
 
     @PostConstruct
@@ -33,6 +35,14 @@ public class ControllerPais implements Serializable {
         this.nombrePais = nombrePais;
     }
 
+    public String getNombrePaisModificado() {
+        return nombrePaisModificado;
+    }
+
+    public void setNombrePaisModificado(String nombrePaisModificado) {
+        this.nombrePaisModificado = nombrePaisModificado;
+    }
+
     public boolean isEliminado() {
         return eliminado;
     }
@@ -41,19 +51,26 @@ public class ControllerPais implements Serializable {
         this.eliminado = eliminado;
     }
 
+    public boolean isPaisNoEncontrado() {
+        return paisNoEncontrado;
+    }
+
+    public void setPaisNoEncontrado(boolean paisNoEncontrado) {
+        this.paisNoEncontrado = paisNoEncontrado;
+    }
+
     public Collection<Pais> getPaises() {
         return paises;
     }
 
     public void guardarPais() {
         try {
-            paisService.crearPais(nombrePais); 
+            paisService.crearPais(nombrePais);
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
-    public void listarPais(){
+    public void listarPais() {
         try {
             paises.clear();
             paises.addAll(paisService.listarPais());
@@ -61,15 +78,42 @@ public class ControllerPais implements Serializable {
             throw e;
         }
     }
-    
-    public void buscarPais(){}
 
-    public void actualizarPais(){
+    public void buscarPais() {
+        Pais pais = paisService.buscarPaisPorNombre(nombrePais);
+        if (pais == null) {
+            setNombrePaisModificado("No existe");
+            setPaisNoEncontrado(true);
+        } else {
+            setNombrePaisModificado(nombrePais);
+            setPaisNoEncontrado(false);
+        }
+    }
+
+    public void actualizarPais() {
         try {
             Pais pais = paisService.buscarPaisPorNombre(nombrePais);
-            paisService.eliminarPais(nombrePais);
+
+            if (pais == null) {
+                throw new IllegalArgumentException("El país no fue encontrado.");
+            }
+
+            paisService.modificarPais(pais.getId(), nombrePaisModificado);
         } catch (Exception e) {
             // Manejo de excepciones
         }
     }
+    
+    public void eliminarPais() {
+        try {
+            Pais pais = paisService.buscarPaisPorNombre(nombrePais);
+            if (pais == null) {
+                throw new IllegalArgumentException("El país no fue encontrado.");
+            }
+            paisService.eliminarPais(pais.getId());
+            
+        } catch (Exception e) {
+        }
+    }
+
 }
