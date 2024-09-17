@@ -11,6 +11,10 @@
     </h:head>
     <h:body>
         <h:form>
+            <div class="card">
+                <p:inputText value="#{paisController.nombrePais}" />
+                <p:commandButton value="Guardar" action="#{paisController.guardarPais}" update="paisTable" />
+            </div>
             <p:dataTable id="paisTable" var="pais" value="#{paisController.paises}">
                 <p:column headerText="País">
                     <h:outputText value="#{pais.nombre}" />
