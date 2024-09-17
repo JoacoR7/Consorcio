@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <h:outputStylesheet name="rio-layout/css/rio-font.css" />
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:dataTable id="paisTable" var="pais" value="#{paisController.paises}">
+                <p:column headerText="País">
+                    <h:outputText value="#{pais.nombre}" />
+                </p:column>
+                <p:column headerText="Acción">
+                    <p:commandButton value="Modificar" 
+                                     action="#{ControllerSession.irAModificar('Pais', pais)}"
+                                     immediate="true" 
+                                     process="@this"
+                                     ajax="false" />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </h:body>
+</ui:composition>

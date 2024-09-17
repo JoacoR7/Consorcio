@@ -75,6 +75,17 @@ public class ProvinciaServiceBean {
         return null;
     }
     
+    public Provincia buscarProvinciaPorNombre(String nombre) {
+        try {
+            if (nombre == null) {
+                throw new IllegalArgumentException("Seleccione una provincia");
+            }
+            return dao.buscarProvinciaPorNombre(nombre);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
     public void modificarProvincia(String id , String nombre){
     
         try {
@@ -101,7 +112,7 @@ public class ProvinciaServiceBean {
         }
     }
    
-    public void eliminarPais(String id){
+    public void eliminarProvincia(String id){
     
         try {
             Provincia provincia = dao.buscarProvinciaId(id);
