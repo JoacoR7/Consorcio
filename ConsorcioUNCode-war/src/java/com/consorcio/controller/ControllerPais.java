@@ -65,8 +65,9 @@ public class ControllerPais implements Serializable {
 
     public void guardarPais() {
         try {
-            paisService.crearPais(nombrePais);
+            paisService.crearPais(nombrePais.toUpperCase());
         } catch (Exception e) {
+            e.getMessage();
         }
     }
 
@@ -80,25 +81,25 @@ public class ControllerPais implements Serializable {
     }
 
     public void buscarPais() {
-        Pais pais = paisService.buscarPaisPorNombre(nombrePais);
+        Pais pais = paisService.buscarPaisPorNombre(nombrePais.toUpperCase());
         if (pais == null) {
             setNombrePaisModificado("No existe");
             setPaisNoEncontrado(true);
         } else {
-            setNombrePaisModificado(nombrePais);
+            setNombrePaisModificado(nombrePais.toUpperCase());
             setPaisNoEncontrado(false);
         }
     }
 
     public void actualizarPais() {
         try {
-            Pais pais = paisService.buscarPaisPorNombre(nombrePais);
+            Pais pais = paisService.buscarPaisPorNombre(nombrePais.toUpperCase());
 
             if (pais == null) {
                 throw new IllegalArgumentException("El país no fue encontrado.");
             }
 
-            paisService.modificarPais(pais.getId(), nombrePaisModificado);
+            paisService.modificarPais(pais.getId(), nombrePaisModificado.toUpperCase());
         } catch (Exception e) {
             // Manejo de excepciones
         }
@@ -106,7 +107,7 @@ public class ControllerPais implements Serializable {
     
     public void eliminarPais() {
         try {
-            Pais pais = paisService.buscarPaisPorNombre(nombrePais);
+            Pais pais = paisService.buscarPaisPorNombre(nombrePais.toUpperCase());
             if (pais == null) {
                 throw new IllegalArgumentException("El país no fue encontrado.");
             }

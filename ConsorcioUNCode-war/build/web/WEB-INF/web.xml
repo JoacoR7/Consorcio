@@ -35,6 +35,7 @@
         <filter-name>PrimeFaces FileUpload Filter</filter-name>
         <servlet-name>Faces Servlet</servlet-name>
     </filter-mapping>
+    
     <context-param>
         <param-name>primefaces.THEME</param-name>
         <param-value>rio</param-value>
@@ -47,7 +48,7 @@
     </session-config>
     
     <welcome-file-list>
-        <welcome-file>index.jsf</welcome-file>
+        <welcome-file>/admin/index.jsf</welcome-file>
     </welcome-file-list>
     
     <servlet-mapping>

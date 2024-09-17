@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?> 
 <!DOCTYPE html>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
@@ -6,18 +6,22 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui">
 
-    <h:form>
-        <div class="card">
-            <p:inputText value="#{paisController.nombrePais}" />
-            <p:commandButton value="Guardar" action="#{paisController.guardarPais}" />
-        </div>
-        <div class="card">
-        <p:dataTable var="pais" value="#{paisController.paises}">
-            <p:column headerText="Paises">
-                <h:outputText value="#{pais.nombre}" />
-            </p:column>
-
-        </p:dataTable>
-    </div>
-    </h:form>
+    <h:head>
+        <h:outputStylesheet name="rio-layout/css/rio-font.css" />
+    </h:head>
+    <h:body>
+        <h:form>
+            <div class="card">
+                <p:inputText value="#{paisController.nombrePais}" />
+                <p:commandButton value="Guardar" action="#{paisController.guardarPais}" update="paisTable" />
+            </div>
+            <div class="card">
+                <p:dataTable id="paisTable" var="pais" value="#{paisController.paises}">
+                    <p:column headerText="Paises">
+                        <h:outputText value="#{pais.nombre}" />
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </h:form>
+    </h:body>
 </ui:composition>
