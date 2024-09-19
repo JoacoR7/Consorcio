@@ -24,11 +24,14 @@ import javax.persistence.NoResultException;
 public class InquilinoServiceBean {
     private @EJB DAOInquilino dao;
     
-    public void crearInquilino(String nombre, String telefono, String correoElectronico, 
+    public void crearInquilino(String nombre, String apellido, String telefono, String correoElectronico, 
             String documento, String tipoDocumento, SexoEnum sexo, String fechaNacimiento) {
         try {
             if (nombre == null || nombre.isEmpty()) {
                 throw new IllegalArgumentException("Ingrese el nombre del inquilino");
+            }
+            if (apellido == null || apellido.isEmpty()) {
+                throw new IllegalArgumentException("Ingrese el apellido del inquilino");
             }
             if (telefono == null || telefono.isEmpty()) {
                 throw new IllegalArgumentException("Ingrese el número de teléfono del inquilino");
@@ -52,6 +55,7 @@ public class InquilinoServiceBean {
             Inquilino inquilino = new Inquilino();
             inquilino.setId(UUID.randomUUID().toString());
             inquilino.setNombre(nombre);
+            inquilino.setApellido(apellido);
             inquilino.setTelefono(telefono);
             inquilino.setCorreoElectronico(correoElectronico);
             inquilino.setDocumento(documento);
@@ -85,8 +89,9 @@ public class InquilinoServiceBean {
         return null;
     }
     
-    public void modificarInquilino(String id, String nombre, String telefono, String correoElectronico,
-            String documento, String tipoDocumento, SexoEnum sexo, String fechaNacimiento) {
+    public void modificarInquilino(String id, String nombre, String telefono, 
+            String correoElectronico, String documento, String tipoDocumento, 
+            SexoEnum sexo, String fechaNacimiento) {
         try {
             Inquilino inquilino = buscarInquilino(id);
             

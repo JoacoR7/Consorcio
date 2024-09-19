@@ -11,7 +11,7 @@
     </h:head>
     <h:body>
         <h:form>
-            <div class="card" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;">
+            <div class="card" style="display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 15px;">
                 <p:inputText value="#{inquilinoController.documento}" 
                              placeholder="Documento" 
                              required="true" 
@@ -61,10 +61,10 @@
                              class="ui-field" />
 
                 <!-- Botón para guardar -->
-                <p:commandButton value="Guardar" 
+                <p:commandButton value="Guardar"
                                  action="#{inquilinoController.guardarInquilino}" 
-                                 update="inquilinoTable" 
-                                 style="margin-bottom: 10px;" />
+                                 update="inquilinoTable" />
+
             </div>
 
             <div class="card">

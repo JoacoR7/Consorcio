@@ -11,5 +11,6 @@ package com.consorcio.enums;
  */
 public enum SexoEnum {
     MASCULINO,
-    FEMENINO
+    FEMENINO,
+    OTRO
 }

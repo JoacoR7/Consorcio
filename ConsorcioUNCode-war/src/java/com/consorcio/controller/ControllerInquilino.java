@@ -6,26 +6,146 @@
 package com.consorcio.controller;
 
 import com.consorcio.business.InquilinoServiceBean;
+import com.consorcio.entity.Inquilino;
 import com.consorcio.enums.SexoEnum;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 /**
  *
  * @author joaqu
  */
-@ManagedBean
-@RequestScoped
-public class ControllerInquilino {
-    private @EJB InquilinoServiceBean inquilinoService;
-    /**
-     * Creates a new instance of NewJSFManagedBean
-     */
+@ManagedBean(name = "inquilinoController")
+@ViewScoped
+public class ControllerInquilino implements Serializable {
+
+    private @EJB
+    InquilinoServiceBean inquilinoService;
+    private String documento;
+    private String tipoDocumento;
+    private String nombre;
+    private String apellido;
+    private SexoEnum sexo;
+    private String fechaNacimiento;
+    private String telefono;
+    private String correoElectronico;
+    private List<Inquilino> inquilinos = new ArrayList<Inquilino>();
+
     @PostConstruct
-    public void init(){
-        inquilinoService.crearInquilino("a", "a", "a", "a", "a", SexoEnum.FEMENINO, "a");
+    public void init() {
+        listarInquilino();
     }
-    
+
+    public String getDocumento() {
+        return documento;
+    }
+
+    public void setDocumento(String documento) {
+        this.documento = documento;
+    }
+
+    public String getTipoDocumento() {
+        return tipoDocumento;
+    }
+
+    public void setTipoDocumento(String tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public SexoEnum getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(SexoEnum sexo) {
+        this.sexo = sexo;
+    }
+
+    public SexoEnum[] getSexos() {
+        return sexo.values();
+    }
+
+    public String getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(String fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getCorreoElectronico() {
+        return correoElectronico;
+    }
+
+    public void setCorreoElectronico(String correoElectronico) {
+        this.correoElectronico = correoElectronico;
+    }
+
+    public Collection<Inquilino> getInquilinos() {
+        return inquilinos;
+    }
+
+    public void guardarInquilino() {
+        try {
+            System.out.println(nombre + apellido + telefono + 
+                    correoElectronico + documento + tipoDocumento + sexo + fechaNacimiento);
+            inquilinoService.crearInquilino(nombre, apellido, telefono, 
+                    correoElectronico, documento, tipoDocumento, sexo, fechaNacimiento);
+            listarInquilino();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public void listarInquilino() {
+        try {
+            inquilinos.clear();
+            inquilinos.addAll(inquilinoService.listarInquilinos());
+
+            Collections.sort(inquilinos, new Comparator<Inquilino>() {
+
+                @Override
+                public int compare(Inquilino o1, Inquilino o2) {
+                    return o1.getDocumento().compareToIgnoreCase(o2.getDocumento());
+                }
+            });
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
 }

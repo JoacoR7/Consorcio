@@ -24,14 +24,6 @@ public class Inquilino extends Persona{
     public Inquilino() {
     }
 
-    public Inquilino(String documento, String tipoDocumento, SexoEnum sexo, String fechaNacimiento, String id, String nombre, String telefono, String correoElectronico, boolean eliminado) {
-        super(id, nombre, telefono, correoElectronico, false);
-        this.documento = documento;
-        this.tipoDocumento = tipoDocumento;
-        this.sexo = sexo;
-        this.fechaNacimiento = fechaNacimiento;
-    }
-
     public String getDocumento() {
         return documento;
     }

@@ -18,22 +18,16 @@ import javax.persistence.InheritanceType;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Persona {
+
     @Id
     private String id;
     private String nombre;
+    private String apellido;
     private String telefono;
     private String correoElectronico;
     private boolean eliminado;
 
     public Persona() {
-    }
-
-    public Persona(String id, String nombre, String telefono, String correoElectronico, boolean eliminado) {
-        this.id = id;
-        this.nombre = nombre;
-        this.telefono = telefono;
-        this.correoElectronico = correoElectronico;
-        this.eliminado = eliminado;
     }
 
     public String getId() {
@@ -54,6 +48,14 @@ public abstract class Persona {
 
     public String getTelefono() {
         return telefono;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
     }
 
     public void setTelefono(String telefono) {
@@ -97,12 +99,10 @@ public abstract class Persona {
         }
         return true;
     }
-    
-    
 
     @Override
     public String toString() {
-        return "Persona{" + "id=" + id + ", nombre=" + nombre + ", telefono=" + telefono + ", correoElectronico=" + correoElectronico + ", eliminado=" + eliminado + '}';
+        return "Persona{" + "id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", telefono=" + telefono + ", correoElectronico=" + correoElectronico + ", eliminado=" + eliminado + '}';
     }
-        
+
 }
