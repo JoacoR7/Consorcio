@@ -9,3 +9,4 @@ dist/
 *.jar
 .DS_Store
 Thumbs.db
+ConsorcioUNCode-ejb/build/generated-sources/ap-source-output/com/consorcio/entity/
