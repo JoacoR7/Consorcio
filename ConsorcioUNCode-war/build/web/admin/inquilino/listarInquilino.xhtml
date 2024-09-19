@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <h:outputStylesheet name="rio-layout/css/rio-font.css" />
+    </h:head>
+    <h:body>
+        <h:form>
+            <div class="card" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;">
+                <p:inputText value="#{inquilinoController.documento}" 
+                             placeholder="Documento" 
+                             required="true" 
+                             maxlength="20" 
+                             class="ui-field" />
+
+                <p:inputText value="#{inquilinoController.tipoDocumento}" 
+                             placeholder="Tipo de documento" 
+                             required="true" 
+                             maxlength="20" 
+                             class="ui-field" />
+
+                <p:inputText value="#{inquilinoController.nombre}" 
+                             placeholder="Nombre" 
+                             required="true" 
+                             maxlength="50"
+                             class="ui-field" />
+
+                <p:inputText value="#{inquilinoController.apellido}" 
+                             placeholder="Apellido" 
+                             required="true" 
+                             maxlength="50"
+                             class="ui-field" />
+
+                <p:inputText value="#{inquilinoController.fechaNacimiento}" 
+                             placeholder="Fecha de nacimiento" 
+                             required="true" 
+                             maxlength="50"
+                             class="ui-field" />
+
+                <p:selectOneMenu value="#{inquilinoController.sexo}" 
+                                 label="Sexo" 
+                                 class="ui-field">
+                    <f:selectItems value="#{inquilinoController.sexos}" />
+                </p:selectOneMenu>
+
+                <p:inputText value="#{inquilinoController.telefono}" 
+                             placeholder="Teléfono" 
+                             required="true" 
+                             maxlength="50"
+                             class="ui-field" />
+
+                <p:inputText value="#{inquilinoController.correoElectronico}" 
+                             placeholder="Correo electrónico" 
+                             required="true" 
+                             maxlength="50"
+                             class="ui-field" />
+
+                <!-- Botón para guardar -->
+                <p:commandButton value="Guardar" 
+                                 action="#{inquilinoController.guardarInquilino}" 
+                                 update="inquilinoTable" 
+                                 style="margin-bottom: 10px;" />
+            </div>
+
+            <div class="card">
+                <p:dataTable id="inquilinoTable" var="inquilino" value="#{inquilinoController.inquilinos}">
+                    <p:column headerText="Documento">
+                        <h:outputText value="#{inquilino.documento}" />
+                    </p:column>
+                    <p:column headerText="Tipo de documento">
+                        <h:outputText value="#{inquilino.tipoDocumento}" />
+                    </p:column>
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{inquilino.nombre}" />
+                    </p:column>
+                    <p:column headerText="Apellido">
+                        <h:outputText value="#{inquilino.apellido}" />
+                    </p:column>
+                    <p:column headerText="Fecha de nacimiento">
+                        <h:outputText value="#{inquilino.fechaNacimiento}" />
+                    </p:column>
+                    <p:column headerText="Sexo">
+                        <h:outputText value="#{inquilino.sexo}" />
+                    </p:column>
+                    <p:column headerText="Teléfono">
+                        <h:outputText value="#{inquilino.telefono}" />
+                    </p:column>
+                    <p:column headerText="Correo electrónico">
+                        <h:outputText value="#{inquilino.correoElectronico}" />
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </h:form>
+    </h:body>
+</ui:composition>

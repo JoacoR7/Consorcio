@@ -15,13 +15,18 @@
                 <p:inputText value="#{paisController.nombrePais}" />
                 <p:commandButton value="Guardar" action="#{paisController.guardarPais}" update="paisTable" />
             </div>
-            <div class="card">
-                <p:dataTable id="paisTable" var="pais" value="#{paisController.paises}">
-                    <p:column headerText="Paises">
-                        <h:outputText value="#{pais.nombre}" />
-                    </p:column>
-                </p:dataTable>
-            </div>
+            <p:dataTable id="paisTable" var="pais" value="#{paisController.paises}">
+                <p:column headerText="País">
+                    <h:outputText value="#{pais.nombre}" />
+                </p:column>
+                <p:column headerText="Acción">
+                    <p:commandButton value="Modificar" 
+                                     action="#{ControllerSession.irAModificar('Pais', pais)}"
+                                     immediate="true" 
+                                     process="@this"
+                                     ajax="false" />
+                </p:column>
+            </p:dataTable>
         </h:form>
     </h:body>
 </ui:composition>
