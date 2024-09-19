@@ -12,5 +12,10 @@
             <to-view-id>/admin/pais/modificarPais.jsf</to-view-id>
             <redirect/>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>listarPais</from-outcome>
+            <to-view-id>/admin/pais/listarPais.jsf</to-view-id>
+            <redirect/>
+        </navigation-case>
     </navigation-rule>
 </faces-config>
