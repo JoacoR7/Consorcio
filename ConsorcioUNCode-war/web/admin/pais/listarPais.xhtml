@@ -10,23 +10,29 @@
         <h:outputStylesheet name="rio-layout/css/rio-font.css" />
     </h:head>
     <h:body>
-        <h:form>
-            <div class="card">
-                <p:inputText value="#{paisController.nombrePais}" />
-                <p:commandButton value="Guardar" action="#{paisController.guardarPais}" update="paisTable" />
+        <h:form>        
+            <div class="Container50 Responsive50">
+                <div class="EmptyBox20"></div>
+                <p:commandButton id="nuevo" icon="fa fa-plus" styleClass="Fleft" action="#{ControllerPais.alta()}"/>
+                <p:tooltip id="toolTipPaisNuevo" for="nuevo" value="Alta" position="top"/>
             </div>
-            <p:dataTable id="paisTable" var="pais" value="#{paisController.paises}">
+            
+            <p:dataTable id="paisTable" var="pais" value="#{ControllerPais.paises}">
                 <p:column headerText="País">
                     <h:outputText value="#{pais.nombre}" />
                 </p:column>
                 <p:column headerText="Acción">
-                    <p:commandButton value="Modificar" 
-                                     action="#{ControllerSession.irAModificar('Pais', pais)}"
-                                     immediate="true" 
-                                     process="@this"
-                                     ajax="false" />
+                    <p:commandButton  icon="fa fa-ellipsis-v" styleClass="Fright GrayButton" id="opciones"/>
+                    <p:slideMenu overlay="true" my="left top" at="left top" trigger="opciones" style="height: 150px">
+                        <p:menuitem value="Modificar" icon="fa fa-pencil-square-o Purple" action="#{ControllerPais.modificar(pais)}"/>
+                        <p:menuitem value="Consultar" icon="fa fa-eye Green" action="#{ControllerPais.consultar(pais)}"/>
+                        <p:menuitem value="Eliminar" icon="fa fa-trash Red" action="#{ControllerPais.baja(pais)}" update="paisTable" />
+                    </p:slideMenu>
+                    
                 </p:column>
             </p:dataTable>
         </h:form>
+
     </h:body>
+
 </ui:composition>

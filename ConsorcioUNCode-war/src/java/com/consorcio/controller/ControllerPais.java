@@ -12,9 +12,13 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
-@ManagedBean(name = "paisController")
-@SessionScoped
+@ManagedBean(name = "ControllerPais")
+@ViewScoped
 public class ControllerPais implements Serializable {
 
     private @EJB
@@ -76,21 +80,6 @@ public class ControllerPais implements Serializable {
         return paises;
     }
 
-    public void guardarPais() {
-        try {
-            paisService.crearPais(nombrePais.toUpperCase());
-            listarPais();
-        } catch (Exception e) {
-            e.getMessage();
-        }
-    }
-
-    public void actualizarContexto(ControllerSession session){
-    
-        Pais pais = (Pais) session.getEntidadSeleccionada("Pais");
-        setNombrePais(pais.getNombre());
-        setIdPais(pais.getId());
-    }
     public void listarPais() {
         try {
             paises.clear();
@@ -108,34 +97,55 @@ public class ControllerPais implements Serializable {
             throw e;
         }
     }
-
-    public void buscarPais() {
-        Pais pais = paisService.buscarPaisPorNombre(nombrePais.toUpperCase());
-        if (pais == null) {
-            setNombrePaisModificado("No existe");
-            setPaisNoEncontrado(true);
-        } else {
-            setNombrePaisModificado(nombrePais.toUpperCase());
-            setPaisNoEncontrado(false);
-        }
-    }
-
-    public void actualizarPais() {
+ 
+    public String alta(){
         try {
-            paisService.modificarPais(idPais , nombrePaisModificado.toUpperCase());
+            guardarSession("ALTA", null);
+            return "modificarPais";  
         } catch (Exception e) {
-             throw new IllegalArgumentException("El país no fue encontrado.");
-            // Manejo de excepciones
+            e.printStackTrace();
+            return null;
         }
+
     }
-
-    public void eliminarPais() {
+    
+    public void baja(Pais pais){
         try {
-            paisService.eliminarPais(idPais);
-
-        } catch (Exception e) {
+            paisService.eliminarPais(pais.getId());
+            listarPais();
+        } catch (Exception e){
             throw new IllegalArgumentException("El país no fue encontrado.");
         }
     }
+    
+    public String modificar(Pais pais){
+        try {
+            guardarSession("MODIFICAR", pais);
+            return "modificarPais";  
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
 
+    }
+
+    public String consultar(Pais pais){
+        try {
+            guardarSession("CONSULTAR", pais);
+            return "modificarPais";  
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+    
+    private void guardarSession(String casoDeUso, Pais pais){
+        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        HttpSession session = (HttpSession) context.getSession(true);
+        session.setAttribute("ACCION", casoDeUso.toUpperCase());  
+        session.setAttribute("PAIS", pais);  
+    }
+    
+    
 }

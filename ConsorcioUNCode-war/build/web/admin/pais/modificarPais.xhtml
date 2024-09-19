@@ -9,13 +9,12 @@
         <h:outputStylesheet name="rio-layout/css/rio-font.css" />
     </h:head>
     <h:form>
-        <f:event type="preRenderView" listener="#{paisController.actualizarContexto(ControllerSession)}" />
         <div class="card">
-            <p:panel header="Modificar País">
-                <h:outputLabel for="nombreModificado" value="Nuevo nombre" />
-                <p:inputText id="nombreModificado" placeholder="#{paisController.nombrePais}" value="#{paisController.nombrePaisModificado}" />
-                <p:commandButton value="Modificar"
-                                 action="#{paisController.actualizarPais()}"
+            <p:panel header="ABM País">
+                <h:outputLabel value="Ingrese el nombre: " />
+                <p:inputText id="nombrePais"  value="#{controllerEditPais.nombrePais}" disabled="#{controllerEditPais.disableButton}" />
+                <p:commandButton value="Aceptar"
+                                 action="#{controllerEditPais.aceptar()}"
                                  update="@form" />
             </p:panel>
         </div>   
