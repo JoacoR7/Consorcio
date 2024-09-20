@@ -17,5 +17,15 @@
             <to-view-id>/admin/pais/listarPais.jsf</to-view-id>
             <redirect/>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>listarProvincia</from-outcome>
+            <to-view-id>/admin/provincia/listarProvincia.jsf</to-view-id>
+            <redirect/>
+        </navigation-case>   
+        <navigation-case>
+            <from-outcome>modificarProvincia</from-outcome>
+            <to-view-id>/admin/provincia/modificarProvincia.jsf</to-view-id>
+            <redirect/>
+        </navigation-case>   
     </navigation-rule>
 </faces-config>

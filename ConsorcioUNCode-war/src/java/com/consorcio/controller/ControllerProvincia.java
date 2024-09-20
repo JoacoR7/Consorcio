@@ -13,10 +13,13 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
-@ManagedBean(name = "provinciaController")
-@SessionScoped
+@ManagedBean
+@ViewScoped
 public class ControllerProvincia implements Serializable {
 
     private @EJB ProvinciaServiceBean provinciaService;
@@ -65,23 +68,62 @@ public class ControllerProvincia implements Serializable {
         this.provinciaNoEncontrado = provinciaNoEncontrado;
     }
 
-    public Collection<Provincia> getProvincia() {
+    public Collection<Provincia> getProvincias() {
         return provincias;
     }
 
-    public void guardarProvincia() {
+    public String alta(){
         try {
-            provinciaService.crearProvincia(nombreProvincia.toUpperCase() , idPais);
-            listarProvincias();
+            guardarSession("ALTA", null);
+            return "modificarProvincia";  
         } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+    
+    public void baja(Provincia provincia){
+        try {
+            provinciaService.eliminarProvincia(provincia.getId());
+            listarProvincias();
+        } catch (Exception e){
             e.getMessage();
         }
     }
+    
+    public String modificar(Provincia provincia){
+        try {
+            guardarSession("MODIFICAR", provincia);
+            return "modificarProvincia";  
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public String consultar(Provincia provincia){
+        try {
+            guardarSession("CONSULTAR", provincia);
+            return "modificarProvincia";  
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    private void guardarSession(String casoDeUso, Provincia provincia){
+        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        HttpSession session = (HttpSession) context.getSession(true);
+        session.setAttribute("ACCION", casoDeUso.toUpperCase());  
+        session.setAttribute("PROVINCIA", provincia);  
+    }
+    
 
     public void listarProvincias() {
         try {
             provincias.clear();
-            provincias.addAll(provinciaService.listarPais());
+            provincias.addAll(provinciaService.listarProvincias());
 
             // Ordenar alfabéticamente por el nombre de la provincia usando un Comparator
             Collections.sort(provincias, new Comparator<Provincia>() {
@@ -95,42 +137,4 @@ public class ControllerProvincia implements Serializable {
             throw e;
         }
     }
-
-    public void buscarProvincia() {
-        Provincia provincia = provinciaService.buscarProvinciaPorNombre(nombreProvincia.toUpperCase());
-        if (provincia == null) {
-            setNombreProvinciaModificado("No existe");
-            setProvinciaNoEncontrado(true);
-        } else {
-            setNombreProvinciaModificado(nombreProvincia.toUpperCase());
-            setProvinciaNoEncontrado(false);
-        }
-    }
-
-    public void actualizarProvincia() {
-        try {
-            Provincia provincia = provinciaService.buscarProvinciaPorNombre(nombreProvincia.toUpperCase());
-
-            if (provincia == null) {
-                throw new IllegalArgumentException("La provincia no fue encontrada.");
-            }
-            
-            provinciaService.modificarProvincia(provincia.getId(), nombreProvincia.toUpperCase());
-        } catch (Exception e) {
-            // Manejo de excepciones
-        }
-    }
-
-    public void eliminarProvincia() {
-        try {
-            Provincia provincia = provinciaService.buscarProvinciaPorNombre(nombreProvincia.toUpperCase());
-            if (provincia == null) {
-                throw new IllegalArgumentException("La provincia no fue encontrada.");
-            }
-            provinciaService.eliminarProvincia(provincia.getId());
-
-        } catch (Exception e) {
-        }
-    }
-
 }

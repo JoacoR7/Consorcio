@@ -15,7 +15,6 @@ public class Provincia implements Serializable {
     private String nombre;
     private boolean eliminado;
     @ManyToOne
-    @JoinColumn(name = "pais_id")
     private Pais pais;
 
     public Provincia(String id, String nombre, boolean eliminado , Pais pais) {

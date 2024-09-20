@@ -35,15 +35,15 @@ public class DAOProvincia {
         return em.find(Provincia.class, id);
     }
     
-public Provincia buscarProvinciaPorNombre(String nombre) {
-    try {
-        TypedQuery<Provincia> query = em.createQuery("SELECT p FROM Provincia p WHERE p.nombre = :nombre AND p.eliminado = FALSE", Provincia.class);
-        query.setParameter("nombre", nombre);
-        return query.getSingleResult();
-    } catch (NoResultException e) {
-        throw e; 
+    public Provincia buscarProvinciaPorNombre(String nombre) {
+        try {
+            TypedQuery<Provincia> query = em.createQuery("SELECT p FROM Provincia p WHERE p.nombre = :nombre AND p.eliminado = FALSE", Provincia.class);
+            query.setParameter("nombre", nombre);
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
-}
     
     public Collection<Provincia> listarProvinciaActivo(){
         TypedQuery<Provincia> query = em.createQuery("SELECT p FROM Provincia p WHERE p.eliminado = FALSE",Provincia.class);
@@ -64,10 +64,11 @@ public Provincia buscarProvinciaPorNombre(String nombre) {
                                       getSingleResult();
 
           } catch (NoResultException ex) {
-                throw new IllegalArgumentException("No se encontró información");
+              ex.getMessage();
+              return null;
           } catch (Exception ex) {
                 ex.printStackTrace();
-                throw new IllegalArgumentException("Error de sistema");
+                return null;
           } 
        }
     

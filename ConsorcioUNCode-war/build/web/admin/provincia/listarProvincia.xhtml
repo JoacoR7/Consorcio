@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <h:outputStylesheet name="rio-layout/css/rio-font.css" />
+        <style>
+            /* Ajuste del diseño del botón de agregar país */
+            .add-button {
+                background-color: #007bff; /* Color azul */
+                color: white;
+                padding: 6px 12px; /* Ajustar padding para que sea más pequeño */
+                border-radius: 4px; /* Reducir el radio de los bordes */
+                font-size: 14px; /* Ajustar el tamaño de la fuente */
+                font-weight: bold;
+                border: none;
+                cursor: pointer;
+                transition: background-color 0.3s ease; /* Efecto suave de hover */
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 15px; /* Añadir margen debajo del botón */
+            }
+
+            /* Estilo para el icono dentro del botón */
+            .add-button .ui-button-icon-left {
+                margin-right: 6px; /* Menor margen entre ícono y texto */
+                font-size: 16px; /* Tamaño del ícono ligeramente reducido */
+            }
+
+            /* Hover: Cambia el color de fondo cuando el mouse pasa sobre el botón */
+            .add-button:hover {
+                background-color: #0056b3; /* Azul más oscuro para hover */
+            }
+
+            /* Estilo para el tooltip */
+            #toolTipPaisNuevo {
+                font-size: 12px;
+            }
+
+            /* Añade algunos estilos para mejorar el diseño */
+            .table-header {
+                background-color: #f0f0f0;
+                text-align: center;
+                font-weight: bold;
+                padding: 10px;
+            }
+
+            .Fright {
+                float: right;
+                margin-right: 10px;
+            }
+
+            .table-row {
+                text-align: center;
+            }
+
+            .actions-menu {
+                display: flex;
+                justify-content: center;
+            }
+
+            .GrayButton {
+                background-color: #e0e0e0;
+                border-radius: 5px;
+            }
+
+            .action-button {
+                margin-left: 5px;
+            }
+
+        </style>
+    </h:head>
+
+    <h:body>
+        <h:form>
+            <!-- Botón para agregar nuevo país -->
+            <div class="Responsive50">
+                <div class="EmptyBox20"></div>
+                <p:commandButton id="nuevo" icon="fa fa-plus" value="Agregar Provincia" 
+                                 styleClass="add-button" action="#{controllerProvincia.alta()}"/>
+                <p:tooltip id="toolTipProvinciaNueva" for="nuevo" value="Agregar nueva provincia" position="bottom"/>
+            </div>
+
+            <!-- Tabla de países -->
+            <p:dataTable id="provinciaTable" var="provincia" value="#{controllerProvincia.provincias}" styleClass="responsive-table">
+                <!-- Columna de nombres de provincias -->
+                <p:column headerText="Provincias" styleClass="table-header">
+                    <h:outputText value="#{provincia.nombre}" />
+                </p:column>
+                <p:column headerText="Paises" styleClass="table-header">
+                    <h:outputText value="#{provincia.pais.nombre}" />
+                </p:column>
+                <!-- Columna de acciones -->
+                <p:column headerText="Acción" styleClass="table-header">
+                    <div class="actions-menu">
+                        <p:commandButton icon="fa fa-ellipsis-v" styleClass="GrayButton action-button" id="opciones" />
+                        <p:slideMenu overlay="true" my="left top" at="left top" trigger="opciones" style="height: 150px">
+                            <p:menuitem value="Modificar" icon="fa fa-pencil-square-o Purple" action="#{controllerProvincia.modificar(provincia)}"/>
+                            <p:menuitem value="Consultar" icon="fa fa-eye Green" action="#{controllerProvincia.consultar(provincia)}"/>
+                            <p:menuitem value="Eliminar" icon="fa fa-trash Red" action="#{controllerProvincia.baja(provincia)}" update="provinciaTable" />
+                        </p:slideMenu>
+                    </div>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </h:body>
+</ui:composition>
