@@ -4,29 +4,33 @@
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
 
-    <!-- Regla para modificar Pais -->
+    
+    
     <navigation-rule>
         <navigation-case>
             <from-outcome>modificarPais</from-outcome>
             <to-view-id>/admin/pais/modificarPais.jsf</to-view-id>
             <redirect/>
         </navigation-case>
-    </navigation-rule>
-
-    <navigation-rule>
         <navigation-case>
-            <from-outcome>modificarInquilino</from-outcome>
-            <to-view-id>/admin/inquilino/modificarInquilino.jsf</to-view-id>
+            <from-outcome>listarPais</from-outcome>
+            <to-view-id>/admin/pais/listarPais.jsf</to-view-id>
             <redirect/>
         </navigation-case>
-    </navigation-rule>
-    
-    <navigation-rule>
+        <navigation-case>
+            <from-outcome>listarProvincia</from-outcome>
+            <to-view-id>/admin/provincia/listarProvincia.jsf</to-view-id>
+            <redirect/>
+        </navigation-case>   
+        <navigation-case>
+            <from-outcome>modificarProvincia</from-outcome>
+            <to-view-id>/admin/provincia/modificarProvincia.jsf</to-view-id>
+            <redirect/>
+        </navigation-case>   
         <navigation-case>
             <from-outcome>listarInquilino</from-outcome>
             <to-view-id>/admin/inquilino/listarInquilino.jsf</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>
-
 </faces-config>
