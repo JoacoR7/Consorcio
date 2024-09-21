@@ -7,20 +7,29 @@
                 xmlns:p="http://primefaces.org/ui">
     <h:head>
         <h:outputStylesheet name="rio-layout/css/rio-font.css" />
+        <h:outputStylesheet name="css/abm.css" />
     </h:head>
     <h:form>
         <div class="card">
-            <p:panel header="ABM Provincia">
-                <h:outputLabel value="Ingrese el nombre: " />
-                <p:inputText id="idNombre"  value="#{controllerEditProvincia.nombre}" disabled="#{controllerEditProvincia.disableButton}" />
-
-                <p:selectOneMenu id="pais" styleClass="Wid80" value="#{controllerEditProvincia.idPais}" disabled="#{controllerEditProvincia.disableButton}">
-                    <f:selectItems  value="#{controllerEditProvincia.paises}" />
-                </p:selectOneMenu> 
-
-                <p:commandButton value="Aceptar"
-                                 action="#{controllerEditProvincia.aceptar()}"
-                                 update="@form" />
+            <p:panel header="ABM Provincia" styleClass="ui-panel ui-widget ui-widget-content ui-corner-all">
+                <div class="form-row">
+                    <h:outputLabel value="Nombre: " />
+                    <p:inputText id="idNombre"  value="#{controllerEditProvincia.nombre}" disabled="#{controllerEditProvincia.disableButton}" />
+                </div>
+                <div class="form-row">
+                    <h:outputLabel value="Pais: " />
+                    <p:selectOneMenu id="pais" styleClass="Wid80" value="#{controllerEditProvincia.idPais}" disabled="#{controllerEditProvincia.disableButton}">
+                        <f:selectItems  value="#{controllerEditProvincia.paises}" />
+                    </p:selectOneMenu> 
+                </div>
+                <div>
+                    <p:commandButton value="Aceptar"
+                                     action="#{controllerEditProvincia.aceptar()}"
+                                     update="@form" />
+                    <p:commandButton value="Volver"
+                                     action="#{controllerEditProvincia.cancelar()}"
+                                     update="@form" />
+                </div>
             </p:panel>
         </div>   
     </h:form>

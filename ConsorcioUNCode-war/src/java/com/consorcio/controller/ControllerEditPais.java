@@ -66,6 +66,9 @@ public class ControllerEditPais {
         }
     }
 
+    public String cancelar(){
+        return "listarPais";
+    }
     public boolean isDisableButton() {
         return disableButton;
     }

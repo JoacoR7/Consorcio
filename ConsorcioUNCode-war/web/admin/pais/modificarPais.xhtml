@@ -7,17 +7,22 @@
                 xmlns:p="http://primefaces.org/ui">
     <h:head>
         <h:outputStylesheet name="rio-layout/css/rio-font.css" />
+        <h:outputStylesheet name="css/abm.css" />
     </h:head>
     <h:form>
-        <div class="card">
-            <p:panel header="ABM País">
-                <h:outputLabel value="Ingrese el nombre: " />
-                <p:inputText id="nombrePais"  value="#{controllerEditPais.nombrePais}" disabled="#{controllerEditPais.disableButton}" />
-                <p:commandButton value="Aceptar"
-                                 action="#{controllerEditPais.aceptar()}"
-                                 update="@form" />
-            </p:panel>
-        </div>   
+        <p:panel header="ABM Pais" styleClass="ui-panel ui-widget ui-widget-content ui-corner-all">
+            <div class="form-row">
+                <h:outputLabel value="Nombre: " />
+                <p:inputText id="nombrePais" value="#{controllerEditPais.nombrePais}" disabled="#{controllerEditPais.disableButton}" />
+            </div>
+            <div>
+                <p:commandButton value="Aceptar" action="#{controllerEditPais.aceptar()}"
+                                 update="@form" icon="pi pi-check"/>
+                <p:commandButton value="Volver" action="#{controllerEditPais.cancelar()}"
+                                 update="@form" icon="pi pi-check"/>
+            </div>
+
+        </p:panel>
     </h:form>
 
 </ui:composition>

@@ -22,14 +22,17 @@ import javax.servlet.http.HttpSession;
 @ViewScoped
 public class ControllerProvincia implements Serializable {
 
-    private @EJB ProvinciaServiceBean provinciaService;
-    private @EJB PaisServiceBean paisService;
+    private @EJB
+    ProvinciaServiceBean provinciaService;
+    private @EJB
+    PaisServiceBean paisService;
     private List<Provincia> provincias = new ArrayList<>();
     private String nombreProvincia;
     private String nombreProvinciaModificado;
     private boolean provinciaNoEncontrado = true;
     private boolean eliminado; // Atributo eliminado
     private String idPais;
+    private Provincia provinciaEliminar;
 
     @PostConstruct
     public void init() {
@@ -72,53 +75,59 @@ public class ControllerProvincia implements Serializable {
         return provincias;
     }
 
-    public String alta(){
+    public String alta() {
         try {
             guardarSession("ALTA", null);
-            return "modificarProvincia";  
+            return "modificarProvincia";
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
 
     }
-    
-    public void baja(Provincia provincia){
-        try {
-            provinciaService.eliminarProvincia(provincia.getId());
-            listarProvincias();
-        } catch (Exception e){
-            e.getMessage();
+
+    public void prepararBaja(Provincia provincia) {
+        this.provinciaEliminar = provincia;
+    }
+
+    public void baja() {
+        
+        if (provinciaEliminar != null) {
+            try {
+                provinciaService.eliminarProvincia(provinciaEliminar.getId());
+                listarProvincias();
+            } catch (Exception e) {
+                e.getMessage();
+            }
         }
     }
-    
-    public String modificar(Provincia provincia){
+
+    public String modificar(Provincia provincia) {
         try {
             guardarSession("MODIFICAR", provincia);
-            return "modificarProvincia";  
+            return "modificarProvincia";
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public String consultar(Provincia provincia){
+    public String consultar(Provincia provincia) {
         try {
             guardarSession("CONSULTAR", provincia);
-            return "modificarProvincia";  
+            return "modificarProvincia";
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
-    
-    private void guardarSession(String casoDeUso, Provincia provincia){
+
+    private void guardarSession(String casoDeUso, Provincia provincia) {
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) context.getSession(true);
-        session.setAttribute("ACCION", casoDeUso.toUpperCase());  
-        session.setAttribute("PROVINCIA", provincia);  
+        session.setAttribute("ACCION", casoDeUso.toUpperCase());
+        session.setAttribute("PROVINCIA", provincia);
     }
-    
 
     public void listarProvincias() {
         try {

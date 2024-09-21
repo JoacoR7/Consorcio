@@ -28,7 +28,8 @@ public class ControllerPais implements Serializable {
     private boolean paisNoEncontrado = true;
     private boolean eliminado; // Atributo eliminado
     private String idPais;
-
+    private Pais paisEliminar;
+    
     @PostConstruct
     public void init() {
         listarPais();
@@ -107,13 +108,18 @@ public class ControllerPais implements Serializable {
         }
 
     }
+    public void prepararBaja(Pais pais){
+        this.paisEliminar = pais;
+    }
     
-    public void baja(Pais pais){
-        try {
-            paisService.eliminarPais(pais.getId());
-            listarPais();
-        } catch (Exception e){
-            throw new IllegalArgumentException("El país no fue encontrado.");
+    public void baja(){
+        if (paisEliminar != null) {
+            try {
+                paisService.eliminarPais(paisEliminar.getId());
+                listarPais();
+            } catch (Exception e){
+                throw new IllegalArgumentException("El país no fue encontrado.");
+            }
         }
     }
     

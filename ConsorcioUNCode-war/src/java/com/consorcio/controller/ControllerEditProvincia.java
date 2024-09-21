@@ -93,7 +93,9 @@ public class ControllerEditProvincia {
             return null;
         }
     }
-    
+    public String cancelar(){
+        return "listarProvincia";
+    }
     public boolean isDisableButton() {
         return disableButton;
     }

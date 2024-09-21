@@ -12,3 +12,4 @@ Thumbs.db
 ConsorcioUNCode-ejb/build/generated-sources/ap-source-output/com/consorcio/entity/
 ConsorcioUNCode-ejb/nbproject/private
 ConsorcioUNCode-war/nbproject/private
+*.dpf

@@ -1,0 +1,63 @@
+/* Ajuste del diseño del botón de agregar */
+.add-button {
+    background-color: #007bff; /* Color azul */
+    color: white;
+    padding: 6px 12px; /* Ajustar padding para que sea más pequeño */
+    border-radius: 4px; /* Reducir el radio de los bordes */
+    font-size: 14px; /* Ajustar el tamaño de la fuente */
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Efecto suave de hover */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px; /* Añadir margen debajo del botón */
+}
+
+/* Estilo para el icono dentro del botón */
+.add-button .ui-button-icon-left {
+    margin-right: 6px; /* Menor margen entre ícono y texto */
+    font-size: 16px; /* Tamaño del ícono ligeramente reducido */
+}
+
+/* Hover: Cambia el color de fondo cuando el mouse pasa sobre el botón */
+.add-button:hover {
+    background-color: #0056b3; /* Azul más oscuro para hover */
+}
+
+/* Estilo para el tooltip */
+#toolTipNuevo {
+    font-size: 12px;
+}
+
+/* Añade algunos estilos para mejorar el diseño */
+.table-header {
+    background-color: #f0f0f0;
+    text-align: center;
+    font-weight: bold;
+    padding: 10px;
+}
+
+.Fright {
+    float: right;
+    margin-right: 10px;
+}
+
+.table-row {
+    text-align: center;
+}
+
+.actions-menu {
+    display: flex;
+    justify-content: center;
+}
+
+.GrayButton {
+    background-color: #e0e0e0;
+    border-radius: 5px;
+}
+
+.action-button {
+    margin-left: 5px;
+}
