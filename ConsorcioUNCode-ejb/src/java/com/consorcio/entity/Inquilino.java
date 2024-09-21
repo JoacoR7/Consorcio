@@ -15,7 +15,7 @@ import javax.persistence.Id;
  * @author joaqu
  */
 @Entity
-public class Inquilino extends Persona{
+public class Inquilino extends Persona implements Serializable{
     private String documento;
     private String tipoDocumento;
     private SexoEnum sexo;

@@ -17,15 +17,16 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author joaqu
  */
-@ManagedBean(name = "inquilinoController")
+@ManagedBean(name = "ControllerInquilino")
 @ViewScoped
 public class ControllerInquilino implements Serializable {
 
@@ -40,6 +41,8 @@ public class ControllerInquilino implements Serializable {
     private String telefono;
     private String correoElectronico;
     private List<Inquilino> inquilinos = new ArrayList<Inquilino>();
+    private boolean eliminado;
+    private Inquilino inquilinoAEliminar;
 
     @PostConstruct
     public void init() {
@@ -52,6 +55,14 @@ public class ControllerInquilino implements Serializable {
 
     public void setDocumento(String documento) {
         this.documento = documento;
+    }
+
+    public boolean isEliminado() {
+        return eliminado;
+    }
+
+    public void setEliminado(boolean eliminado) {
+        this.eliminado = eliminado;
     }
 
     public String getTipoDocumento() {
@@ -87,7 +98,7 @@ public class ControllerInquilino implements Serializable {
     }
 
     public SexoEnum[] getSexos() {
-        return sexo.values();
+        return SexoEnum.values();
     }
 
     public String getFechaNacimiento() {
@@ -120,9 +131,7 @@ public class ControllerInquilino implements Serializable {
 
     public void guardarInquilino() {
         try {
-            System.out.println(nombre + apellido + telefono + 
-                    correoElectronico + documento + tipoDocumento + sexo + fechaNacimiento);
-            inquilinoService.crearInquilino(nombre, apellido, telefono, 
+            inquilinoService.crearInquilino(nombre, apellido, telefono,
                     correoElectronico, documento, tipoDocumento, sexo, fechaNacimiento);
             listarInquilino();
         } catch (Exception e) {
@@ -146,6 +155,58 @@ public class ControllerInquilino implements Serializable {
         } catch (Exception e) {
             throw e;
         }
+    }
+
+    public String alta() {
+        try {
+            guardarSession("ALTA", null);
+            return "modificarInquilino";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public void prepararBaja(Inquilino inquilino) {
+        this.inquilinoAEliminar = inquilino;
+    }
+
+    public void baja() {
+        if (inquilinoAEliminar != null) {
+            try {
+                inquilinoService.eliminarInquilino(inquilinoAEliminar.getId());
+                listarInquilino();
+                inquilinoAEliminar = null;
+            } catch (Exception e) {
+                throw new IllegalArgumentException("El inquilino no fue encontrado.");
+            }
+        }
+    }
+
+    public String modificar(Inquilino inquilino) {
+        try {
+            guardarSession("MODIFICAR", inquilino);
+            return "modificarInquilino";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public String consultar(Inquilino inquilino) {
+        try {
+            guardarSession("CONSULTAR", inquilino);
+            return "modificarInquilino";
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private void guardarSession(String casoDeUso, Inquilino inquilino) {
+        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        HttpSession session = (HttpSession) context.getSession(true);
+        session.setAttribute("ACCION", casoDeUso.toUpperCase());
+        session.setAttribute("INQUILINO", inquilino);
     }
 
 }
