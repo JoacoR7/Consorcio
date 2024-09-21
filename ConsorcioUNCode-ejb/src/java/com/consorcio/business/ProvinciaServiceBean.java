@@ -38,8 +38,10 @@ public class ProvinciaServiceBean {
             }
             
             try {
-                dao.buscarProvinciaPorPaisYNombre(idPais, nombre);
-                throw new IllegalArgumentException("Existe una provincia con el nombre para el país indicado");
+                Provincia provinciaExistente = dao.buscarProvinciaPorPaisYNombre(idPais, nombre);
+                if (provinciaExistente != null) {
+                   throw new IllegalArgumentException("Existe una provincia con el nombre para el país indicado"); 
+                }
             } catch (Exception ex) {}
             
             Provincia provincia = new Provincia();
@@ -74,18 +76,7 @@ public class ProvinciaServiceBean {
         }
         return null;
     }
-    
-    public Provincia buscarProvinciaPorNombre(String nombre) {
-        try {
-            if (nombre == null) {
-                throw new IllegalArgumentException("Seleccione una provincia");
-            }
-            return dao.buscarProvinciaPorNombre(nombre);
-        } catch (Exception e) {
-            throw e;
-        }
-    }
-    
+      
     public void modificarProvincia(String id , String nombre){
     
         try {
@@ -98,7 +89,7 @@ public class ProvinciaServiceBean {
             
             try {
                 Provincia provinciaExistente = dao.buscarProvinciaPorNombre(nombre); 
-                if (!provinciaExistente.getId().equals(id)){
+                if (provinciaExistente != null && !provinciaExistente.getId().equals(id)){
                     throw new IllegalArgumentException("Ya existe una provincia con ese nombre");
                 }
             }catch (NoResultException e){}
@@ -124,7 +115,7 @@ public class ProvinciaServiceBean {
 
     }
     
-    public Collection<Provincia> listarPais(){
+    public Collection<Provincia> listarProvincias(){
         try {
             return dao.listarProvinciaActivo();
             

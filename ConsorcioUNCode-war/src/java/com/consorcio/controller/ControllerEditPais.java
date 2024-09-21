@@ -43,7 +43,7 @@ public class ControllerEditPais {
                 if (casoDeUso.equals("CONSULTAR")){
                     disableButton = true;
                 }
-            } 
+            }
         } catch (Exception e) {
             e.getMessage();
         }
@@ -52,7 +52,6 @@ public class ControllerEditPais {
     public String aceptar(){
     
         try {
-            System.out.println("EL NOMBRE DEL PAIS ES: "+ nombrePais + "y el caso de uso es " + casoDeUso);
             if (casoDeUso.equals("ALTA")){
                 paisService.crearPais(nombrePais);
             } else {
