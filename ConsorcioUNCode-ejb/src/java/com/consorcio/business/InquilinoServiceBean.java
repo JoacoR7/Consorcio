@@ -89,7 +89,7 @@ public class InquilinoServiceBean {
         return null;
     }
     
-    public void modificarInquilino(String id, String nombre, String telefono, 
+    public void modificarInquilino(String id, String nombre, String apellido, String telefono, 
             String correoElectronico, String documento, String tipoDocumento, 
             SexoEnum sexo, String fechaNacimiento) {
         try {
@@ -97,6 +97,9 @@ public class InquilinoServiceBean {
             
             if (nombre != null || !nombre.isEmpty()) {
                 inquilino.setNombre(nombre);
+            }
+            if (apellido != null || !apellido.isEmpty()) {
+                inquilino.setApellido(apellido);
             }
             if (telefono != null || !telefono.isEmpty()) {
                 inquilino.setTelefono(telefono);

@@ -1,0 +1,23 @@
+/* Reduce el espacio entre las columnas */
+.ui-grid-responsive > tbody > tr > td {
+    padding: 2px; /* Reduce el espacio entre celdas */
+}
+
+/* Estilo compacto para label e input */
+.form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px; /* Controla la separación vertical */
+}
+
+.form-row label {
+    width: 100px; /* Fija el ancho de las etiquetas */
+    text-align: left;
+    padding-right: 50px;
+}
+
+.form-row input,
+.form-row select {
+    flex-grow: 1;
+}
+

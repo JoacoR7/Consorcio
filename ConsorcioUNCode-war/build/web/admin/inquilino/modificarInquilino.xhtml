@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <h:outputStylesheet name="rio-layout/css/rio-font.css" />
+        <h:outputStylesheet name="css/abm.css" />
+    </h:head>
+    <h:form>
+        <div class="card">
+            <p:panel header="ABM Inquilino" styleClass="ui-panel ui-widget ui-widget-content ui-corner-all">
+                <div class="form-row">
+                    <h:outputLabel for="documentoInquilino" value="Documento" />
+                    <p:inputText id="documentoInquilino" 
+                                 value="#{controllerEditInquilino.documento}" 
+                                 disabled="#{controllerEditInquilino.casoDeUso ne 'ALTA'}"
+                                 styleClass="ui-inputfield" />
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel for="tipoDocumentoInquilino" value="TipoDocumento" />
+                    <p:inputText id="tipoDocumentoInquilino" value="#{controllerEditInquilino.tipoDocumento}" disabled="#{controllerEditInquilino.casoDeUso ne 'ALTA'}" styleClass="ui-inputfield" />
+                </div>
+                <div class="form-row">
+                    <h:outputLabel for="nombreInquilino" value="Nombre:" />
+                    <p:inputText id="nombreInquilino" value="#{controllerEditInquilino.nombre}" disabled="#{controllerEditInquilino.disableButton}" styleClass="ui-inputfield" />
+                </div>
+                <div class="form-row">
+                    <h:outputLabel for="apellidoInquilino" value="Apellido:" />
+                    <p:inputText id="apellidoInquilino" value="#{controllerEditInquilino.apellido}" disabled="#{controllerEditInquilino.disableButton}" styleClass="ui-inputfield" />
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel for="telefonoInquilino" value="Teléfono:" />
+                    <p:inputText id="telefonoInquilino" value="#{controllerEditInquilino.telefono}" disabled="#{controllerEditInquilino.disableButton}" styleClass="ui-inputfield" />
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel for="correoInquilino" value="Correo:" />
+                    <p:inputText id="correoInquilino" value="#{controllerEditInquilino.correoElectronico}" disabled="#{controllerEditInquilino.disableButton}" styleClass="ui-inputfield" />
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel for="sexoInquilino" value="Sexo:" />
+                    <p:selectOneMenu id="sexoInquilino" value="#{controllerEditInquilino.sexo}" styleClass="ui-inputfield" disabled="#{controllerEditInquilino.disableButton}">
+                        <f:selectItems value="#{ControllerInquilino.sexos}" var="sexo" itemLabel="#{sexo}" itemValue="#{sexo}" />
+                    </p:selectOneMenu>
+
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel for="fechaNacimientoInquilino" value="FechaNacimiento" />
+                    <p:inputText id="fechaNacimientoInquilino" value="#{controllerEditInquilino.fechaNacimiento}" disabled="#{controllerEditInquilino.casoDeUso ne 'ALTA'}" styleClass="ui-inputfield" />
+                </div>
+
+                <p:commandButton value="Aceptar" action="#{controllerEditInquilino.aceptar()}"
+                                 update="@form" icon="pi pi-check" styleClass="ui-button-success" />
+            </p:panel>
+        </div>   
+    </h:form>
+</ui:composition>
