@@ -18,9 +18,7 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 public class Departamento implements Serializable {
-    private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
     private String nombre;
     private boolean eliminado;

@@ -30,7 +30,13 @@ public class DAODepartamento {
     private EntityManager em;
 
     public void guardarDepartamento(Departamento departamento) {
-        em.persist(departamento);
+        try {
+            em.persist(departamento);
+        } catch (Exception e) {
+            e.getMessage();
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     public void actualizarDepartamento(Departamento departamento) {
@@ -66,14 +72,14 @@ public class DAODepartamento {
         }
     }
     
-    public Collection<Departamento> buscarDepartamentoPorProvinciaYNombre(String nombreDpto , String idProvincia) {
+    public Departamento buscarDepartamentoPorProvinciaYNombre(String nombreDpto , String idProvincia) {
         try {
             TypedQuery<Departamento> query = em.createQuery("SELECT d FROM Departamento d "
             + "WHERE d.provincia.id := idProvincia AMD d.nombre := nombreDpto "
             + "AND d.elimnado = FALSE", Departamento.class);
             query.setParameter("nombreDpto", nombreDpto);
             query.setParameter("idProvincia", idProvincia);
-            return query.getResultList();  
+            return query.getSingleResult();  
         } catch (Exception e) {
             return null;
         }

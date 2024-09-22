@@ -24,51 +24,12 @@ public class ControllerProvincia implements Serializable {
 
     private @EJB
     ProvinciaServiceBean provinciaService;
-    private @EJB
-    PaisServiceBean paisService;
     private List<Provincia> provincias = new ArrayList<>();
-    private String nombreProvincia;
-    private String nombreProvinciaModificado;
-    private boolean provinciaNoEncontrado = true;
-    private boolean eliminado; // Atributo eliminado
-    private String idPais;
     private Provincia provinciaEliminar;
 
     @PostConstruct
     public void init() {
         listarProvincias();
-    }
-
-    public String getNombreProvincia() {
-        return nombreProvincia;
-    }
-
-    public void setNombreProvincia(String nombreProvincia) {
-        this.nombreProvincia = nombreProvincia;
-    }
-
-    public String getNombreProvinciaModificado() {
-        return nombreProvinciaModificado;
-    }
-
-    public void setNombreProvinciaModificado(String nombreProvinciaModificado) {
-        this.nombreProvinciaModificado = nombreProvinciaModificado;
-    }
-
-    public boolean isEliminado() {
-        return eliminado;
-    }
-
-    public void setEliminado(boolean eliminado) {
-        this.eliminado = eliminado;
-    }
-
-    public boolean isProvinciaNoEncontrado() {
-        return provinciaNoEncontrado;
-    }
-
-    public void setProvinciaNoEncontrado(boolean provinciaNoEncontrado) {
-        this.provinciaNoEncontrado = provinciaNoEncontrado;
     }
 
     public Collection<Provincia> getProvincias() {

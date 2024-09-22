@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <h:outputStylesheet name="rio-layout/css/rio-font.css" />
+        <h:outputStylesheet name="css/abm.css" />
+    </h:head>
+    <h:form>
+        <div class="card">
+            <p:panel header="ABM Departamento" styleClass="ui-panel ui-widget ui-widget-content ui-corner-all">
+
+                <div class="form-row">
+                    <h:outputLabel value="Pais: " />
+                    <p:selectOneMenu id="pais" styleClass="Wid80"
+                                     value="#{controllerEditDepartamento.idPais}" 
+                                     disabled="#{controllerEditDepartamento.disableButton}">
+                        
+                        <f:selectItems  value="#{controllerEditDepartamento.paises}" />
+                        <p:ajax listener="#{controllerEditDepartamento.comboPaisProvincia()}"
+                                update="provincia"/>
+                        
+                    </p:selectOneMenu> 
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel value="Provincia: " />
+                    <p:selectOneMenu id="provincia" 
+                                     styleClass="Wid80" 
+                                     value="#{controllerEditDepartamento.idProvincia}" 
+                                     disabled="#{controllerEditProvincia.disableButton}">
+                        
+                        <f:selectItems  value="#{controllerEditDepartamento.provincias}" />
+                        
+                    </p:selectOneMenu> 
+                </div>
+                
+                <div class="form-row">
+                    <h:outputLabel value="Nombre: " />
+                    <p:inputText id="idNombre"  value="#{controllerEditDepartamento.nombre}"
+                                 disabled="#{controllerEditDepartamento.disableButton}" />
+                </div>
+                <div>
+                    <p:commandButton value="Aceptar"
+                                     action="#{controllerEditDepartamento.aceptar()}"
+                                     update="@form" />
+                    <p:commandButton value="Volver"
+                                     action="#{controllerEditDepartamento.cancelar()}"
+                                     update="@form" />
+                </div>
+            </p:panel>
+        </div>   
+    </h:form>
+
+</ui:composition>
