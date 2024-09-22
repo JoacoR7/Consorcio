@@ -29,15 +29,14 @@ public class DAODepartamento {
     @PersistenceContext
     private EntityManager em;
 
-    public void guardarDepartamento(Departamento departamento) {
-        try {
-            em.persist(departamento);
-        } catch (Exception e) {
-            e.getMessage();
-            e.printStackTrace();
-            throw e;
-        }
-    }
+   public void guardarDepartamento(Departamento departamento) throws Exception{
+        try{ 
+         em.persist(departamento);
+        } catch (Exception ex) {
+          ex.printStackTrace();
+          throw new Exception("Error de sistema");
+        }  
+   }
 
     public void actualizarDepartamento(Departamento departamento) {
         em.setFlushMode(FlushModeType.COMMIT);
@@ -66,23 +65,36 @@ public class DAODepartamento {
         try {
             TypedQuery<Departamento> query = em.createQuery("SELECT d FROM Departamento d "
                     + "WHERE d.eliminado = FALSE", Departamento.class);
-            return query.getResultList(); 
+            return query.getResultList();
         } catch (Exception e) {
             return null;
         }
     }
-    
-    public Departamento buscarDepartamentoPorProvinciaYNombre(String nombreDpto , String idProvincia) {
+
+    public Collection<Departamento> listarDepartamentoPorProvincia(String idProvincia) {
+        try {
+            TypedQuery<Departamento> query;
+            query = em.createQuery("SELECT d FROM Departamento d"
+                    + " WHERE d.eliminado = FALSE AND d.provincia.id = :idProvincia", Departamento.class);
+            query.setParameter("idProvincia", idProvincia);
+            return query.getResultList();
+        } catch (Exception e) {
+            e.getMessage();
+            return null;
+        }
+    }
+
+    public Departamento buscarDepartamentoPorProvinciaYNombre(String nombreDpto, String idProvincia) {
         try {
             TypedQuery<Departamento> query = em.createQuery("SELECT d FROM Departamento d "
-            + "WHERE d.provincia.id := idProvincia AMD d.nombre := nombreDpto "
-            + "AND d.elimnado = FALSE", Departamento.class);
+                    + "WHERE d.provincia.id := idProvincia AMD d.nombre := nombreDpto "
+                    + "AND d.elimnado = FALSE", Departamento.class);
             query.setParameter("nombreDpto", nombreDpto);
             query.setParameter("idProvincia", idProvincia);
-            return query.getSingleResult();  
+            return query.getSingleResult();
         } catch (Exception e) {
             return null;
         }
     }
-    
+
 }

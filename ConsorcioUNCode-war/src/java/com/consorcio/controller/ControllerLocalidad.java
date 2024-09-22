@@ -5,9 +5,8 @@
  */
 package com.consorcio.controller;
 
-import com.consorcio.business.DepartamentoServiceBean;
-import com.consorcio.business.ProvinciaServiceBean;
-import com.consorcio.entity.Departamento;
+import com.consorcio.business.LocalidadServiceBean;
+import com.consorcio.entity.Localidad;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,28 +27,29 @@ import javax.servlet.http.HttpSession;
  */
 @ManagedBean
 @ViewScoped
-public class ControllerDepartamento implements Serializable{
+public class ControllerLocalidad implements Serializable{
 
     /**
-     * Creates a new instance of ControllerDepartamento
+     * Creates a new instance of ControllerLocalidad
      */
-    private @EJB DepartamentoServiceBean departamentoService;
-    private List<Departamento> departamentos = new ArrayList<>();
-    private Departamento departamentoEliminar;
+    private @EJB
+    LocalidadServiceBean localidadService;
+    private List<Localidad> localidades = new ArrayList<>();
+    private Localidad localidadEliminar;
 
     @PostConstruct
     public void init() {
-        listarDepartamentos();
+        listarLocalidades();
     }
 
-    public Collection<Departamento> getDepartamentos() {
-        return departamentos;
+    public Collection<Localidad> getLocalidades() {
+        return localidades;
     }
 
     public String alta() {
         try {
             guardarSession("ALTA", null);
-            return "modificarDepartamento";
+            return "modificarLocalidad";
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -57,59 +57,59 @@ public class ControllerDepartamento implements Serializable{
 
     }
 
-    public void prepararBaja(Departamento departamento) {
-        this.departamentoEliminar = departamento;
+    public void prepararBaja(Localidad localidad) {
+        this.localidadEliminar = localidad;
     }
 
     public void baja() {
         
-        if (departamentoEliminar != null) {
+        if (localidadEliminar != null) {
             try {
-                departamentoService.eliminarDepartamento(departamentoEliminar.getId());
-                listarDepartamentos();
+                localidadService.eliminarLocalidad(localidadEliminar.getId());
+                listarLocalidades();
             } catch (Exception e) {
                 e.getMessage();
             }
         }
     }
 
-    public String modificar(Departamento departamento) {
+    public String modificar(Localidad localidad) {
         try {
-            guardarSession("MODIFICAR", departamento);
-            return "modificarDepartamento";
+            guardarSession("MODIFICAR", localidad);
+            return "modificarLocalidad";
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public String consultar(Departamento departamento) {
+    public String consultar(Localidad localidad) {
         try {
-            guardarSession("CONSULTAR", departamento);
-            return "modificarDepartamento";
+            guardarSession("CONSULTAR", localidad);
+            return "modificarLocalidad";
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    private void guardarSession(String casoDeUso, Departamento departamento) {
+    private void guardarSession(String casoDeUso, Localidad localidad) {
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) context.getSession(true);
         session.setAttribute("ACCION", casoDeUso.toUpperCase());
-        session.setAttribute("DEPARTAMENTO", departamento);
+        session.setAttribute("LOCALIDAD", localidad);
     }
 
-    public void listarDepartamentos() {
+    public void listarLocalidades() {
         try {
-            departamentos.clear();
-            departamentos.addAll(departamentoService.listarDepartamentos());
+            localidades.clear();
+            localidades.addAll(localidadService.listarLocalidades());
 
             // Ordenar alfabéticamente por el nombre de la provincia usando un Comparator
-            Collections.sort(departamentos, new Comparator<Departamento>() {
+            Collections.sort(localidades, new Comparator<Localidad>() {
                 @Override
-                public int compare(Departamento d1, Departamento d2) {
-                    return d1.getNombre().compareToIgnoreCase(d2.getNombre());
+                public int compare(Localidad l1, Localidad l2) {
+                    return l1.getNombre().compareToIgnoreCase(l2.getNombre());
                 }
             });
 

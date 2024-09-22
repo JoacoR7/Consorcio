@@ -7,6 +7,8 @@ package com.consorcio.entity;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
@@ -15,22 +17,16 @@ import javax.persistence.ManyToOne;
  * @author victo
  */
 @Entity
-public class Departamento implements Serializable {
+public class Localidad implements Serializable {
+
     @Id
     private String id;
     private String nombre;
     private boolean eliminado;
+    private String codigoPostal;
     @ManyToOne
-    private Provincia provincia;
-    
-    public Provincia getProvincia() {
-        return provincia;
-    }
+    private Departamento departamento;
 
-    public void setProvincia(Provincia provincia) {
-        this.provincia = provincia;
-    }
-    
     public String getNombre() {
         return nombre;
     }
@@ -47,6 +43,23 @@ public class Departamento implements Serializable {
         this.eliminado = eliminado;
     }
 
+    public String getCodigoPostal() {
+        return codigoPostal;
+    }
+
+    public void setCodigoPostal(String codigoPostal) {
+        this.codigoPostal = codigoPostal;
+    }
+
+    public Departamento getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(Departamento departamento) {
+        this.departamento = departamento;
+    }
+
+    
     public String getId() {
         return id;
     }
@@ -65,10 +78,10 @@ public class Departamento implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Departamento)) {
+        if (!(object instanceof Localidad)) {
             return false;
         }
-        Departamento other = (Departamento) object;
+        Localidad other = (Localidad) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -77,7 +90,7 @@ public class Departamento implements Serializable {
 
     @Override
     public String toString() {
-        return "com.consorcio.entity.Departamento[ id=" + id + " ]";
+        return "com.consorcio.entity.Localidad[ id=" + id + " ]";
     }
     
 }

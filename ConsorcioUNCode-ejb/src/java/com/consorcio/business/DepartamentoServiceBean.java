@@ -30,14 +30,14 @@ public class DepartamentoServiceBean {
     private @EJB
     DAODepartamento dao;
 
-    public void crearDepartamento(String nombre, String idProvincia) {
+    public void crearDepartamento(String nombre, String idProvincia) throws Exception {
 
         try {
 
             Provincia provincia = provinciaService.buscarProvincia(idProvincia);
             System.out.println("La provincia actual es: " + provincia.getNombre());
             if (nombre == null || nombre.isEmpty()) {
-                throw new IllegalArgumentException("Ingrese el nombre de la provincia");
+                throw new IllegalArgumentException("Ingrese el nombre del departamento");
             }
 
             try {
@@ -47,19 +47,21 @@ public class DepartamentoServiceBean {
                 }
             } catch (Exception ex) {
             }
-           
+
             Departamento departamento = new Departamento();
             departamento.setId(UUID.randomUUID().toString());
             departamento.setNombre(nombre);
             departamento.setEliminado(false);
             departamento.setProvincia(provincia);
-            System.out.println("El departamento será creado con: "+departamento.getId()+ " " + departamento.getNombre()
-            +" "+ departamento.getProvincia().getNombre());
-            
+            System.out.println("El departamento será creado con: " + departamento.getId() + " " + departamento.getNombre()
+                    + " " + departamento.getProvincia().getNombre());
+
             dao.guardarDepartamento(departamento);
 
         } catch (IllegalArgumentException e) {
             throw e;
+        }catch (Exception ex){
+            throw ex;
         }
 
     }
@@ -86,7 +88,7 @@ public class DepartamentoServiceBean {
     public void modificarDepartamento(String nombreDepartamento, String idDepartamento, String idProvincia) {
 
         try {
-            
+
             Departamento departamento = buscarDepartamento(idDepartamento);
             Provincia provincia = provinciaService.buscarProvincia(idProvincia);
 
@@ -127,6 +129,16 @@ public class DepartamentoServiceBean {
     public Collection<Departamento> listarDepartamentos() {
         try {
             return dao.listarDepartamentoActivo();
+
+        } catch (Exception e) {
+            e.getMessage();
+            throw e;
+        }
+    }
+
+    public Collection<Departamento> listarDepartamentosPorProvincia(String idProvincia) {
+        try {
+            return dao.listarDepartamentoPorProvincia(idProvincia);
 
         } catch (Exception e) {
             e.getMessage();

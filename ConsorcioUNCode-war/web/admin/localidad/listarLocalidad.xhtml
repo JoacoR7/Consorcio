@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <h:outputStylesheet name="rio-layout/css/rio-font.css" />
+        <h:outputStylesheet name="css/listar.css" />
+    </h:head>
+
+    <h:body>
+        <h:form>
+            <!-- Botón para agregar nuevo país -->
+            <div class="Responsive50">
+                <div class="EmptyBox20"></div>
+                <p:commandButton id="nuevo" icon="fa fa-plus" value="Agregar Localidad" 
+                                 styleClass="add-button" action="#{controllerLocalidad.alta()}"/>
+                <p:tooltip id="toolTipNuevo" for="nuevo" value="Agregar nueva localidad" position="bottom"/>
+            </div>
+
+            <!-- Tabla de países -->
+            <p:dataTable id="localidadTable" 
+                         var="localidad" 
+                         value="#{controllerLocalidad.localidades}" 
+                         styleClass="responsive-table">
+                <!-- Columna de nombres de localidades -->
+                <p:column headerText="Localidad" styleClass="table-header">
+                    <h:outputText value="#{localidad.nombre}" />
+                </p:column>
+                
+                <p:column headerText="Departamento" styleClass="table-header">
+                    <h:outputText value="#{localidad.departamento.nombre}" />
+                </p:column>
+                
+                <p:column headerText="Provincia" styleClass="table-header">
+                    <h:outputText value="#{localidad.departamento.provincia.nombre}" />
+                </p:column>
+                
+                <p:column headerText="País" styleClass="table-header">
+                    <h:outputText value="#{localidad.departamento.provincia.pais.nombre}" />
+                </p:column>
+                
+                <!-- Columna de acciones -->
+                <p:column headerText="Acción" styleClass="table-header">
+                    <div class="actions-menu">
+                        <p:commandButton icon="fa fa-ellipsis-v" 
+                                         styleClass="GrayButton action-button" 
+                                         id="opciones" />
+                        <p:slideMenu overlay="true" 
+                                     my="left top" at="left top" 
+                                     trigger="opciones" 
+                                     style="height: 150px">
+                            <p:menuitem value="Modificar"
+                                        icon="fa fa-pencil-square-o Purple"
+                                        action="#{controllerLocalidad.modificar(localidad)}"/>
+                            <p:menuitem value="Consultar"
+                                        icon="fa fa-eye Green"
+                                        action="#{controllerLocalidad.consultar(localidad)}"/>
+                            <p:menuitem value="Eliminar"
+                                        icon="fa fa-trash Red"
+                                        actionListener="#{controllerLocalidad.prepararBaja(localidad)}"
+                                        oncomplete="PF('confirmDialog').show()"
+                                        update="localidadTable" />
+                        </p:slideMenu>
+                    </div>
+                </p:column>
+            </p:dataTable>
+            <p:confirmDialog id="confirmDialog" widgetVar="confirmDialog" 
+                             header="Confirmación" 
+                             message="¿Está seguro de que desea eliminar esta localidad?" 
+                             severity="alert">
+                <p:commandButton value="Sí" 
+                                 action="#{controllerLocalidad.baja()}" 
+                                 update="localidadTable" 
+                                 oncomplete="PF('confirmDialog').hide()" />
+                <p:commandButton value="No" 
+                                 onclick="PF('confirmDialog').hide()" type="button" />
+            </p:confirmDialog>
+        </h:form>
+    </h:body>
+</ui:composition>
