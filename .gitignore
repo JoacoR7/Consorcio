@@ -13,3 +13,5 @@ ConsorcioUNCode-ejb/build/generated-sources/ap-source-output/com/consorcio/entit
 ConsorcioUNCode-ejb/nbproject/private
 ConsorcioUNCode-war/nbproject/private
 *.dpf
+/ConsorcioUNCode-ejb/build/
+/ConsorcioUNCode-war/build/
