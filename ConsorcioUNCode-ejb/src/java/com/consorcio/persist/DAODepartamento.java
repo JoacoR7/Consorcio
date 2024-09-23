@@ -29,14 +29,14 @@ public class DAODepartamento {
     @PersistenceContext
     private EntityManager em;
 
-   public void guardarDepartamento(Departamento departamento) throws Exception{
-        try{ 
-         em.persist(departamento);
+    public void guardarDepartamento(Departamento departamento) throws Exception {
+        try {
+            em.persist(departamento);
         } catch (Exception ex) {
-          ex.printStackTrace();
-          throw new Exception("Error de sistema");
-        }  
-   }
+            ex.printStackTrace();
+            throw new Exception("Error de sistema");
+        }
+    }
 
     public void actualizarDepartamento(Departamento departamento) {
         em.setFlushMode(FlushModeType.COMMIT);
@@ -87,8 +87,8 @@ public class DAODepartamento {
     public Departamento buscarDepartamentoPorProvinciaYNombre(String nombreDpto, String idProvincia) {
         try {
             TypedQuery<Departamento> query = em.createQuery("SELECT d FROM Departamento d "
-                    + "WHERE d.provincia.id := idProvincia AMD d.nombre := nombreDpto "
-                    + "AND d.elimnado = FALSE", Departamento.class);
+                    + "WHERE d.provincia.id = :idProvincia AND d.nombre = :nombreDpto "
+                    + "AND d.eliminado = FALSE", Departamento.class);
             query.setParameter("nombreDpto", nombreDpto);
             query.setParameter("idProvincia", idProvincia);
             return query.getSingleResult();

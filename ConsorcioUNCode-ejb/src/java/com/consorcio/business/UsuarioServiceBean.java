@@ -6,7 +6,7 @@
 package com.consorcio.business;
 
 import com.consorcio.entity.Usuario;
-import com.consorcio.persist.DAOUsuarioBean;
+import com.consorcio.persist.DAOUsuario;
 import java.util.UUID;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -28,10 +28,23 @@ import javax.xml.bind.DatatypeConverter;
 @Stateless
 @LocalBean
 public class UsuarioServiceBean {
-    private @EJB DAOUsuarioBean dao;
+    private @EJB DAOUsuario dao;
     
-    public void crearUsuario(String usuario, String clave) {
+    public void crearUsuario(String nombre, String apellido, String correoElectronico,
+            String telefono, String usuario, String clave) {
         try {
+            if (nombre == null || nombre.isEmpty()){
+                throw new IllegalArgumentException("Ingrese el nombre");
+            }
+            if (apellido == null || apellido.isEmpty()){
+                throw new IllegalArgumentException("Ingrese el apellido");
+            }
+            if (correoElectronico == null || correoElectronico.isEmpty()){
+                throw new IllegalArgumentException("Ingrese el correo electrónico");
+            }
+            if (telefono == null || telefono.isEmpty()){
+                throw new IllegalArgumentException("Ingrese el teléfono");
+            }
             if (usuario == null || usuario.isEmpty()){
                 throw new IllegalArgumentException("Ingrese el usuario");
             }
@@ -41,6 +54,10 @@ public class UsuarioServiceBean {
             
             Usuario user = new Usuario();
             user.setId(UUID.randomUUID().toString());
+            user.setNombre(nombre);
+            user.setApellido(apellido);
+            user.setCorreoElectronico(correoElectronico);
+            user.setTelefono(telefono);
             user.setUsuario(usuario);
             user.setClave(hashPassword(clave));
             user.setEliminado(false);
@@ -102,10 +119,22 @@ public class UsuarioServiceBean {
         return null;
     }
     
-    public void modificarUsuario(String usuario, String clave) throws Exception{
+    public void modificarUsuario(String nombre, String apellido, String correoElectronico, 
+            String telefono, String usuario, String clave) throws Exception{
         try {
             Usuario user = buscarUsuario(usuario);
-            
+            if(nombre != null || !nombre.isEmpty()){
+                user.setNombre(nombre);
+            }
+            if(apellido != null || !apellido.isEmpty()){
+                user.setApellido(apellido);
+            }
+            if(correoElectronico != null || !correoElectronico.isEmpty()){
+                user.setCorreoElectronico(correoElectronico);
+            }
+            if(telefono != null || !telefono.isEmpty()){
+                user.setTelefono(telefono);
+            }
             if(usuario != null || !usuario.isEmpty()){
                 user.setUsuario(usuario);
             }

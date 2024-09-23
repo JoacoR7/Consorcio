@@ -8,6 +8,7 @@ package com.consorcio.entity;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 /**
@@ -21,6 +22,7 @@ public class Departamento implements Serializable {
     private String nombre;
     private boolean eliminado;
     @ManyToOne
+    @JoinColumn(name = "provincia_id")
     private Provincia provincia;
     
     public Provincia getProvincia() {
