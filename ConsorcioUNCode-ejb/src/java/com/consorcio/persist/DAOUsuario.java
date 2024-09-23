@@ -20,7 +20,7 @@ import javax.persistence.TypedQuery;
  */
 @Stateless
 @LocalBean
-public class DAOUsuarioBean {
+public class DAOUsuario {
     private @PersistenceContext EntityManager em;
     
     public void guardarUsuario(Usuario usuario){

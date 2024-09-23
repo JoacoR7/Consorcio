@@ -37,5 +37,15 @@
             <to-view-id>/admin/inquilino/listarInquilino.jsf</to-view-id>
             <redirect/>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>listarUsuario</from-outcome>
+            <to-view-id>/admin/usuario/listarUsuario.jsf</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>modificarUsuario</from-outcome>
+            <to-view-id>/admin/usuario/modificarUsuario.jsf</to-view-id>
+            <redirect/>
+        </navigation-case>
     </navigation-rule>
 </faces-config>

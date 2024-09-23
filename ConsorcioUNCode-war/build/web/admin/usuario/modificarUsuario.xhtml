@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <h:outputStylesheet name="rio-layout/css/rio-font.css" />
+        <h:outputStylesheet name="css/abm.css" />
+    </h:head>
+    <h:form>
+        <div class="card">
+            <p:panel header="ABM Usuario" styleClass="ui-panel ui-widget ui-widget-content ui-corner-all">
+                <div class="form-row">
+                    <h:outputLabel for="nombreUsuario" value="Nombre" />
+                    <p:inputText id="nombreUsuario" 
+                                 value="#{controllerEditUsuario.nombre}" 
+                                 disabled="#{controllerEditUsuario.disableButton}"
+                                 styleClass="ui-inputfield" />
+                </div>
+                
+                <div class="form-row">
+                    <h:outputLabel for="apellidoUsuario" value="Apellido:" />
+                    <p:inputText id="apellidoUsuario" value="#{controllerEditUsuario.apellido}" disabled="#{controllerEditUsuario.disableButton}" styleClass="ui-inputfield" />
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel for="telefonoUsuario" value="Teléfono:" />
+                    <p:inputText id="telefonoUsuario" value="#{controllerEditUsuario.telefono}" disabled="#{controllerEditUsuario.disableButton}" styleClass="ui-inputfield" />
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel for="correoUsuario" value="Correo:" />
+                    <p:inputText id="correoUsuario" value="#{controllerEditUsuario.correoElectronico}" disabled="#{controllerEditUsuario.disableButton}" styleClass="ui-inputfield" />
+                </div>
+                
+                <div class="form-row">
+                    <h:outputLabel for="username" value="Usuario" />
+                    <p:inputText id="username" value="#{controllerEditUsuario.nombreUsuario}" disabled="#{controllerEditUsuario.disableButton}" styleClass="ui-inputfield" />
+                </div>
+                
+                <div class="form-row">
+                    <h:outputLabel for="password" value="Clave" />
+                    <p:inputText id="password" value="#{controllerEditUsuario.clave}" disabled="#{controllerEditUsuario.disableButton}" styleClass="ui-inputfield" />
+                </div>
+
+                <p:commandButton value="Aceptar" action="#{controllerEditUsuario.aceptar()}"
+                                 update="@form" icon="pi pi-check" styleClass="ui-button-success" />
+            </p:panel>
+        </div>   
+    </h:form>
+</ui:composition>
