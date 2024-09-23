@@ -1,4 +1,3 @@
-
 package com.consorcio.persist;
 
 import com.consorcio.entity.Provincia;
@@ -19,22 +18,23 @@ import javax.persistence.TypedQuery;
 @LocalBean
 public class DAOProvincia {
 
-    @PersistenceContext private EntityManager em;
-    
-    public void guardarProvincia(Provincia provincia){
+    @PersistenceContext
+    private EntityManager em;
+
+    public void guardarProvincia(Provincia provincia) {
         em.persist(provincia);
     }
-    
-    public void actualizarProvincia(Provincia provincia){
+
+    public void actualizarProvincia(Provincia provincia) {
         em.setFlushMode(FlushModeType.COMMIT);
         em.merge(provincia);
         em.flush();
     }
-    
-    public Provincia buscarProvinciaId(String id) throws NoResultException{
+
+    public Provincia buscarProvinciaId(String id) throws NoResultException {
         return em.find(Provincia.class, id);
     }
-    
+
     public Provincia buscarProvinciaPorNombre(String nombre) {
         try {
             TypedQuery<Provincia> query = em.createQuery("SELECT p FROM Provincia p WHERE p.nombre = :nombre AND p.eliminado = FALSE", Provincia.class);
@@ -44,33 +44,45 @@ public class DAOProvincia {
             return null;
         }
     }
-    
-    public Collection<Provincia> listarProvinciaActivo(){
-        TypedQuery<Provincia> query = em.createQuery("SELECT p FROM Provincia p WHERE p.eliminado = FALSE",Provincia.class);
+
+    public Collection<Provincia> listarProvinciaActivo() {
+        TypedQuery<Provincia> query = em.createQuery("SELECT p FROM Provincia p WHERE p.eliminado = FALSE", Provincia.class);
         return query.getResultList();
     }
-    
-    public Provincia buscarProvinciaPorPaisYNombre (String idPais, String nombre){
 
-          try{
+    public Provincia buscarProvinciaPorPaisYNombre(String idPais, String nombre) {
 
-           return (Provincia) em.createQuery("SELECT p "
-                                      + "  FROM Provincia p"
-                                      + " WHERE p.pais.id = :idPais"
-                                      + "   AND p.nombre = :nombre"
-                                      + "   AND p.eliminado = FALSE").
-                                      setParameter("idPais", idPais).
-                                      setParameter("nombre", nombre).
-                                      getSingleResult();
+        try {
 
-          } catch (NoResultException ex) {
-              ex.getMessage();
-              return null;
-          } catch (Exception ex) {
-                ex.printStackTrace();
-                return null;
-          } 
-       }
-    
-    
+            return (Provincia) em.createQuery("SELECT p "
+                    + "  FROM Provincia p"
+                    + " WHERE p.pais.id = :idPais"
+                    + "   AND p.nombre = :nombre"
+                    + "   AND p.eliminado = FALSE").
+                    setParameter("idPais", idPais).
+                    setParameter("nombre", nombre).
+                    getSingleResult();
+
+        } catch (NoResultException ex) {
+            ex.getMessage();
+            return null;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    public Collection<Provincia> listarProvinciasPorPais(String idPais) {
+        try {
+            TypedQuery<Provincia> query;
+            query = em.createQuery("SELECT p FROM Provincia p"
+                    + " WHERE p.eliminado = FALSE AND p.pais.id = :idPais", Provincia.class);
+            query.setParameter("idPais", idPais);
+            return query.getResultList();
+        } catch (Exception e) {
+            e.getMessage();
+            return null;
+        }
+    }
+
 }

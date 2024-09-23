@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <h:outputStylesheet name="rio-layout/css/rio-font.css" />
+        <h:outputStylesheet name="css/abm.css" />
+    </h:head>
+    <h:form>
+        <div class="card">
+            <p:panel header="ABM Localidad" styleClass="ui-panel ui-widget ui-widget-content ui-corner-all">
+
+                <div class="form-row">
+                    <h:outputLabel value="Pais: " />
+                    <p:selectOneMenu id="pais" styleClass="Wid80"
+                                     value="#{controllerEditLocalidad.idPais}" 
+                                     disabled="#{controllerEditLocalidad.disableButton}">
+
+                        <f:selectItems  value="#{controllerEditLocalidad.paises}" />
+                        <p:ajax listener="#{controllerEditLocalidad.comboPaisProvinciaDepartamento()}"
+                                update="provincia"/>
+
+                    </p:selectOneMenu> 
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel value="Provincia: " />
+                    <p:selectOneMenu id="provincia" 
+                                     styleClass="Wid80" 
+                                     value="#{controllerEditLocalidad.idProvincia}" 
+                                     disabled="#{controllerEditLocalidad.disableButton}">
+
+                        <f:selectItems  value="#{controllerEditLocalidad.provincias}" />
+                        <p:ajax listener="#{controllerEditLocalidad.comboProvinciaDepartamento()}"
+                                update="departamento"/>
+
+                    </p:selectOneMenu> 
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel value="Departamento " />
+                    <p:selectOneMenu id="departamento" 
+                                     styleClass="Wid80" 
+                                     value="#{controllerEditLocalidad.idDepartamento}" 
+                                     disabled="#{controllerEditLocalidad.disableButton}">
+
+                        <f:selectItems  value="#{controllerEditLocalidad.departamentos}" />
+                    </p:selectOneMenu> 
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel value="Nombre: " />
+                    <p:inputText id="idNombre"  value="#{controllerEditLocalidad.nombre}"
+                                 disabled="#{controllerEditLocalidad.disableButton}" />
+                </div>
+                
+                <div class="form-row">
+                    <h:outputLabel value="Codigo Postal: " />
+                    <p:inputText id="codigoPostal"  value="#{controllerEditLocalidad.codigoPostal}"
+                                 disabled="#{controllerEditLocalidad.disableButton}" />
+                </div>
+                
+                <div>
+                    <p:commandButton value="Aceptar"
+                                     action="#{controllerEditLocalidad.aceptar()}"
+                                     update="@form" />
+                    <p:commandButton value="Volver"
+                                     action="#{controllerEditLocalidad.cancelar()}"
+                                     update="@form" />
+                </div>
+            </p:panel>
+        </div>   
+    </h:form>
+
+</ui:composition>
