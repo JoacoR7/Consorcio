@@ -31,18 +31,22 @@
                     <h:outputText value="#{localidad.nombre}" />
                 </p:column>
                 
+                <p:column headerText="Codigo Postal" styleClass="table-header">
+                    <h:outputText value="#{localidad.codigoPostal}" />
+                </p:column>
+                
                 <p:column headerText="Departamento" styleClass="table-header">
                     <h:outputText value="#{localidad.departamento.nombre}" />
                 </p:column>
-                
+
                 <p:column headerText="Provincia" styleClass="table-header">
                     <h:outputText value="#{localidad.departamento.provincia.nombre}" />
                 </p:column>
-                
+
                 <p:column headerText="País" styleClass="table-header">
                     <h:outputText value="#{localidad.departamento.provincia.pais.nombre}" />
                 </p:column>
-                
+
                 <!-- Columna de acciones -->
                 <p:column headerText="Acción" styleClass="table-header">
                     <div class="actions-menu">

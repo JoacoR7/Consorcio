@@ -97,7 +97,6 @@ public class ControllerEditLocalidad {
         departamentos.clear();
         comboDepartamentos(idProvincia);
         RequestContext.getCurrentInstance().update("departamento");
-
     }
 
     public void comboPaises() {
@@ -132,7 +131,8 @@ public class ControllerEditLocalidad {
             departamentos = new ArrayList<SelectItem>();
             departamentos.add(new SelectItem(null, "Seleccione..."));
             for (Departamento departamento : departamentoService.listarDepartamentosPorProvincia(idProvincia)) {
-                provincias.add(new SelectItem(departamento.getId(), departamento.getNombre()));
+                System.out.println("Departamento actual: "+departamento.getNombre());
+                departamentos.add(new SelectItem(departamento.getId(), departamento.getNombre()));
             }
 
         } catch (Exception e) {
