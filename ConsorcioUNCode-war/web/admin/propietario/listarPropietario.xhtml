@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <h:outputStylesheet name="rio-layout/css/rio-font.css" />
+    </h:head>
+    <h:body>
+        <h:form>
+            <div class="Container50 Responsive50" style="margin-bottom: 15px;">
+                <p:commandButton id="nuevo" icon="fa fa-plus" styleClass="Fleft" 
+                                 action="#{controllerPropietario.alta()}" ajax="false"/>
+                <p:tooltip id="toolTipPropietarioNuevo" for="nuevo" value="Alta" position="top"/>
+            </div>
+
+            <!-- Tabla de propietarios -->
+            <div class="card">
+                <p:dataTable id="propietarioTable" var="propietario" value="#{controllerPropietario.propietarios}">
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{propietario.nombre}" />
+                    </p:column>
+                    <p:column headerText="Apellido">
+                        <h:outputText value="#{propietario.apellido}" />
+                    </p:column>
+                    <p:column headerText="Teléfono">
+                        <h:outputText value="#{propietario.telefono}" />
+                    </p:column>
+                    <p:column headerText="Correo electrónico">
+                        <h:outputText value="#{propietario.correoElectronico}" />
+                    </p:column>
+                    <p:column headerText="Habita Consorcio">
+                        <h:outputText value="#{propietario.habitaConsorcio ? 'Sí' : 'No'}" />
+                    </p:column>
+
+                    <p:column headerText="Acción">
+                        <p:commandButton  icon="fa fa-ellipsis-v" styleClass="Fright GrayButton" id="opciones"/>
+                        <p:slideMenu overlay="true" my="left top" at="left top" trigger="opciones" style="height: 150px">
+                            <p:menuitem value="Modificar" icon="fa fa-pencil-square-o Purple" action="#{controllerPropietario.modificar(propietario)}"/>
+                            <p:menuitem value="Consultar" icon="fa fa-eye Green" action="#{controllerPropietario.consultar(propietario)}"/>
+                            <p:menuitem value="Eliminar" icon="fa fa-trash Red" 
+                                        actionListener="#{controllerPropietario.prepararBaja(propietario)}" 
+                                        oncomplete="PF('confirmDialog').show()"
+                                        update="propietarioTable" />
+                        </p:slideMenu>
+                    </p:column>
+                </p:dataTable>
+            </div>
+
+            <!-- Confirmación para eliminación -->
+            <p:confirmDialog id="confirmDialog" widgetVar="confirmDialog" header="Confirmación" message="¿Está seguro de que desea eliminar este propietario?" severity="alert">
+                <p:commandButton value="Sí" 
+                                 action="#{controllerPropietario.baja()}" 
+                                 update="propietarioTable" 
+                                 oncomplete="PF('confirmDialog').hide()" />
+                <p:commandButton value="No" 
+                                 onclick="PF('confirmDialog').hide()" type="button" />
+            </p:confirmDialog>
+        </h:form>
+    </h:body>
+</ui:composition>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <h:outputStylesheet name="css/style.css" />
+    </h:head>
+    <h:form>
+        <div class="card">
+            <p:panel header="Subir Texto" styleClass="ui-panel ui-widget ui-widget-content ui-corner-all">
+                <!--
+                <div class="form-row">
+                    <h:outputLabel for="texto" value="Texto: " />
+                    <p:inputText id="texto" value=" required="true" />
+                </div>
+                -->
+                <div class="form-row">
+                    <p:commandButton value="Subir"
+                                     action="#{controllerMail.send}"
+                                     update="@form"
+                                     oncomplete="PF('msg').show();" />
+                </div>
+                <p:growl id="msg" life="3000" />
+            </p:panel>
+        </div>
+    </h:form>
+</ui:composition>

@@ -129,17 +129,6 @@ public class ControllerInquilino implements Serializable {
         return inquilinos;
     }
 
-    public void guardarInquilino() {
-        try {
-            inquilinoService.crearInquilino(nombre, apellido, telefono,
-                    correoElectronico, documento, tipoDocumento, sexo, fechaNacimiento);
-            listarInquilino();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
-    }
-
     public void listarInquilino() {
         try {
             inquilinos.clear();

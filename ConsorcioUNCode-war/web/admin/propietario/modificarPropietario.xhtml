@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <h:outputStylesheet name="rio-layout/css/rio-font.css" />
+        <h:outputStylesheet name="css/abm.css" />
+    </h:head>
+    <h:form>
+        <div class="card">
+            <p:panel header="ABM Propietario" styleClass="ui-panel ui-widget ui-widget-content ui-corner-all">
+
+                <div class="form-row">
+                    <div class="form-row">
+                        <h:outputLabel value="Nombre: " />
+                        <p:inputText id="idNombre"  value="#{controllerEditPropietario.nombre}"
+                                     disabled="#{controllerEditPropietario.disableButton}" />
+                    </div>
+                </div>
+                <div class="form-row"><div class="form-row">
+                        <h:outputLabel value="Apellido: " />
+                        <p:inputText id="apellido"  value="#{controllerEditPropietario.apellido}"
+                                     disabled="#{controllerEditPropietario.disableButton}" />
+                    </div>
+                </div>
+
+
+                <div class="form-row"><div class="form-row">
+                        <h:outputLabel value="Teléfono: " />
+                        <p:inputText id="telefono"  value="#{controllerEditPropietario.telefono}"
+                                     disabled="#{controllerEditPropietario.disableButton}" />
+                    </div>
+                </div>
+
+
+                <div class="form-row"><div class="form-row">
+                        <h:outputLabel value="Correo electrónico: " />
+                        <p:inputText id="correoElectronico"  value="#{controllerEditPropietario.correoElectronico}"
+                                     disabled="#{controllerEditPropietario.disableButton}" />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel value="Habita Consorcio: " />
+                    <p:selectBooleanCheckbox id="idHabitaConsorcio" value="#{controllerEditPropietario.habitaConsorcio}"
+                                             disabled="#{controllerEditPropietario.disableButton}" />
+                </div>
+
+
+                <div class="form-row"><h:outputLabel value="Pais: " />
+                    <p:selectOneMenu id="pais" styleClass="Wid80"
+                                     value="#{controllerEditPropietario.idPais}" 
+                                     disabled="#{controllerEditPropietario.disableButton}">
+
+                        <f:selectItems  value="#{controllerEditPropietario.paises}" />
+                        <p:ajax listener="#{controllerEditPropietario.comboPaisProvinciaDepartamentoLocalidad()}"
+                                update="provincia departamento localidad"/>
+
+                    </p:selectOneMenu> 
+                </div>
+
+
+
+                <div class="form-row">
+                    <h:outputLabel value="Provincia: " />
+                    <p:selectOneMenu id="provincia" 
+                                     styleClass="Wid80" 
+                                     value="#{controllerEditPropietario.idProvincia}" 
+                                     disabled="#{controllerEditPropietario.disableButton}">
+
+                        <f:selectItems  value="#{controllerEditPropietario.provincias}" />
+                        <p:ajax listener="#{controllerEditPropietario.comboProvinciaDepartamentoLocalidad()}"
+                                update="departamento localidad"/>
+
+                    </p:selectOneMenu> 
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel value="Departamento: " />
+                    <p:selectOneMenu id="departamento" 
+                                     styleClass="Wid80" 
+                                     value="#{controllerEditPropietario.idDepartamento}" 
+                                     disabled="#{controllerEditPropietario.disableButton}">
+
+                        <f:selectItems  value="#{controllerEditPropietario.departamentos}" />
+                        <p:ajax listener="#{controllerEditPropietario.comboDepartamentoLocalidad()}"
+                                update="localidad"/>
+                    </p:selectOneMenu> 
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel value="Localidad: " />
+                    <p:selectOneMenu id="localidad" 
+                                     styleClass="Wid80" 
+                                     value="#{controllerEditPropietario.idLocalidad}" 
+                                     disabled="#{controllerEditPropietario.disableButton}">
+
+                        <f:selectItems  value="#{controllerEditPropietario.localidades}" />
+                    </p:selectOneMenu> 
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel value="Calle: " />
+                    <p:inputText id="calle"  value="#{controllerEditPropietario.calle}"
+                                 disabled="#{controllerEditPropietario.disableButton}" />
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel value="Numeracion: " />
+                    <p:inputText id="numeracion"  value="#{controllerEditPropietario.numeracion}"
+                                 disabled="#{controllerEditPropietario.disableButton}" />
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel value="Barrio: " />
+                    <p:inputText id="barrio"  value="#{controllerEditPropietario.barrio}"
+                                 disabled="#{controllerEditPropietario.disableButton}" />
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel value="Piso o casa: " />
+                    <p:inputText id="pisoCasa"  value="#{controllerEditPropietario.pisoCasa}"
+                                 disabled="#{controllerEditPropietario.disableButton}" />
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel value="Puerta o manzana " />
+                    <p:inputText id="puertaManzana"  value="#{controllerEditPropietario.puertaManzana}"
+                                 disabled="#{controllerEditPropietario.disableButton}" />
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel value="Coordenada en X: " />
+                    <p:inputText id="coordenadaX"  value="#{controllerEditPropietario.coordenadaX}"
+                                 disabled="#{controllerEditPropietario.disableButton}" />
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel value="Coordenada en Y: " />
+                    <p:inputText id="coordenadaY"  value="#{controllerEditPropietario.coordenadaY}"
+                                 disabled="#{controllerEditPropietario.disableButton}" />
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel value="Observación: " />
+                    <p:inputText id="observacion"  value="#{controllerEditPropietario.observacion}"
+                                 disabled="#{controllerEditPropietario.disableButton}" />
+                </div>
+
+                <div>
+                    <p:commandButton value="Aceptar"
+                                     action="#{controllerEditPropietario.aceptar()}"
+                                     update="@form" />
+                    <p:commandButton value="Volver"
+                                     action="#{controllerEditPropietario.cancelar()}"
+                                     update="@form" />
+                    <h:outputLink value="#{controllerEditPropietario.search()}" target="_blank" rendered="#{controllerEditPropietario.casoDeUso != 'ALTA'}">
+                        Buscar
+                    </h:outputLink>
+
+
+
+
+                </div>
+            </p:panel>
+        </div>   
+    </h:form>
+
+</ui:composition>
