@@ -77,6 +77,16 @@
             <to-view-id>/admin/consorcio/modificarConsorcio.jsf</to-view-id>
             <redirect/>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>listarPropietario</from-outcome>
+            <to-view-id>/admin/propietario/listarPropietario</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>modificarPropietario</from-outcome>
+            <to-view-id>/admin/propietario/modificarPropietario.jsf</to-view-id>
+            <redirect/>
+        </navigation-case>
 
     </navigation-rule>
 </faces-config>

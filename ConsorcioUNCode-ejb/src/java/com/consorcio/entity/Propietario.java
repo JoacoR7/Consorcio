@@ -8,18 +8,20 @@ package com.consorcio.entity;
 import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 /**
  *
- * @author adrzanbar
+ * @author joaqu
  */
 @Entity
-public class Propietario extends Persona implements Serializable {
-
+public class Propietario extends Persona implements Serializable{
     private boolean habitaConsorcio;
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToOne (cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Direccion direccion;
+    
+    public Propietario() {
+    }
 
     public boolean isHabitaConsorcio() {
         return habitaConsorcio;
@@ -36,5 +38,5 @@ public class Propietario extends Persona implements Serializable {
     public void setDireccion(Direccion direccion) {
         this.direccion = direccion;
     }
-
+    
 }
