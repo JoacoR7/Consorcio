@@ -125,9 +125,10 @@
                     <p:commandButton value="Volver"
                                      action="#{controllerEditConsorcio.cancelar()}"
                                      update="@form" />
-                    <h:outputLink value="#{controllerEditConsorcio.search()}" target="_blank">
+                    <h:outputLink value="#{controllerEditConsorcio.search()}" target="_blank" rendered="#{controllerEditConsorcio.casoDeUso != 'ALTA'}">
                         Buscar
                     </h:outputLink>
+
 
 
 
