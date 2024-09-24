@@ -5,7 +5,7 @@
  */
 package com.consorcio.persist;
 
-import com.consorcio.entity.Direccion;
+import com.consorcio.entity.Consorcio;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
@@ -19,26 +19,26 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 @LocalBean
-public class DAODireccion {
+public class DAOConsorcio {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
     @PersistenceContext
     private EntityManager em;
 
-    public void guardarDireccion(Direccion direccion) throws Exception {
+    public void guardarConsorcio(Consorcio consorcio) throws Exception {
         try {
-            em.persist(direccion);
+            em.persist(consorcio);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw new Exception("Error de sistema");
         }
     }
 
-    public void actualizarDireccion(Direccion direccion) throws Exception {
+    public void actualizarConsorcio(Consorcio consorcio) throws Exception {
         try {
             em.setFlushMode(FlushModeType.COMMIT);
-            em.merge(direccion);
+            em.merge(consorcio);
             em.flush();
         } catch (Exception e) {
             e.printStackTrace();
@@ -47,14 +47,13 @@ public class DAODireccion {
 
     }
 
-    public Direccion buscarDireccionId(String id) throws NoResultException, Exception {
+    public Consorcio buscarConsorcioId(String id) throws NoResultException, Exception {
         try {
-            return em.find(Direccion.class, id);
+            return em.find(Consorcio.class, id);
         } catch (Exception e) {
             e.printStackTrace();
             throw new Exception("Error de sistema");
         }
 
     }
-
 }

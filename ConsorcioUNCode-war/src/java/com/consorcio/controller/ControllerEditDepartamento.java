@@ -110,7 +110,6 @@ public class ControllerEditDepartamento {
     public String aceptar() {
         try {
             if (casoDeUso.equals("ALTA")) {
-                System.out.println("Nombre actual: "+nombre+"Provincia seleccionada: "+idProvincia);
                 departamentoService.crearDepartamento(nombre, idProvincia);
             } else if (casoDeUso.equals("MODIFICAR")) {
                 departamentoService.modificarDepartamento(nombre, departamento.getId(), idProvincia);

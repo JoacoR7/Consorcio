@@ -35,7 +35,6 @@ public class DepartamentoServiceBean {
         try {
 
             Provincia provincia = provinciaService.buscarProvincia(idProvincia);
-            System.out.println("La provincia actual es: " + provincia.getNombre());
             if (nombre == null || nombre.isEmpty()) {
                 throw new IllegalArgumentException("Ingrese el nombre del departamento");
             }
@@ -53,9 +52,7 @@ public class DepartamentoServiceBean {
             departamento.setNombre(nombre);
             departamento.setEliminado(false);
             departamento.setProvincia(provincia);
-            System.out.println("El departamento será creado con ID: " + departamento.getId() + " " + departamento.getNombre()
-                    + " " + departamento.getProvincia().getNombre());
-
+            
             dao.guardarDepartamento(departamento);
 
         } catch (IllegalArgumentException e) {

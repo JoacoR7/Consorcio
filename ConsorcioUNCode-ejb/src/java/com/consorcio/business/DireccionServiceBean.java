@@ -28,9 +28,9 @@ public class DireccionServiceBean {
     @EJB
     private LocalidadServiceBean localidadService;
 
-    public void crearDireccion(String idLocalidad, String calle, String numeracion,
+    public Direccion crearDireccion(String idLocalidad, String calle, String numeracion,
             String barrio, String pisoCasa, String puertaManzana, String coordenadaX,
-            String coordenadaY, String observacion) {
+            String coordenadaY, String observacion) throws Exception {
 
         try {
 
@@ -49,7 +49,7 @@ public class DireccionServiceBean {
             direccion.setCoordenadaY(coordenadaY);
             direccion.setObservacion(observacion);
 
-            dao.guardarDireccion(direccion);
+            return direccion;
 
         } catch (IllegalArgumentException e) {
             throw e;
@@ -89,7 +89,7 @@ public class DireccionServiceBean {
         return (value == null || value.isEmpty());
     }
 
-    public Direccion buscarDireccion(String id) {
+    public Direccion buscarDireccion(String id) throws Exception {
 
         try {
             if (id == null) {
@@ -100,6 +100,8 @@ public class DireccionServiceBean {
 
             if (!direccion.isEliminado()) {
                 return direccion;
+            }else{
+                throw new IllegalArgumentException("No se encontro la direccion");
             }
         } catch (IllegalArgumentException | NoResultException e) {
             e.getMessage();
@@ -108,12 +110,11 @@ public class DireccionServiceBean {
             ex.printStackTrace();
             throw ex;
         }
-        return null;
     }
 
-    public void modificarDireccion(String idDireccion , String idLocalidad, String calle, String numeracion,
+    public Direccion modificarDireccion(String idDireccion , String idLocalidad, String calle, String numeracion,
             String barrio, String pisoCasa, String puertaManzana, String coordenadaX,
-            String coordenadaY, String observacion) {
+            String coordenadaY, String observacion) throws Exception {
 
         try {
             Direccion direccion = dao.buscarDireccionId(idDireccion);
@@ -130,6 +131,7 @@ public class DireccionServiceBean {
             direccion.setCoordenadaX(coordenadaX);
             direccion.setCoordenadaY(coordenadaY);
             direccion.setObservacion(observacion);
+            return direccion;
 
         } catch (IllegalArgumentException e) {
             throw e;
@@ -139,7 +141,7 @@ public class DireccionServiceBean {
         }
     }
 
-    public void eliminarDireccion(String id) {
+    public void eliminarDireccion(String id) throws Exception {
 
         try {
             Direccion direccion = dao.buscarDireccionId(id);
