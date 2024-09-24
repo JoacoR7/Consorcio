@@ -111,7 +111,7 @@
                     <p:inputText id="coordenadaY"  value="#{controllerEditConsorcio.coordenadaY}"
                                  disabled="#{controllerEditConsorcio.disableButton}" />
                 </div>
-                
+
                 <div class="form-row">
                     <h:outputLabel value="Observación: " />
                     <p:inputText id="observacion"  value="#{controllerEditConsorcio.observacion}"
@@ -125,6 +125,12 @@
                     <p:commandButton value="Volver"
                                      action="#{controllerEditConsorcio.cancelar()}"
                                      update="@form" />
+                    <h:outputLink value="#{controllerEditConsorcio.search()}" target="_blank">
+                        Buscar
+                    </h:outputLink>
+
+
+
                 </div>
             </p:panel>
         </div>   

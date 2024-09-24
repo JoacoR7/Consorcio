@@ -77,7 +77,7 @@ public class ControllerEditConsorcio {
         try {
             casoDeUso = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("ACCION");
             consorcio = (Consorcio) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("CONSORCIO");
-
+            
             if (casoDeUso.equals("ALTA")) {
                 comboPaises();
                 comboProvincias("");
@@ -97,7 +97,6 @@ public class ControllerEditConsorcio {
                 idDepartamento = consorcio.getDireccion().getLocalidad().getDepartamento().getId();
                 idProvincia = consorcio.getDireccion().getLocalidad().getDepartamento().getProvincia().getId();
                 idPais = consorcio.getDireccion().getLocalidad().getDepartamento().getProvincia().getPais().getId();
-
                 comboPaises();
                 comboProvincias(idPais);
                 comboDepartamentos(idProvincia);
@@ -110,7 +109,13 @@ public class ControllerEditConsorcio {
             e.getMessage();
         }
     }
-
+    
+    public String search(){
+        Localidad localidad = localidadService.buscarLocalidad(idLocalidad);
+        Provincia provincia = provinciaService.buscarProvincia(idProvincia);
+        return direccionService.search(calle, numeracion, localidad.getNombre(),localidad.getCodigoPostal(), provincia.getNombre());
+    }
+    
     public void comboPaisProvinciaDepartamentoLocalidad() {
         provincias.clear();
         departamentos.clear();
