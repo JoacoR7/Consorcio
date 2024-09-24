@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <h:outputStylesheet name="rio-layout/css/rio-font.css" />
+        <h:outputStylesheet name="css/abm.css" />
+    </h:head>
+    <h:form>
+        <div class="card">
+            <p:panel header="ABM Consorcio" styleClass="ui-panel ui-widget ui-widget-content ui-corner-all">
+
+                <div class="form-row">
+                    <h:outputLabel value="Pais: " />
+                    <p:selectOneMenu id="pais" styleClass="Wid80"
+                                     value="#{controllerEditConsorcio.idPais}" 
+                                     disabled="#{controllerEditConsorcio.disableButton}">
+
+                        <f:selectItems  value="#{controllerEditConsorcio.paises}" />
+                        <p:ajax listener="#{controllerEditConsorcio.comboPaisProvinciaDepartamentoLocalidad()}"
+                                update="provincia departamento localidad"/>
+
+                    </p:selectOneMenu> 
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel value="Provincia: " />
+                    <p:selectOneMenu id="provincia" 
+                                     styleClass="Wid80" 
+                                     value="#{controllerEditConsorcio.idProvincia}" 
+                                     disabled="#{controllerEditConsorcio.disableButton}">
+
+                        <f:selectItems  value="#{controllerEditConsorcio.provincias}" />
+                        <p:ajax listener="#{controllerEditConsorcio.comboProvinciaDepartamentoLocalidad()}"
+                                update="departamento localidad"/>
+
+                    </p:selectOneMenu> 
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel value="Departamento: " />
+                    <p:selectOneMenu id="departamento" 
+                                     styleClass="Wid80" 
+                                     value="#{controllerEditConsorcio.idDepartamento}" 
+                                     disabled="#{controllerEditConsorcio.disableButton}">
+
+                        <f:selectItems  value="#{controllerEditConsorcio.departamentos}" />
+                        <p:ajax listener="#{controllerEditConsorcio.comboDepartamentoLocalidad()}"
+                                update="localidad"/>
+                    </p:selectOneMenu> 
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel value="Localidad: " />
+                    <p:selectOneMenu id="localidad" 
+                                     styleClass="Wid80" 
+                                     value="#{controllerEditConsorcio.idLocalidad}" 
+                                     disabled="#{controllerEditConsorcio.disableButton}">
+
+                        <f:selectItems  value="#{controllerEditConsorcio.localidades}" />
+                    </p:selectOneMenu> 
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel value="Nombre: " />
+                    <p:inputText id="idNombre"  value="#{controllerEditConsorcio.nombre}"
+                                 disabled="#{controllerEditConsorcio.disableButton}" />
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel value="Calle: " />
+                    <p:inputText id="calle"  value="#{controllerEditConsorcio.calle}"
+                                 disabled="#{controllerEditConsorcio.disableButton}" />
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel value="Numeracion: " />
+                    <p:inputText id="numeracion"  value="#{controllerEditConsorcio.numeracion}"
+                                 disabled="#{controllerEditConsorcio.disableButton}" />
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel value="Barrio: " />
+                    <p:inputText id="barrio"  value="#{controllerEditConsorcio.barrio}"
+                                 disabled="#{controllerEditConsorcio.disableButton}" />
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel value="Piso o casa: " />
+                    <p:inputText id="pisoCasa"  value="#{controllerEditConsorcio.pisoCasa}"
+                                 disabled="#{controllerEditConsorcio.disableButton}" />
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel value="Puerta o manzana " />
+                    <p:inputText id="puertaManzana"  value="#{controllerEditConsorcio.puertaManzana}"
+                                 disabled="#{controllerEditConsorcio.disableButton}" />
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel value="Coordenada en X: " />
+                    <p:inputText id="coordenadaX"  value="#{controllerEditConsorcio.coordenadaX}"
+                                 disabled="#{controllerEditConsorcio.disableButton}" />
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel value="Coordenada en Y: " />
+                    <p:inputText id="coordenadaY"  value="#{controllerEditConsorcio.coordenadaY}"
+                                 disabled="#{controllerEditConsorcio.disableButton}" />
+                </div>
+                
+                <div class="form-row">
+                    <h:outputLabel value="Observación: " />
+                    <p:inputText id="observacion"  value="#{controllerEditConsorcio.observacion}"
+                                 disabled="#{controllerEditConsorcio.disableButton}" />
+                </div>
+
+                <div>
+                    <p:commandButton value="Aceptar"
+                                     action="#{controllerEditConsorcio.aceptar()}"
+                                     update="@form" />
+                    <p:commandButton value="Volver"
+                                     action="#{controllerEditConsorcio.cancelar()}"
+                                     update="@form" />
+                </div>
+            </p:panel>
+        </div>   
+    </h:form>
+
+</ui:composition>

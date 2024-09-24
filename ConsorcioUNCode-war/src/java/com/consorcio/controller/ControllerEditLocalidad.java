@@ -88,17 +88,15 @@ public class ControllerEditLocalidad {
         provincias.clear();
         departamentos.clear();
         comboProvincias(idPais);
-        comboDepartamentos("");
-        RequestContext.getCurrentInstance().update("@form:provincia");
-        RequestContext.getCurrentInstance().update("@form:departamento");
+        comboDepartamentos(idProvincia);
+        RequestContext.getCurrentInstance().update("provincia");
+        RequestContext.getCurrentInstance().update("departamento");
     }
 
     public void comboProvinciaDepartamento() {
-        provincias.clear();
         departamentos.clear();
         comboDepartamentos(idProvincia);
-        RequestContext.getCurrentInstance().update("@form:provincia");
-        RequestContext.getCurrentInstance().update("@form:departamento");
+        RequestContext.getCurrentInstance().update("departamento");
     }
 
     public void comboPaises() {
@@ -109,6 +107,7 @@ public class ControllerEditLocalidad {
             for (Pais pais : paisService.listarPais()) {
                 paises.add(new SelectItem(pais.getId(), pais.getNombre()));
             }
+
         } catch (Exception e) {
             e.getMessage();
         }
@@ -121,6 +120,7 @@ public class ControllerEditLocalidad {
             for (Provincia provincia : provinciaService.listarProvinciasPorPais(idPais)) {
                 provincias.add(new SelectItem(provincia.getId(), provincia.getNombre()));
             }
+
         } catch (Exception e) {
             e.getMessage();
         }

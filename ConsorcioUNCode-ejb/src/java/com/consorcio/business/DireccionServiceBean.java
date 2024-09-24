@@ -8,6 +8,7 @@ package com.consorcio.business;
 import com.consorcio.entity.Direccion;
 import com.consorcio.entity.Localidad;
 import com.consorcio.persist.DAODireccion;
+import java.util.UUID;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -39,6 +40,7 @@ public class DireccionServiceBean {
             comprobarCampos(calle, numeracion, barrio, pisoCasa, puertaManzana, coordenadaX, coordenadaY);
 
             Direccion direccion = new Direccion();
+            direccion.setId(UUID.randomUUID().toString());
             direccion.setLocalidad(localidad);
             direccion.setCalle(calle);
             direccion.setNumeracion(numeracion);

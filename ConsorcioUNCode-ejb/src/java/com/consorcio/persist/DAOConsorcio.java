@@ -6,12 +6,14 @@
 package com.consorcio.persist;
 
 import com.consorcio.entity.Consorcio;
+import java.util.Collection;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -55,5 +57,21 @@ public class DAOConsorcio {
             throw new Exception("Error de sistema");
         }
 
+    }
+
+    public Consorcio buscarConsorcioPorNombre(String nombre) {
+        try {
+            TypedQuery<Consorcio> query = em.createQuery("SELECT c FROM Consorcio c "
+                    + " WHERE c.nombre = :nombre AND c.eliminado = FALSE", Consorcio.class);
+            query.setParameter("nombre", nombre);
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    public Collection<Consorcio> listarConsorcioActivo() {
+        TypedQuery<Consorcio> query = em.createQuery("SELECT c FROM Consorcio c WHERE c.eliminado = FALSE", Consorcio.class);
+        return query.getResultList();
     }
 }
