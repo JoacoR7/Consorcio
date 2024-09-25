@@ -19,5 +19,5 @@ public class InmuebleServiceBean {
 
     private @EJB InquilinoServiceBean inquilinoService;
     private @EJB PropietarioServiceBean propietarioService;
-    private @EJB DAOInmuebleImplBean dao;
+    //private @EJB DAOInmuebleImplBean dao;
 }

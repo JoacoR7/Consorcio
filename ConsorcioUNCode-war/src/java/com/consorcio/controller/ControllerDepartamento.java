@@ -6,7 +6,6 @@
 package com.consorcio.controller;
 
 import com.consorcio.business.DepartamentoServiceBean;
-import com.consorcio.business.ProvinciaServiceBean;
 import com.consorcio.entity.Departamento;
 import java.io.Serializable;
 import java.util.ArrayList;

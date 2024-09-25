@@ -15,3 +15,5 @@ ConsorcioUNCode-war/nbproject/private
 *.dpf
 /ConsorcioUNCode-ejb/build/
 /ConsorcioUNCode-war/build/
+/ConsorcioUNCode-ejb/lib/
+/ConsorcioUNCode-war/lib/
