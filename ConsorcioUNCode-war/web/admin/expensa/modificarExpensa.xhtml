@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <h:outputStylesheet name="rio-layout/css/rio-font.css" />
+        <h:outputStylesheet name="css/abm.css" />
+    </h:head>
+    <h:form>
+        <div class="card">
+            <p:panel header="ABM Expensa" styleClass="ui-panel ui-widget ui-widget-content ui-corner-all">
+
+                <div class="form-row">
+                    <h:outputLabel value="Fecha inicio: " />
+                    <p:calendar id="idFechaDesde" value="#{controllerEditExpensa.fechaDesde}" 
+                                locale="es" showOn="button"  navigator="true" pattern="dd/MM/yyyy"  
+                                mindate="01/01/1920" effect="drop" styleClass="Wid80" 
+                                disabled="#{controllerEditExpensa.disableButton}"/>
+                </div>
+                
+                <div class="form-row">
+                    <h:outputLabel value="Fecha finalizacion: " />
+                    <p:calendar id="idFechaHasta" value="#{controllerEditExpensa.fechaHasta}" 
+                                locale="es" showOn="button"  navigator="true" pattern="dd/MM/yyyy"  
+                                mindate="01/01/1920" effect="drop" styleClass="Wid80" 
+                                disabled="#{controllerEditExpensa.disableButton}"/>
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel value="Importe: " />
+                    <p:inputText id="idImporte"  value="#{controllerEditExpensa.importe}"
+                                 disabled="#{controllerEditExpensa.disableButton}" />
+                </div>
+
+                <div>
+                    <p:commandButton value="Aceptar"
+                                     action="#{controllerEditExpensa.aceptar()}"
+                                     update="@form" />
+                    <p:commandButton value="Volver"
+                                     action="#{controllerEditExpensa.cancelar()}"
+                                     update="@form" />
+
+                </div>
+            </p:panel>
+        </div>   
+    </h:form>
+
+</ui:composition>
