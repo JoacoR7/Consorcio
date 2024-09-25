@@ -45,6 +45,30 @@ public class DAOExpensa {
     public Collection<Expensa> listarExpensaActivo() {
         TypedQuery<Expensa> query = em.createQuery("SELECT e FROM Expensa e WHERE e.eliminado = FALSE", Expensa.class);
         return query.getResultList();
-    }   
-    
+    }
+
+    public Expensa buscarExpensaActual() {
+        try {
+            TypedQuery<Expensa> query = em.createQuery("SELECT e FROM Expensa e "
+                    + " WHERE e.eliminado = FALSE AND e.fechaHasta IS NULL", Expensa.class);
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    public Expensa buscarPenultimaExpensa() {
+        try {
+            TypedQuery<Expensa> query = em.createQuery(
+                    "SELECT e FROM Expensa e WHERE e.eliminado = FALSE AND e.fechaHasta IS NOT NULL ORDER BY e.fechaHasta DESC",
+                    Expensa.class);
+
+            query.setMaxResults(1);
+
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
 }

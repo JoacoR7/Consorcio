@@ -7,6 +7,7 @@ package com.consorcio.business;
 
 import com.consorcio.entity.Expensa;
 import com.consorcio.persist.DAOExpensa;
+import com.consorcio.util.UtilFechaBean;
 import java.util.Collection;
 import java.util.Date;
 import java.util.UUID;
@@ -27,16 +28,26 @@ public class ExpensaServiceBean {
     private @EJB
     DAOExpensa dao;
 
-    public void crearExpensa(Date fechaDesde, Date fechaHasta, double importe) {
+    public void crearExpensa(Date fechaDesde, Date fechaHasta, double importe) throws ErrorServiceException {
 
         try {
-            validarDatos(fechaDesde, fechaHasta, importe);
+
+            // Busco alguna expensa q tenga fechaHasta = null
+            Expensa expensaActual = dao.buscarExpensaActual();
+
+            // Le cambio la fecha a fin de mes a la fecha actual
+            if (expensaActual != null) {
+                Date fechaHastaExpensaActual = UtilFechaBean.restarDiasAFecha(fechaDesde, 1);
+                expensaActual.setFechaHasta(fechaHastaExpensaActual);
+            }
+            // El fechaDesde siempre es inicio de mes y el importe > 0
+            validarDatos(fechaDesde, importe);
             Expensa expensa = new Expensa();
 
             expensa.setId(UUID.randomUUID().toString());
             expensa.setEliminado(false);
             expensa.setFechaDesde(fechaDesde);
-            expensa.setFechaHasta(fechaHasta);
+            expensa.setFechaHasta(null); // Seteo null para indicar la fecha actual
             expensa.setImporte(importe);
 
             dao.guardarExpensa(expensa);
@@ -46,13 +57,12 @@ public class ExpensaServiceBean {
         } catch (Exception ex) {
             throw ex;
         }
-
     }
 
     public void modificarExpensa(String idExpensa, Date fechaDesde, Date fechaHasta, double importe) {
 
         try {
-            validarDatos(fechaDesde, fechaHasta, importe);
+            validarDatos(fechaDesde, importe);
 
             if (idExpensa == null) {
                 throw new IllegalArgumentException("Seleccione una expensa");
@@ -73,10 +83,15 @@ public class ExpensaServiceBean {
         }
 
     }
-    
+
     public void eliminarExpensa(String id) {
 
         try {
+            Expensa penultimaExpensa = dao.buscarPenultimaExpensa();
+            if (penultimaExpensa != null) {
+                penultimaExpensa.setFechaHasta(null);
+            }
+            
             Expensa expensa = dao.buscarExpensaId(id);
             expensa.setEliminado(true);
             dao.actualizarExpensa(expensa);
@@ -85,16 +100,19 @@ public class ExpensaServiceBean {
         }
 
     }
-    
-    public void validarDatos(Date fechaDesde, Date fechaHasta, double importe) {
+
+    public void validarDatos(Date fechaDesde, double importe) {
 
         if (fechaDesde == null) {
             throw new IllegalArgumentException("Ingrese una fecha de inicio");
         }
-
-        if (fechaHasta == null) {
-            throw new IllegalArgumentException("Ingrese una fecha de finalizacion");
+        Date fechaInicioMes = UtilFechaBean.llevarInicioDia(UtilFechaBean.llevarInicioMes(fechaDesde));
+        Date fechaDesdeInicioDia = UtilFechaBean.llevarInicioDia(fechaDesde);
+        
+        if (!fechaDesdeInicioDia.equals(fechaInicioMes)){
+            throw new IllegalArgumentException("La fecha de inicio debe ser el 1 de cada mes");
         }
+
         if (importe <= 0.0) {
             throw new IllegalArgumentException("El importe debe ser mayor a 0");
         }

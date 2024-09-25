@@ -7,6 +7,7 @@ package com.consorcio.controller;
 
 import com.consorcio.business.ExpensaServiceBean;
 import com.consorcio.entity.Expensa;
+import java.util.Calendar;
 import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -25,7 +26,8 @@ public class ControllerEditExpensa {
     /**
      * Creates a new instance of ControllerEditExpensa
      */
-    private @EJB ExpensaServiceBean expensaService;
+    private @EJB
+    ExpensaServiceBean expensaService;
 
     private String casoDeUso;
     private Expensa expensa;
@@ -33,7 +35,7 @@ public class ControllerEditExpensa {
     private Date fechaDesde;
     private Date fechaHasta;
     private boolean disableButton;
-    
+
     @PostConstruct
     public void init() {
         try {
@@ -57,9 +59,9 @@ public class ControllerEditExpensa {
     public String aceptar() {
         try {
             if (casoDeUso.equals("ALTA")) {
-                expensaService.crearExpensa(fechaDesde,fechaHasta,importe);
+                expensaService.crearExpensa(fechaDesde, fechaHasta, importe);
             } else if (casoDeUso.equals("MODIFICAR")) {
-                expensaService.modificarExpensa(expensa.getId(),fechaDesde,fechaHasta,importe);
+                expensaService.modificarExpensa(expensa.getId(), fechaDesde, fechaHasta, importe);
             }
 
             return "listarExpensa";
@@ -69,7 +71,8 @@ public class ControllerEditExpensa {
             return null;
         }
     }
-    public String cancelar(){
+
+    public String cancelar() {
         return "listarExpensa";
     }
 
@@ -101,16 +104,8 @@ public class ControllerEditExpensa {
         return fechaDesde;
     }
 
-    public void setFechaDesde(Date fechaDesde) {
-        this.fechaDesde = fechaDesde;
-    }
-
     public Date getFechaHasta() {
         return fechaHasta;
-    }
-
-    public void setFechaHasta(Date fechaHasta) {
-        this.fechaHasta = fechaHasta;
     }
 
     public boolean isDisableButton() {
@@ -120,7 +115,13 @@ public class ControllerEditExpensa {
     public void setDisableButton(boolean disableButton) {
         this.disableButton = disableButton;
     }
-    
-    
-    
+
+    public void setFechaDesde(Date fechaDesde) {
+        this.fechaDesde = fechaDesde;
+    }
+
+    public void setFechaHasta(Date fechaHasta) {
+        this.fechaHasta = fechaHasta;
+    }
+
 }
