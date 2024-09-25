@@ -87,6 +87,16 @@
             <to-view-id>/admin/propietario/modificarPropietario.jsf</to-view-id>
             <redirect/>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>modificarExpensa</from-outcome>
+            <to-view-id>/admin/expensa/modificarExpensa.jsf</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>listarExpensa</from-outcome>
+            <to-view-id>/admin/expensa/listarExpensa.jsf</to-view-id>
+            <redirect/>
+        </navigation-case>
 
     </navigation-rule>
 </faces-config>
