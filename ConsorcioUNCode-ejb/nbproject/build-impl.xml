@@ -793,21 +793,21 @@ exists or setup the property manually. For example like this:
     </target>
     <target depends="compile,-library-inclusion-in-archive-weblogic,-library-inclusion-in-archive-by-user" name="library-inclusion-in-archive"/>
     <target if="is.jars.in.ejbjar" name="-library-inclusion-in-archive-by-user">
-        <copyfiles files="${file.reference.mysql-connector-java-5.1.22-bin.jar}" todir="${build.classes.dir}"/>
-        <copyfiles files="${file.reference.Librerias-2._Librerias_Modelo}" todir="${build.classes.dir}"/>
+        <copyfiles files="${libs.3._Librerias_BD.classpath}" todir="${build.classes.dir}"/>
+        <copyfiles files="${libs.2._Librerias_Modelo.classpath}" todir="${build.classes.dir}"/>
     </target>
     <target if="is.server.weblogic" name="-library-inclusion-in-archive-weblogic">
-        <basename file="${file.reference.mysql-connector-java-5.1.22-bin.jar}" property="manifest.file.reference.mysql-connector-java-5.1.22-bin.jar"/>
-        <basename file="${file.reference.Librerias-2._Librerias_Modelo}" property="manifest.file.reference.Librerias-2._Librerias_Modelo"/>
+        <basename file="${libs.3._Librerias_BD.classpath}" property="manifest.libs.3._Librerias_BD.classpath"/>
+        <basename file="${libs.2._Librerias_Modelo.classpath}" property="manifest.libs.2._Librerias_Modelo.classpath"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update">
             <attribute name="Extension-List" value="jar-1 jar-2 "/>
-            <attribute name="jar-1-Extension-Name" value="${manifest.file.reference.mysql-connector-java-5.1.22-bin.jar}"/>
-            <attribute name="jar-2-Extension-Name" value="${manifest.file.reference.Librerias-2._Librerias_Modelo}"/>
+            <attribute name="jar-1-Extension-Name" value="${manifest.libs.3._Librerias_BD.classpath}"/>
+            <attribute name="jar-2-Extension-Name" value="${manifest.libs.2._Librerias_Modelo.classpath}"/>
         </manifest>
     </target>
     <target depends="compile" name="library-inclusion-in-manifest">
-        <copyfiles files="${file.reference.mysql-connector-java-5.1.22-bin.jar}" todir="${dist.ear.dir}/lib"/>
-        <copyfiles files="${file.reference.Librerias-2._Librerias_Modelo}" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${libs.3._Librerias_BD.classpath}" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${libs.2._Librerias_Modelo.classpath}" todir="${dist.ear.dir}/lib"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update"/>
     </target>
     <target name="-copy-meta-inf">

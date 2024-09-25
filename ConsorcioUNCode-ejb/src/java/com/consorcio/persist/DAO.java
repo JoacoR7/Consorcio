@@ -24,5 +24,7 @@ public interface DAO<T> {
 
     Collection<T> listar();
 
-    public Collection<T> listarLike(Map<String, String> attributes) throws IllegalArgumentException, Exception ;
+    Collection<T> listar(Collection<Map<String, Object>> searchCriteria) throws DAOException;
+
+    T buscarUnico(Collection<Map<String, Object>> searchCriteria) throws DAOException;
 }
