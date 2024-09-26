@@ -215,6 +215,10 @@ public class ControllerEditPropietario {
             return null;
         }
     }
+    
+    public String cancelar(){
+        return "listarPropietario";
+    }
 
     public PropietarioServiceBean getPropietarioService() {
         return propietarioService;
