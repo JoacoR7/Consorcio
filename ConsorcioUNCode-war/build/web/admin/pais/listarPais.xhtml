@@ -4,58 +4,101 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <h:head>
         <h:outputStylesheet name="rio-layout/css/rio-font.css" />
         <h:outputStylesheet name="css/listar.css" />
+        <style>
+            html, body {
+                height: 100%;
+                margin: 0;
+            }
+
+            .container {
+                display: flex;
+                height: 100vh;
+            }
+
+            .sidebar {
+                width: 250px;
+                background-color: #f4f4f4;
+                padding: 15px;
+            }
+
+            .main-content {
+                flex-grow: 1;
+                padding: 15px;
+                background-color: #ffffff;
+                overflow-y: auto;
+            }
+        </style>
     </h:head>
 
     <h:body>
         <h:form>
-            <!-- Botón para agregar nuevo país -->
-            <div class="Responsive50">
-                <div class="EmptyBox20"></div>
-                <p:commandButton id="nuevo" icon="fa fa-plus" value="Agregar País" 
-                                 styleClass="add-button" action="#{ControllerPais.alta()}"/>
-                <p:tooltip id="toolTipNuevo" for="nuevo" value="Agregar un nuevo país" position="bottom"/>
+            <div class="sidebar">
+                <p:menu>
+                    <c:forEach items="#{ControllerMenu.menues}" var="menu">
+                        <p:submenu label="#{menu.nombre}" icon="fa fa-list">
+                            <c:forEach items="#{ControllerMenu.listarSubMenus(menu.id)}" var="subMenu">
+                                <p:menuitem value="#{subMenu.nombre}" 
+                                            action="#{ControllerMenu.redirectToUrl(subMenu.url)}" 
+                                            ajax="false" />
+                            </c:forEach>
+                        </p:submenu>
+                    </c:forEach>
+                </p:menu>
             </div>
 
-            <!-- Tabla de países -->
-            <p:dataTable id="paisTable" var="pais" value="#{ControllerPais.paises}" styleClass="responsive-table">
-                <!-- Columna de nombres de países -->
-                <p:column headerText="País" styleClass="table-header">
-                    <h:outputText value="#{pais.nombre}" />
-                </p:column>
-
-                <!-- Columna de acciones -->
-                <p:column headerText="Acción" styleClass="table-header">
-                    <div class="actions-menu">
-                        <p:commandButton icon="fa fa-ellipsis-v" styleClass="GrayButton action-button" id="opciones" />
-                        <p:slideMenu overlay="true" my="left top" at="left top" trigger="opciones" style="height: 150px">
-                            <p:menuitem value="Modificar"
-                                        icon="fa fa-pencil-square-o Purple"
-                                        action="#{ControllerPais.modificar(pais)}"/>
-                            <p:menuitem value="Consultar"
-                                        icon="fa fa-eye Green"
-                                        action="#{ControllerPais.consultar(pais)}"/>
-                            <p:menuitem value="Eliminar"
-                                        icon="fa fa-trash Red"
-                                        actionListener="#{ControllerPais.prepararBaja(pais)}" 
-                                        oncomplete="PF('confirmDialog').show()"
-                                        update="paisTable" />
-                        </p:slideMenu>
+            <div class="main-content">
+                <div class="container">
+                    <!-- Botón para agregar nuevo país -->
+                    <div class="Responsive50">
+                        <div class="EmptyBox20"></div>
+                        <p:commandButton id="nuevo" icon="fa fa-plus" value="Agregar País" 
+                                         styleClass="add-button" action="#{ControllerPais.alta()}"/>
+                        <p:tooltip id="toolTipNuevo" for="nuevo" value="Agregar un nuevo país" position="bottom"/>
                     </div>
-                </p:column>
-            </p:dataTable>
-            <p:confirmDialog id="confirmDialog" widgetVar="confirmDialog" header="Confirmación" message="¿Está seguro de que desea eliminar este Pais?" severity="alert">
-                <p:commandButton value="Sí" 
-                                 action="#{ControllerPais.baja()}" 
-                                 update="paisTable" 
-                                 oncomplete="PF('confirmDialog').hide()" />
-                <p:commandButton value="No" 
-                                 onclick="PF('confirmDialog').hide()" type="button" />
-            </p:confirmDialog>
+
+                    <!-- Tabla de países -->
+                    <p:dataTable id="paisTable" var="pais" value="#{ControllerPais.paises}" styleClass="responsive-table">
+                        <!-- Columna de nombres de países -->
+                        <p:column headerText="País" styleClass="table-header">
+                            <h:outputText value="#{pais.nombre}" />
+                        </p:column>
+
+                        <!-- Columna de acciones -->
+                        <p:column headerText="Acción" styleClass="table-header">
+                            <div class="actions-menu">
+                                <p:commandButton icon="fa fa-ellipsis-v" styleClass="GrayButton action-button" id="opciones" />
+                                <p:slideMenu overlay="true" my="left top" at="left top" trigger="opciones" style="height: 150px">
+                                    <p:menuitem value="Modificar"
+                                                icon="fa fa-pencil-square-o Purple"
+                                                action="#{ControllerPais.modificar(pais)}"/>
+                                    <p:menuitem value="Consultar"
+                                                icon="fa fa-eye Green"
+                                                action="#{ControllerPais.consultar(pais)}"/>
+                                    <p:menuitem value="Eliminar"
+                                                icon="fa fa-trash Red"
+                                                actionListener="#{ControllerPais.prepararBaja(pais)}" 
+                                                oncomplete="PF('confirmDialog').show()"
+                                                update="paisTable" />
+                                </p:slideMenu>
+                            </div>
+                        </p:column>
+                    </p:dataTable>
+                    <p:confirmDialog id="confirmDialog" widgetVar="confirmDialog" header="Confirmación" message="¿Está seguro de que desea eliminar este Pais?" severity="alert">
+                        <p:commandButton value="Sí" 
+                                         action="#{ControllerPais.baja()}" 
+                                         update="paisTable" 
+                                         oncomplete="PF('confirmDialog').hide()" />
+                        <p:commandButton value="No" 
+                                         onclick="PF('confirmDialog').hide()" type="button" />
+                    </p:confirmDialog>
+                </div>
+            </div>
         </h:form>
     </h:body>
 </ui:composition>
