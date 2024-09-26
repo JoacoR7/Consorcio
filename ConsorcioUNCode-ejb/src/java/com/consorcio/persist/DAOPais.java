@@ -49,8 +49,7 @@ public class DAOPais {
         try {
             TypedQuery<Pais> query = em.createQuery("SELECT p FROM Pais p WHERE p.nombre = :nombre AND p.eliminado = FALSE", Pais.class);
             query.setParameter("nombre", nombre);
-            List<Pais> resultados = query.getResultList();
-            return resultados.get(0);
+            return query.getSingleResult();
         } catch (NoResultException e) {
             throw new NoResultDAOException("No se encontró ningún país con ese nombre.");
         } catch (Exception e){

@@ -8,36 +8,38 @@
 
     <h:head>
         <h:outputStylesheet name="rio-layout/css/rio-font.css" />
+        <h:outputStylesheet name="css/listar.css" />
     </h:head>
     <h:body>
         <h:form>
             <div class="Container50 Responsive50" style="margin-bottom: 15px;">
                 <p:commandButton id="nuevo" icon="fa fa-plus" styleClass="Fleft" 
-                 action="#{ControllerMenu.alta()}" ajax="false"/>
+                                 action="#{ControllerMenu.alta()}" ajax="false"/>
                 <p:tooltip id="toolTipMenuNuevo" for="nuevo" value="Alta" position="top"/>
             </div>
-            
+
             <!-- Tabla de menues -->
             <div class="card">
-                <p:dataTable id="menuTable" var="menu" value="#{ControllerMenu.menues}">
-                    <p:column headerText="Nombre">
-                        <h:outputText value="#{menu.nombre}" />
+                <p:dataTable id="paisTable" var="pais" value="#{ControllerPais.paises}">
+                    <!-- Columna de nombres de países -->
+                    <p:column headerText="País">
+                        <h:outputText value="#{pais.nombre}" />
                     </p:column>
-                    <p:column headerText="Orden">
-                        <h:outputText value="#{menu.orden}" />
-                    </p:column>
+
+                    <!-- Columna de acciones -->
                     <p:column headerText="Acción">
-                        <p:commandButton  icon="fa fa-ellipsis-v" styleClass="Fright GrayButton" id="opciones"/>
+                        <p:commandButton icon="fa fa-ellipsis-v" styleClass="Fright GrayButton" id="opciones"/>
                         <p:slideMenu overlay="true" my="left top" at="left top" trigger="opciones" style="height: 150px">
-                            <p:menuitem value="Modificar" icon="fa fa-pencil-square-o Purple" action="#{ControllerMenu.modificar(menu)}"/>
-                            <p:menuitem value="Consultar" icon="fa fa-eye Green" action="#{ControllerMenu.consultar(menu)}"/>
-                            <p:menuitem value="Eliminar" icon="fa fa-trash Red" 
-                                        actionListener="#{ControllerMenu.prepararBaja(menu)}" 
+                            <p:menuitem value="Modificar" icon="fa fa-pencil-square-o Purple" action="#{ControllerPais.modificar(pais)}"/>
+                            <p:menuitem value="Consultar" icon="fa fa-eye Green" action="#{ControllerPais.consultar(pais)}"/>
+                            <p:menuitem value="Eliminar" icon="fa fa-trash Red"
+                                        actionListener="#{ControllerPais.prepararBaja(pais)}" 
                                         oncomplete="PF('confirmDialog').show()"
-                                        update="menuTable" />
+                                        update="paisTable" />
                         </p:slideMenu>
                     </p:column>
                 </p:dataTable>
+
             </div>
 
             <!-- Confirmación para eliminación -->

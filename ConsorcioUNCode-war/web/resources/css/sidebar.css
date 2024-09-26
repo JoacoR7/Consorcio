@@ -1,0 +1,90 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 26/09/2024, 18:15:30
+    Author     : victo
+*/
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+/* Estilo del sidebar */
+.sidebar {
+    background-color: #f2f9ff; /* Fondo claro */
+    padding: 20px;
+    height: 100%;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Alinear el ícono y el texto con mayor espacio */
+.sidebar .ui-menuitem-link i,
+.sidebar .ui-submenu-link i {
+    margin-right: 12px; /* Aumenta el espacio entre el ícono y el texto */
+    font-size: 18px; /* Ajusta el tamaño del icono si es necesario */
+}
+
+/* Estilo del texto y enlaces en el sidebar */
+.sidebar .ui-menuitem-link,
+.sidebar .ui-submenu-link {
+    color: #333;
+    font-weight: bold;
+    display: flex; /* Alinear ícono y texto en línea */
+    padding: 5px; /* Añade algo de padding */
+}
+
+/* Estilo para el hover en los enlaces del sidebar */
+.sidebar .ui-menuitem-link:hover,
+.sidebar .ui-submenu-link:hover {
+    background-color: #e0f0ff;
+    color: #000;
+}
+
+.main-content {
+    padding: 20px;
+    background-color: #f9f9f9;
+    overflow-y: auto;
+}
+
+.add-button {
+    margin-bottom: 20px;
+}
+
+.responsive-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background-color: #f4f4f4; /* Color de fondo de la tabla restaurado */
+}
+
+.responsive-table th, .responsive-table td {
+    padding: 10px;
+    text-align: center; /* Centramos el contenido horizontalmente */
+    vertical-align: middle; /* Centramos el contenido verticalmente */
+}
+
+.actions-menu {
+    display: flex;
+}
+
+.GrayButton {
+    background-color: #e0e0e0;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.EmptyBox20 {
+    margin-bottom: 20px;
+}

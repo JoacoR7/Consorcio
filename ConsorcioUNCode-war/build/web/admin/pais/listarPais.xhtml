@@ -10,59 +10,36 @@
     <h:head>
         <h:outputStylesheet name="rio-layout/css/rio-font.css" />
         <h:outputStylesheet name="css/listar.css" />
-        <style>
-            html, body {
-                height: 100%;
-                margin: 0;
-            }
-
-            .container {
-                display: flex;
-                height: 100vh;
-            }
-
-            .sidebar {
-                width: 250px;
-                background-color: #f4f4f4;
-                padding: 15px;
-            }
-
-            .main-content {
-                flex-grow: 1;
-                padding: 15px;
-                background-color: #ffffff;
-                overflow-y: auto;
-            }
-        </style>
+        <h:outputStylesheet name="css/sidebar.css" />
     </h:head>
 
     <h:body>
         <h:form>
-            <div class="sidebar">
-                <p:menu>
-                    <c:forEach items="#{ControllerMenu.menues}" var="menu">
-                        <p:submenu label="#{menu.nombre}" icon="fa fa-list">
-                            <c:forEach items="#{ControllerMenu.listarSubMenus(menu.id)}" var="subMenu">
-                                <p:menuitem value="#{subMenu.nombre}" 
-                                            action="#{ControllerMenu.redirectToUrl(subMenu.url)}" 
-                                            ajax="false" />
-                            </c:forEach>
-                        </p:submenu>
-                    </c:forEach>
-                </p:menu>
-            </div>
+            <div class="container">
+                <!-- Sidebar -->
+                <div class="sidebar">
+                    <p:menu>
+                        <c:forEach items="#{ControllerMenu.menues}" var="menu">
+                            <p:submenu label="#{menu.nombre}" icon="fa fa-list">
+                                <c:forEach items="#{ControllerMenu.listarSubMenus(menu.id)}" var="subMenu">
+                                    <p:menuitem value="#{subMenu.nombre}" 
+                                                action="#{ControllerMenu.redirectToUrl(subMenu.url)}" 
+                                                ajax="false" />
+                                </c:forEach>
+                            </p:submenu>
+                        </c:forEach>
+                    </p:menu>
+                </div>
 
-            <div class="main-content">
-                <div class="container">
+                <!-- Main Content -->
+                <div class="main-content">
                     <!-- Botón para agregar nuevo país -->
-                    <div class="Responsive50">
-                        <div class="EmptyBox20"></div>
+                    <div>
                         <p:commandButton id="nuevo" icon="fa fa-plus" value="Agregar País" 
                                          styleClass="add-button" action="#{ControllerPais.alta()}"/>
                         <p:tooltip id="toolTipNuevo" for="nuevo" value="Agregar un nuevo país" position="bottom"/>
                     </div>
 
-                    <!-- Tabla de países -->
                     <p:dataTable id="paisTable" var="pais" value="#{ControllerPais.paises}" styleClass="responsive-table">
                         <!-- Columna de nombres de países -->
                         <p:column headerText="País" styleClass="table-header">
@@ -89,7 +66,9 @@
                             </div>
                         </p:column>
                     </p:dataTable>
-                    <p:confirmDialog id="confirmDialog" widgetVar="confirmDialog" header="Confirmación" message="¿Está seguro de que desea eliminar este Pais?" severity="alert">
+
+
+                    <p:confirmDialog id="confirmDialog" widgetVar="confirmDialog" header="Confirmación" message="¿Está seguro de que desea eliminar este País?" severity="alert">
                         <p:commandButton value="Sí" 
                                          action="#{ControllerPais.baja()}" 
                                          update="paisTable" 
