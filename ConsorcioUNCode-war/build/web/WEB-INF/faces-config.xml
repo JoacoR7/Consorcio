@@ -97,6 +97,16 @@
             <to-view-id>/admin/expensa/listarExpensa.jsf</to-view-id>
             <redirect/>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>modificarInmueble</from-outcome>
+            <to-view-id>/admin/inmueble/modificarInmueble.jsf</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>listarInmueble</from-outcome>
+            <to-view-id>/admin/inmueble/listarInmueble.jsf</to-view-id>
+            <redirect/>
+        </navigation-case>
 
     </navigation-rule>
 </faces-config>

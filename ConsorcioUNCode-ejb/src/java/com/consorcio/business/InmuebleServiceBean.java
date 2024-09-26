@@ -1,65 +1,57 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.consorcio.business;
 
 import com.consorcio.entity.EstadoInmueble;
 import com.consorcio.entity.Inmueble;
 import com.consorcio.entity.Inquilino;
 import com.consorcio.entity.Propietario;
-import com.consorcio.persist.DAOException;
-import com.consorcio.persist.DAOImpl;
-import java.util.ArrayList;
+import com.consorcio.persist.DAOInmueble;
+import com.consorcio.persist.error.NoResultDAOException;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
+import javax.persistence.NoResultException;
 
 /**
  *
- * @author adrzanbar
+ * @author victo
  */
 @Stateless
 @LocalBean
 public class InmuebleServiceBean {
 
+    // Add business logic below. (Right-click in editor and choose
+    // "Insert Code > Add Business Method")
     private @EJB
-    InquilinoServiceBean inquilinoService;
+    DAOInmueble dao;
+
     private @EJB
     PropietarioServiceBean propietarioService;
     private @EJB
-    DAOImpl<Inmueble> dao;
+    InquilinoServiceBean inquiliService;
 
-    private void validar(String piso, String puerta) throws ErrorServiceException {
-        if (piso == null || piso.trim().isEmpty()) {
-            throw new ErrorServiceException("Debe indicar el piso");
-        }
-        if (puerta == null || puerta.trim().isEmpty()) {
-            throw new ErrorServiceException("Debe indicar la puerta");
-        }
-    }
+    public void crearInmueble(String idPropietario, String idInquilino, String piso, String puerta) throws Exception {
 
-    public void crearInmueble(String idPropietario, String idInquilino, String piso, String puerta) throws ErrorServiceException, DAOException {
         try {
+
             validar(piso, puerta);
+
             Propietario propietario = propietarioService.buscarPropietario(idPropietario);
-
-            if (propietario == null) {
-                throw new ErrorServiceException("El propietario indicado no existe");
+            if (propietario == null || propietario.isEliminado()) {
+                throw new ErrorServiceException("Debe ingresar el propietario");
             }
+            Inquilino inquilino = inquiliService.buscarInquilino(idInquilino);
 
-            Inquilino inquilino = inquilinoService.buscarInquilino(idInquilino);
-
-            Map<String, Object> searchCriteria = new HashMap<>();
-            searchCriteria.put("eliminado", Boolean.FALSE);
-            searchCriteria.put("piso", piso);
-            searchCriteria.put("puerta", puerta);
-
-            Collection<Map<String, Object>> searchCriteriaCollection = new ArrayList<>();
-            searchCriteriaCollection.add(searchCriteria);
-
-            if (!dao.listar(searchCriteriaCollection).isEmpty()) {
-                throw new ErrorServiceException("Existe un inmueble con el piso y puerta indicado");
+            try {
+                dao.buscarInmueblePorPisoYPuerta(piso, puerta);
+                throw new ErrorServiceException("Ya existe un inmueble con ese piso y puerta");
+            } catch (NoResultDAOException e) {
             }
 
             Inmueble inmueble = new Inmueble();
@@ -67,191 +59,87 @@ public class InmuebleServiceBean {
             inmueble.setEliminado(false);
             inmueble.setPropietario(propietario);
             inmueble.setInquilino(inquilino);
-            inmueble.setEstado(inquilino == null
-                    ? (propietario.isHabitaConsorcio() ? EstadoInmueble.HABITADO : EstadoInmueble.DESOCUPADO)
-                    : EstadoInmueble.HABITADO);
             inmueble.setPiso(piso);
             inmueble.setPuerta(puerta);
+            inmueble.setEstado((inquilino == null ? (propietario.isHabitaConsorcio() ? EstadoInmueble.HABITADO : EstadoInmueble.DESOCUPADO) : EstadoInmueble.HABITADO));
+            dao.guardarInmueble(inmueble);
 
-            dao.guardar(inmueble);
-
-        } catch (Exception exception) {
-            System.err.println(exception.getMessage());
-            throw new ErrorServiceException("Error de sistemas");
+        } catch (ErrorServiceException e) {
+            throw e;
+        } catch (Exception ex) {
+            throw ex;
         }
     }
 
-    public Inmueble buscarInmueble(String idInmueble) throws ErrorServiceException {
-        try {
-            if (idInmueble == null || idInmueble.isEmpty()) {
-                throw new ErrorServiceException("Debe indicar el inmueble");
-            }
+    public void validar(String piso, String puerta) throws ErrorServiceException {
 
-            Map<String, Object> searchCriteria = new HashMap<>();
-            searchCriteria.put("id", idInmueble);
-            searchCriteria.put("eliminado", Boolean.FALSE);
-
-            Collection<Map<String, Object>> searchCriteriaCollection = new ArrayList<>();
-            searchCriteriaCollection.add(searchCriteria);
-
-            Inmueble inmueble = dao.buscarUnico(searchCriteriaCollection);
-            if (inmueble == null) {
-                throw new ErrorServiceException("No se encuentra el inmueble indicado");
-            }
-            return inmueble;
-        } catch (Exception exception) {
-            System.err.println(exception.getMessage());
-            throw new ErrorServiceException("Error de sistema");
+        if (piso == null || piso.isEmpty()) {
+            throw new ErrorServiceException("Ingrese el piso");
+        }
+        if (puerta == null || piso.isEmpty()) {
+            throw new ErrorServiceException("Ingrese el número de puerta");
         }
     }
 
-    public void modificarInmueble(String idInmueble, String idPropietario, String idInquilino, String piso, String puerta) throws ErrorServiceException, DAOException {
-        Inmueble inmueble = buscarInmueble(idInmueble);
-        Propietario propietario = propietarioService.buscarPropietario(idPropietario);
-        Inquilino inquilino = inquilinoService.buscarInquilino(idInquilino);
-
-        validar(piso, puerta);
-
-        Map<String, Object> searchCriteria = new HashMap<>();
-        searchCriteria.put("piso", piso);
-        searchCriteria.put("puerta", puerta);
-        searchCriteria.put("eliminado", Boolean.FALSE);
-
-        Collection<Map<String, Object>> searchCriteriaCollection = new ArrayList<>();
-        searchCriteriaCollection.add(searchCriteria);
+    public void modificarInmueble(String idInmueble, String idPropietario, String idInquilino,
+            String piso, String puerta) throws Exception {
 
         try {
-            Inmueble inmuebleAux = dao.buscarUnico(searchCriteriaCollection);
-            if (inmuebleAux != null && !inmuebleAux.getId().equals(idInmueble)) {
-                throw new ErrorServiceException("Existe un inmueble con el piso y puerta indicado");
+            validar(piso, puerta);
+
+            Inmueble inmueble = dao.buscarInmuebleId(idInmueble);
+
+            if (idInquilino == null || idInquilino.isEmpty()) {
+                throw new ErrorServiceException("Debe indicar el inquilino");
             }
-        } catch (Exception exception) {
-            System.err.println(exception.getMessage());
-            throw new ErrorServiceException("Error de sistemas");
-        }
+            if (idPropietario == null || idPropietario.isEmpty()) {
+                throw new ErrorServiceException("Debe indicar el propietario");
+            }
+            
+            Inquilino inquilino = inquiliService.buscarInquilino(idInquilino);
+            Propietario propietario = propietarioService.buscarPropietario(idPropietario);
 
-        inmueble.setPropietario(propietario);
-        inmueble.setInquilino(inquilino);
-        inmueble.setEstado((inquilino == null ? (propietario.isHabitaConsorcio() ? EstadoInmueble.HABITADO : EstadoInmueble.DESOCUPADO) : EstadoInmueble.HABITADO));
-        inmueble.setPiso(piso);
-        inmueble.setPuerta(puerta);
+            try {
+                Inmueble inmuebleExistente = dao.buscarInmueblePorPisoYPuerta(piso,puerta);
+                if (inmuebleExistente != null && !inmuebleExistente.getId().equals(idInmueble)) {
+                    throw new ErrorServiceException("Ya existe un inmueble con ese piso y puerta");
+                }
+            } catch (NoResultDAOException e) {
+            }
 
-        try {
-            dao.actualizar(inmueble);
-        } catch (Exception exception) {
-            System.err.println(exception.getMessage());
+            inmueble.setPuerta(puerta);
+            inmueble.setPiso(piso);
+            inmueble.setPropietario(propietario);
+            inmueble.setInquilino(inquilino);
+            inmueble.setEstado((inquilino == null ? (propietario.isHabitaConsorcio() ? EstadoInmueble.HABITADO : EstadoInmueble.DESOCUPADO) : EstadoInmueble.HABITADO));
+
+            dao.actualizarInmueble(inmueble);
+
+        } catch (ErrorServiceException e) {
+            throw e;
+        }catch (Exception ex){
             throw new ErrorServiceException("Error de Sistemas");
         }
     }
 
-    public void eliminarInmueble(String idInmueble) throws ErrorServiceException {
-        Inmueble inmueble = buscarInmueble(idInmueble);
-        inmueble.setEliminado(true);
+    public void eliminarInmueble(String id) throws ErrorServiceException {
+
         try {
-            dao.actualizar(inmueble);
-        } catch (Exception exception) {
-            System.err.println(exception.getMessage());
-            throw new ErrorServiceException("Error de sistemas");
+            Inmueble inmueble = dao.buscarInmuebleId(id);
+            inmueble.setEliminado(true);
+            dao.actualizarInmueble(inmueble);
+        } catch (Exception e) {
+            throw new ErrorServiceException("Error al eliminar el inmueble");
         }
     }
 
-    public Collection<Inmueble> listar() throws ErrorServiceException {
-        Map<String, Object> searchCriteria = new HashMap<>();
-        searchCriteria.put("eliminado", Boolean.FALSE);
-        Collection<Map<String, Object>> searchCriteriaCollection = new ArrayList<>();
-        searchCriteriaCollection.add(searchCriteria);
-
+    public Collection<Inmueble> listarInmueble() {
         try {
-            return dao.listar(searchCriteriaCollection);
-        } catch (Exception exception) {
-            System.err.println(exception.getMessage());
-            throw new ErrorServiceException("Error de sistemas");
+            return dao.listarInmuebleActivo();
+
+        } catch (Exception e) {
+            e.getMessage();
+            throw e;
         }
     }
-
-    public Inmueble buscarInmueblePorInquilino(String idInquilino) throws ErrorServiceException {
-        if (idInquilino == null || idInquilino.isEmpty()) {
-            throw new ErrorServiceException("Debe indicar el inquilino");
-        }
-        Map<String, Object> searchCriteria = new HashMap<>();
-        searchCriteria.put("eliminado", Boolean.FALSE);
-        searchCriteria.put("inquilino", inquilinoService.buscarInquilino(idInquilino));
-
-        Collection<Map<String, Object>> searchCriteriaCollection = new ArrayList<>();
-        searchCriteriaCollection.add(searchCriteria);
-
-        try {
-            return dao.buscarUnico(searchCriteriaCollection);
-        } catch (Exception exception) {
-            System.err.println(exception.getMessage());
-            throw new ErrorServiceException("Error de sistemas");
-        }
-    }
-
-    public Inmueble buscarInmueblePorPropietario(String idPropietario) throws ErrorServiceException {
-        if (idPropietario == null || idPropietario.isEmpty()) {
-            throw new ErrorServiceException("Debe indicar el propietario");
-        }
-        Map<String, Object> searchCriteria = new HashMap<>();
-        searchCriteria.put("eliminado", Boolean.FALSE);
-        searchCriteria.put("propietario", propietarioService.buscarPropietario(idPropietario));
-
-        Collection<Map<String, Object>> searchCriteriaCollection = new ArrayList<>();
-        searchCriteriaCollection.add(searchCriteria);
-
-        try {
-            return dao.buscarUnico(searchCriteriaCollection);
-        } catch (Exception exception) {
-            System.err.println(exception.getMessage());
-            throw new ErrorServiceException("Error de sistemas");
-        }
-    }
-
-    public Collection<Inmueble> listarInmueblePorPropietario(String idPropietario) throws ErrorServiceException {
-        if (idPropietario == null || idPropietario.isEmpty()) {
-            throw new ErrorServiceException("Debe indicar el propietario");
-        }
-        Map<String, Object> searchCriteria = new HashMap<>();
-        searchCriteria.put("eliminado", Boolean.FALSE);
-        searchCriteria.put("propietario", propietarioService.buscarPropietario(idPropietario));
-
-        Collection<Map<String, Object>> searchCriteriaCollection = new ArrayList<>();
-        searchCriteriaCollection.add(searchCriteria);
-
-        try {
-            return dao.listar(searchCriteriaCollection);
-        } catch (Exception exception) {
-            System.err.println(exception.getMessage());
-            throw new ErrorServiceException("Error de sistemas");
-        }
-    }
-
-    public Collection<Inmueble> listarInmueblePorApellidoDni(String filtro) throws ErrorServiceException {
-        try {
-            if (filtro == null || filtro.isEmpty()) {
-                throw new ErrorServiceException("Debe indicar el criterio de búsqueda");
-            }
-
-            // Create search criteria
-            Map<String, Object> propietarioCriteria = new HashMap<>();
-            propietarioCriteria.put("eliminado", Boolean.FALSE);
-            propietarioCriteria.put("propietario.apellido", filtro);
-
-            Map<String, Object> inquilinoCriteria = new HashMap<>();
-            inquilinoCriteria.put("eliminado", Boolean.FALSE);
-            inquilinoCriteria.put("inquilino.apellido", filtro);
-            inquilinoCriteria.put("inquilino.documento", filtro);
-
-            Collection<Map<String, Object>> searchCriteria = new ArrayList<>();
-            searchCriteria.add(propietarioCriteria);
-            searchCriteria.add(inquilinoCriteria);
-
-            return dao.listar(searchCriteria);
-
-        } catch (Exception ex) {
-            System.err.println(ex.getMessage());
-            throw new ErrorServiceException("Error de sistema");
-        }
-    }
-
 }

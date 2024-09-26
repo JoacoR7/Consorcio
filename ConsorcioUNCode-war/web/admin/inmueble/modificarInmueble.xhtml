@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <h:outputStylesheet name="rio-layout/css/rio-font.css" />
+        <h:outputStylesheet name="css/abm.css" />
+    </h:head>
+    <h:form>
+        <div class="card">
+            <p:panel header="ABM Inmueble" styleClass="ui-panel ui-widget ui-widget-content ui-corner-all">
+
+                <div class="form-row">
+                    <h:outputLabel value="Piso: " />
+                    <p:inputText id="piso" value="#{controllerEditInmueble.piso}" 
+                                 disabled="#{controllerEditInmueble.disableButton}" />
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel value="Puerta: " />
+                    <p:inputText id="puerta" value="#{controllerEditInmueble.puerta}" 
+                                 disabled="#{controllerEditInmueble.disableButton}" />
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel value="Propietario: " />
+                    <p:selectOneMenu id="propietario" 
+                                     value="#{controllerEditInmueble.idPropietario}" 
+                                     disabled="#{controllerEditInmueble.disableButton}">
+                        <f:selectItems value="#{controllerEditInmueble.propietarios}" />
+                    </p:selectOneMenu>
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel value="Inquilino: " />
+                    <p:selectOneMenu id="inquilino" 
+                                     value="#{controllerEditInmueble.idInquilino}" 
+                                     disabled="#{controllerEditInmueble.disableButton}">
+                        <f:selectItems value="#{controllerEditInmueble.inquilinos}" />
+                    </p:selectOneMenu>
+                </div>
+
+                <div>
+                    <p:commandButton value="Aceptar" 
+                                     action="#{controllerEditInmueble.aceptar()}" 
+                                     update="@form" />
+                    <p:commandButton value="Volver" 
+                                     action="#{controllerEditInmueble.cancelar()}" 
+                                     update="@form" />
+<!--                    <h:outputLink value="#{controllerEditInmueble.search()}" target="_blank" 
+                                  rendered="#{controllerEditInmueble.casoDeUso != 'ALTA'}">
+                        Buscar
+                    </h:outputLink>-->
+                </div>
+            </p:panel>
+        </div>   
+    </h:form>
+</ui:composition>
