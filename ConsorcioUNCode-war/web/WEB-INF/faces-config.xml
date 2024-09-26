@@ -87,6 +87,46 @@
             <to-view-id>/admin/propietario/modificarPropietario.jsf</to-view-id>
             <redirect/>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>modificarExpensa</from-outcome>
+            <to-view-id>/admin/expensa/modificarExpensa.jsf</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>listarExpensa</from-outcome>
+            <to-view-id>/admin/expensa/listarExpensa.jsf</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>modificarInmueble</from-outcome>
+            <to-view-id>/admin/inmueble/modificarInmueble.jsf</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>listarInmueble</from-outcome>
+            <to-view-id>/admin/inmueble/listarInmueble.jsf</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>listarMenu</from-outcome>
+            <to-view-id>/admin/menu/listarMenu</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>modificarMenu</from-outcome>
+            <to-view-id>/admin/menu/modificarMenu.jsf</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>listarSubMenu</from-outcome>
+            <to-view-id>/admin/menu/listarSubMenu</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>modificarSubMenu</from-outcome>
+            <to-view-id>/admin/menu/modificarSubMenu.jsf</to-view-id>
+            <redirect/>
+        </navigation-case>
 
     </navigation-rule>
 </faces-config>
