@@ -6,6 +6,7 @@
 package com.consorcio.persist;
 
 import com.consorcio.entity.Pais;
+import com.consorcio.persist.error.NoResultDAOException;
 import java.util.Collection;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -43,15 +44,17 @@ public class DAOPais {
         return em.find(Pais.class, id);
     }
 
-    public Pais buscarPaisPorNombre(String nombre) {
-        TypedQuery<Pais> query = em.createQuery("SELECT p FROM Pais p WHERE p.nombre = :nombre AND p.eliminado = FALSE", Pais.class);
-        query.setParameter("nombre", nombre);
-        List<Pais> resultados = query.getResultList();
+    public Pais buscarPaisPorNombre(String nombre) throws NoResultDAOException {
 
-        if (resultados.isEmpty()) {
-            return null;  // Devuelve null si no hay resultados
-        } else {
-            return resultados.get(0);  // Devuelve el primer resultado
+        try {
+            TypedQuery<Pais> query = em.createQuery("SELECT p FROM Pais p WHERE p.nombre = :nombre AND p.eliminado = FALSE", Pais.class);
+            query.setParameter("nombre", nombre);
+            List<Pais> resultados = query.getResultList();
+            return resultados.get(0);
+        } catch (NoResultException e) {
+            throw new NoResultDAOException("No se encontró ningún país con ese nombre.");
+        } catch (Exception e){
+            throw e;
         }
     }
 

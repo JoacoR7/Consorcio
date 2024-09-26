@@ -5,7 +5,10 @@
  */
 package com.consorcio.controller;
 
+import com.consorcio.business.ErrorServiceException;
 import com.consorcio.business.PaisServiceBean;
+import com.consorcio.controller.messages.Messages;
+import com.consorcio.controller.messages.TypeMessages;
 import com.consorcio.entity.Pais;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -59,9 +62,9 @@ public class ControllerEditPais {
             }
             return "listarPais";
             
-            
         } catch (Exception e) {
-            e.getMessage();
+            e.printStackTrace();
+            Messages.show(e.getMessage(), TypeMessages.ERROR);
             return null;
         }
     }

@@ -7,6 +7,7 @@ package com.consorcio.business;
 
 import com.consorcio.persist.DAOPais;
 import com.consorcio.entity.Pais;
+import com.consorcio.persist.error.NoResultDAOException;
 import java.util.Collection;
 import java.util.UUID;
 import javax.ejb.EJB;
@@ -27,23 +28,24 @@ public class PaisServiceBean {
     private @EJB
     DAOPais dao;
 
-    public void crearPais(String nombre) {
+    public void crearPais(String nombre) throws NoResultDAOException, ErrorServiceException, Exception {
 
         try {
             if (nombre == null || nombre.isEmpty()) {
                 throw new IllegalArgumentException("Ingrese el nombre del país");
             }
-
-            if (dao.buscarPaisPorNombre(nombre) != null) {
-                // Lanzar IllegalStateException si el país ya existe
-                throw new IllegalStateException("El país con el nombre '" + nombre + "' ya existe.");
-            } else {
-                Pais pais = new Pais(UUID.randomUUID().toString(), nombre, false);
-                dao.guardarPais(pais);
+            try {
+                dao.buscarPaisPorNombre(nombre);
+                throw new ErrorServiceException("El país con el nombre '" + nombre + "' ya existe.");
+            } catch (NoResultDAOException e) {
             }
+            Pais pais = new Pais(UUID.randomUUID().toString(), nombre, false);
+            dao.guardarPais(pais);
 
-        } catch (IllegalArgumentException | IllegalStateException e) {
+        } catch (ErrorServiceException e) {
             throw e;
+        } catch (Exception e){
+            throw new Exception("Error de sistema");
         }
     }
 
@@ -66,7 +68,7 @@ public class PaisServiceBean {
         return null;
     }
 
-    public Pais buscarPaisPorNombre(String nombre) {
+    public Pais buscarPaisPorNombre(String nombre) throws Exception {
         try {
             if (nombre == null) {
                 throw new IllegalArgumentException("Seleccione un pais");
@@ -77,7 +79,7 @@ public class PaisServiceBean {
         }
     }
 
-    public void modificarPais(String id, String nombre) {
+    public void modificarPais(String id, String nombre) throws Exception {
         try {
             Pais pais = buscarPais(id); // País seleccionado
 
