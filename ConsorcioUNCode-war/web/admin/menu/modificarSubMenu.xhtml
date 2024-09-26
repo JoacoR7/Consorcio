@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <h:outputStylesheet name="rio-layout/css/rio-font.css" />
+        <h:outputStylesheet name="css/abm.css" />
+    </h:head>
+    <h:form>
+        <div class="card">
+            <p:panel header="ABM SubMenu" styleClass="ui-panel ui-widget ui-widget-content ui-corner-all">
+                <div class="form-row">
+                    <h:outputLabel for="nombreSubMenu" value="Nombre" />
+                    <p:inputText id="nombreSubMenu" 
+                                 value="#{ControllerEditSubMenu.nombre}" 
+                                 disabled="#{ControllerEditSubMenu.disableButton}"
+                                 styleClass="ui-inputfield" />
+                </div>
+                <div class="form-row">
+                    <h:outputLabel for="ordenSubMenu" value="Orden" />
+                    <p:inputText id="ordenSubMenu" 
+                                 value="#{ControllerEditSubMenu.orden}" 
+                                 disabled="#{ControllerEditSubMenu.disableButton}"
+                                 styleClass="ui-inputfield" />
+                </div>
+                <div class="form-row">
+                    <h:outputLabel for="url" value="Url" />
+                    <p:inputText id="url" 
+                                 value="#{ControllerEditSubMenu.url}" 
+                                 disabled="#{ControllerEditSubMenu.disableButton}"
+                                 styleClass="ui-inputfield" />
+                </div>
+                <div class="form-row">
+                    <h:outputLabel for="nombreMenu" value="Nombre menú" />
+                    <p:inputText id="nombreMenu" 
+                                 value="#{ControllerEditSubMenu.nombreMenu}" 
+                                 disabled="#{ControllerEditSubMenu.disableButton}"
+                                 styleClass="ui-inputfield" />
+                </div>
+                <p:commandButton value="Aceptar" action="#{ControllerEditSubMenu.aceptar()}"
+                                 update="@form" icon="pi pi-check" styleClass="ui-button-success" />
+            </p:panel>
+        </div>   
+    </h:form>
+</ui:composition>

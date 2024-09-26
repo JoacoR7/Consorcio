@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <h:outputStylesheet name="rio-layout/css/rio-font.css" />
+        <h:outputStylesheet name="css/abm.css" />
+    </h:head>
+    <h:form>
+        <div class="card">
+            <p:panel header="ABM Menu" styleClass="ui-panel ui-widget ui-widget-content ui-corner-all">
+                <div class="form-row">
+                    <h:outputLabel for="nombreMenu" value="Nombre" />
+                    <p:inputText id="nombreMenu" 
+                                 value="#{ControllerEditMenu.nombre}" 
+                                 disabled="#{ControllerEditMenu.disableButton}"
+                                 styleClass="ui-inputfield" />
+                </div>
+                <div class="form-row">
+                    <h:outputLabel for="ordenMenu" value="Orden" />
+                    <p:inputText id="ordenMenu" 
+                                 value="#{ControllerEditMenu.orden}" 
+                                 disabled="#{ControllerEditMenu.disableButton}"
+                                 styleClass="ui-inputfield" />
+                </div>
+                
+                <p:commandButton value="Aceptar" action="#{ControllerEditMenu.aceptar()}"
+                                 update="@form" icon="pi pi-check" styleClass="ui-button-success" />
+            </p:panel>
+        </div>   
+    </h:form>
+</ui:composition>
