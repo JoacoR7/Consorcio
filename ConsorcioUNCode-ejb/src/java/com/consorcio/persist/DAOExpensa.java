@@ -42,7 +42,7 @@ public class DAOExpensa {
         return em.find(Expensa.class, id);
     }
 
-    public Collection<Expensa> listarExpensaActivo() {
+    public Collection<Expensa> listarExpensas() {
         TypedQuery<Expensa> query = em.createQuery("SELECT e FROM Expensa e WHERE e.eliminado = FALSE", Expensa.class);
         return query.getResultList();
     }

@@ -14,6 +14,7 @@ import java.util.UUID;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
+import javax.persistence.NoResultException;
 
 /**
  *
@@ -118,12 +119,31 @@ public class ExpensaServiceBean {
         }
     }
 
+    public Expensa buscarExpensaPorId(String id) throws ErrorServiceException{
+    
+        try {
+            Expensa expensa = dao.buscarExpensaId(id);
+            return expensa;
+        } catch (NoResultException e) {
+            throw new ErrorServiceException("Debe indicar la expensa");
+        } catch (Exception ex){
+            throw ex;
+        }
+    }
+    
     public Collection<Expensa> listarExpensas() {
         try {
-            return dao.listarExpensaActivo();
+            return dao.listarExpensas();
 
         } catch (Exception e) {
             e.getMessage();
+            throw e;
+        }
+    }
+    public Expensa expensaActual(){
+        try {
+            return dao.buscarExpensaActual();
+        } catch (Exception e) {
             throw e;
         }
     }

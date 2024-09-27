@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <h:outputStylesheet name="rio-layout/css/rio-font.css" />
+        <h:outputStylesheet name="css/abm.css" />
+    </h:head>
+    <h:form>
+        <div class="card">
+            <p:panel header="ABM Expensa Inmueble" styleClass="ui-panel ui-widget ui-widget-content ui-corner-all">
+
+                <div class="form-row">
+                    <h:outputLabel value="Mes: " />
+                    <p:selectOneMenu id="mes" styleClass="Wid80"
+                                     value="#{controllerEditExpensaInmueble.mes}" 
+                                     disabled="#{controllerEditExpensaInmueble.disableButton}">
+
+                        <f:selectItems  value="#{controllerEditExpensaInmueble.meses}" />
+
+                    </p:selectOneMenu> 
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel value="Año: " />
+                    <p:selectOneMenu id="anio" styleClass="Wid80"
+                                     value="#{controllerEditExpensaInmueble.anio}" 
+                                     disabled="#{controllerEditExpensaInmueble.disableButton}">
+
+                        <f:selectItems  value="#{controllerEditExpensaInmueble.anios}" />
+
+                    </p:selectOneMenu> 
+                </div>
+                <div class="form-row">
+                    <h:outputLabel value="Importe Expensa: " />
+                    <p:selectOneMenu id="importe" styleClass="Wid80"
+                                     value="#{controllerEditExpensaInmueble.idExpensa}" 
+                                     disabled="#{controllerEditExpensaInmueble.disableButton}">
+
+                        <f:selectItems  value="#{controllerEditExpensaInmueble.expensas}" />
+
+                    </p:selectOneMenu> 
+                </div>
+                <div class="form-row">
+                    <h:outputLabel value="Estado: " />
+                    <p:selectOneMenu id="estado" styleClass="Wid80"
+                                     value="#{controllerEditExpensaInmueble.estado}" 
+                                     disabled="#{controllerEditExpensaInmueble.disableButton}">
+
+                        <f:selectItems  value="#{controllerEditExpensaInmueble.estados}" />
+
+                    </p:selectOneMenu> 
+                </div>
+
+                <div class="form-row">
+                    <h:outputLabel value="Inmueble: " />
+                    <p:selectOneMenu id="inmueble" styleClass="Wid80"
+                                     value="#{controllerEditExpensaInmueble.idInmueble}" 
+                                     disabled="#{controllerEditExpensaInmueble.disableButton}">
+
+                        <f:selectItems  value="#{controllerEditExpensaInmueble.inmuebles}" />
+
+                    </p:selectOneMenu> 
+                </div>
+
+                <div>
+                    <p:commandButton value="Aceptar"
+                                     action="#{controllerEditExpensaInmueble.aceptar()}"
+                                     update="@form" />
+                    <p:commandButton value="Volver"
+                                     action="#{controllerEditExpensaInmueble.cancelar()}"
+                                     update="@form" />
+
+                </div>
+            </p:panel>
+        </div>   
+    </h:form>
+
+</ui:composition>

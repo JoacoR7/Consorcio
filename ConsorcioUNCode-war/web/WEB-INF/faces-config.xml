@@ -127,6 +127,16 @@
             <to-view-id>/admin/menu/modificarSubMenu.jsf</to-view-id>
             <redirect/>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>listarExpensaInmueble</from-outcome>
+            <to-view-id>/admin/expensa/listarExpensaInmueble.jsf</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>modificarExpensaInmueble</from-outcome>
+            <to-view-id>/admin/expensa/modificarExpensaInmueble.jsf</to-view-id>
+            <redirect/>
+        </navigation-case>
 
     </navigation-rule>
 </faces-config>
