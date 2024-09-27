@@ -6,9 +6,12 @@
 package com.consorcio.controller;
 
 import com.consorcio.business.DepartamentoServiceBean;
+import com.consorcio.business.ErrorServiceException;
 import com.consorcio.business.LocalidadServiceBean;
 import com.consorcio.business.PaisServiceBean;
 import com.consorcio.business.ProvinciaServiceBean;
+import com.consorcio.controller.messages.Messages;
+import com.consorcio.controller.messages.TypeMessages;
 import com.consorcio.entity.Departamento;
 import com.consorcio.entity.Localidad;
 import com.consorcio.entity.Pais;
@@ -141,6 +144,12 @@ public class ControllerEditLocalidad {
 
     public String aceptar() {
         try {
+            if(idPais == null || idPais.isEmpty()){
+                throw new ErrorServiceException("Ingrese un país");
+            }
+            if(idProvincia == null || idProvincia.isEmpty()){
+                throw new ErrorServiceException("Ingrese una provincia");
+            }
             if (casoDeUso.equals("ALTA")) {
                 localidadService.crearLocalidad(nombre, codigoPostal, idDepartamento);
             } else if (casoDeUso.equals("MODIFICAR")) {
@@ -149,8 +158,13 @@ public class ControllerEditLocalidad {
 
             return "listarLocalidad";
 
-        } catch (Exception e) {
+        }catch (ErrorServiceException e){
             e.printStackTrace();
+            Messages.show(e.getMessage(), TypeMessages.ERROR);
+            return null;
+        }catch (Exception e) {
+            e.printStackTrace();
+            Messages.show(e.getMessage(), TypeMessages.ERROR);
             return null;
         }
     }

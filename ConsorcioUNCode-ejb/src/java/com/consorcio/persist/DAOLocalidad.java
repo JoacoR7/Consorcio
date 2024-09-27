@@ -6,6 +6,7 @@
 package com.consorcio.persist;
 
 import com.consorcio.entity.Localidad;
+import com.consorcio.persist.error.NoResultDAOException;
 import java.util.Collection;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -42,13 +43,15 @@ public class DAOLocalidad {
         return em.find(Localidad.class, id);
     }
 
-    public Localidad buscarLocalidadPorNombre(String nombre) {
+    public Localidad buscarLocalidadPorNombre(String nombre) throws NoResultDAOException, Exception {
         try {
             TypedQuery<Localidad> query = em.createQuery("SELECT l FROM Localidad l WHERE l.nombre = :nombre AND l.eliminado = FALSE", Localidad.class);
             query.setParameter("nombre", nombre);
             return query.getSingleResult();
         } catch (NoResultException e) {
-            return null;
+            throw new NoResultDAOException("No se encontró ningúna localidad con ese nombre.");
+        } catch (Exception e){
+            throw new Exception("Error de sistemas");
         }
     }
 
@@ -57,7 +60,7 @@ public class DAOLocalidad {
         return query.getResultList();
     }
 
-    public Localidad buscarLocalidadPorDeptoYNombre(String idDpto, String nombre) {
+    public Localidad buscarLocalidadPorDeptoYNombre(String idDpto, String nombre) throws NoResultDAOException, Exception {
 
         try {
 
@@ -70,12 +73,10 @@ public class DAOLocalidad {
                     setParameter("nombre", nombre).
                     getSingleResult();
 
-        } catch (NoResultException ex) {
-            ex.getMessage();
-            return null;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
+        } catch (NoResultException e) {
+            throw new NoResultDAOException("No se encontró ningúna localidad.");
+        } catch (Exception e){
+            throw new Exception("Error de sistemas");
         }
     }
 

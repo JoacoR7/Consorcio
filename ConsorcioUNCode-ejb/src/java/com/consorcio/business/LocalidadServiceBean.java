@@ -30,7 +30,7 @@ public class LocalidadServiceBean {
     private @EJB
     DepartamentoServiceBean departamentoService;
 
-    public void crearLocalidad(String nombre,String codigoPostal, String idDpto) throws ErrorServiceException {
+    public void crearLocalidad(String nombre, String codigoPostal, String idDpto) throws ErrorServiceException, Exception {
 
         try {
 
@@ -38,18 +38,22 @@ public class LocalidadServiceBean {
 
             if (nombre == null || nombre.isEmpty()) {
                 throw new IllegalArgumentException("Ingrese el nombre de la localidad");
-            }else if (codigoPostal == null || codigoPostal.isEmpty()){
+            } else if (codigoPostal == null || codigoPostal.isEmpty()) {
                 throw new IllegalArgumentException("Ingrese el codigo postal");
             }
-
+            
+            boolean existeLocalidad = false;
             try {
                 Localidad localidadExistente = dao.buscarLocalidadPorDeptoYNombre(idDpto, nombre);
                 if (localidadExistente != null) {
-                    throw new IllegalArgumentException("Existe una localidad para el departamento indicado");
+                    existeLocalidad = true;
                 }
-            } catch (Exception ex) {
-            }
+            } catch (Exception ex) {}
 
+            if(existeLocalidad){
+                throw new ErrorServiceException("Existe esa localidad para el departamento indicado");
+            }
+            
             Localidad localidad = new Localidad();
             localidad.setId(UUID.randomUUID().toString());
             localidad.setNombre(nombre);
@@ -60,7 +64,11 @@ public class LocalidadServiceBean {
             dao.guardarLocalidad(localidad);
 
         } catch (IllegalArgumentException e) {
+            throw new ErrorServiceException(e.getMessage());
+        } catch (ErrorServiceException e) {
             throw e;
+        } catch (Exception e) {
+            throw new Exception("Error de sistema");
         }
 
     }
@@ -84,7 +92,7 @@ public class LocalidadServiceBean {
         return null;
     }
 
-    public void modificarLocalidad(String id, String nombre , String codigoPostal, String idDpto) throws Exception {
+    public void modificarLocalidad(String id, String nombre, String codigoPostal, String idDpto) throws Exception {
 
         try {
 
@@ -92,24 +100,32 @@ public class LocalidadServiceBean {
 
             if (nombre == null || nombre.isEmpty()) {
                 throw new IllegalArgumentException("Indique el nombre de la localidad");
-            }else if (codigoPostal == null || codigoPostal.isEmpty()){
+            } else if (codigoPostal == null || codigoPostal.isEmpty()) {
                 throw new IllegalArgumentException("Ingrese el codigo postal");
             }
-
+            boolean existeLocalidad = false;
             try {
                 Localidad localidadExistente = dao.buscarLocalidadPorNombre(nombre);
                 if (localidadExistente != null && !localidadExistente.getId().equals(id)) {
-                    throw new IllegalArgumentException("Ya existe una localidad con ese nombre");
+                    existeLocalidad = true;
                 }
-            } catch (NoResultException e) {
+            } catch (Exception e) {
             }
+
+            if (existeLocalidad) {
+                throw new ErrorServiceException("Ya existe una localidad con ese nombre");
+            }
+
             Departamento departamento = departamentoService.buscarDepartamento(idDpto);
             localidad.setDepartamento(departamento);
             localidad.setCodigoPostal(codigoPostal);
             localidad.setNombre(nombre);
-            
+
             dao.actualizarLocalidad(localidad);
 
+        } catch (ErrorServiceException e) {
+            e.getMessage();
+            throw e;
         } catch (Exception e) {
             e.getMessage();
             throw e;
@@ -147,7 +163,5 @@ public class LocalidadServiceBean {
             throw e;
         }
     }
-    
-    
 
 }
