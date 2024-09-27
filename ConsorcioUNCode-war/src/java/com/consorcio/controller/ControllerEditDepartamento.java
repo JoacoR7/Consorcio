@@ -6,8 +6,11 @@
 package com.consorcio.controller;
 
 import com.consorcio.business.DepartamentoServiceBean;
+import com.consorcio.business.ErrorServiceException;
 import com.consorcio.business.PaisServiceBean;
 import com.consorcio.business.ProvinciaServiceBean;
+import com.consorcio.controller.messages.Messages;
+import com.consorcio.controller.messages.TypeMessages;
 import com.consorcio.entity.Departamento;
 import com.consorcio.entity.Pais;
 import com.consorcio.entity.Provincia;
@@ -36,7 +39,8 @@ public class ControllerEditDepartamento {
     DepartamentoServiceBean departamentoService;
     private @EJB
     ProvinciaServiceBean provinciaService;
-    private @EJB PaisServiceBean paisService;
+    private @EJB
+    PaisServiceBean paisService;
 
     private String casoDeUso;
     private Departamento departamento;
@@ -58,7 +62,7 @@ public class ControllerEditDepartamento {
                 comboProvincias("");
             } else if (casoDeUso.equals("MODIFICAR") || casoDeUso.equals("CONSULTAR")) {
                 nombre = departamento.getNombre();
-                idProvincia = departamento.getProvincia().getId(); 
+                idProvincia = departamento.getProvincia().getId();
                 idPais = departamento.getProvincia().getPais().getId();
                 comboPaises();
                 comboProvincias(idPais);
@@ -70,8 +74,8 @@ public class ControllerEditDepartamento {
             e.getMessage();
         }
     }
-    
-    public void comboPaisProvincia(){
+
+    public void comboPaisProvincia() {
         provincias.clear();
         comboProvincias(idPais);
         RequestContext.getCurrentInstance().update("provincia");
@@ -94,11 +98,11 @@ public class ControllerEditDepartamento {
 
     public void comboProvincias(String idPais) {
         try {
-            System.out.println("El id del pais es: "+ idPais);
+            System.out.println("El id del pais es: " + idPais);
             provincias = new ArrayList<SelectItem>();
             provincias.add(new SelectItem(null, "Seleccione..."));
             for (Provincia provincia : provinciaService.listarProvinciasPorPais(idPais)) {
-                System.out.println("Provincia actual: "+ provincia);
+                System.out.println("Provincia actual: " + provincia);
                 provincias.add(new SelectItem(provincia.getId(), provincia.getNombre()));
             }
 
@@ -110,15 +114,26 @@ public class ControllerEditDepartamento {
     public String aceptar() {
         try {
             if (casoDeUso.equals("ALTA")) {
+                if (idPais == null || idPais.isEmpty()) {
+                    throw new ErrorServiceException("Seleccione un país");
+                }
                 departamentoService.crearDepartamento(nombre, idProvincia);
             } else if (casoDeUso.equals("MODIFICAR")) {
+                if (idPais == null || idPais.isEmpty()) {
+                    throw new ErrorServiceException("Seleccione un país");
+                }
                 departamentoService.modificarDepartamento(nombre, departamento.getId(), idProvincia);
             }
 
             return "listarDepartamento";
 
+        } catch (ErrorServiceException e) {
+            e.printStackTrace();
+            Messages.show(e.getMessage(), TypeMessages.ERROR);
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
+            Messages.show(e.getMessage(), TypeMessages.ERROR);
             return null;
         }
     }

@@ -38,32 +38,37 @@ public class DepartamentoServiceBean {
             if (nombre == null || nombre.isEmpty()) {
                 throw new IllegalArgumentException("Ingrese el nombre del departamento");
             }
-
+            boolean existeDepto = false;
             try {
                 Departamento departamentoExistente = dao.buscarDepartamentoPorProvinciaYNombre(nombre, idProvincia);
                 if (departamentoExistente != null) {
-                    throw new IllegalArgumentException("Existe un departamento con el nombre para la provincia indicada");
+                    existeDepto = true;
                 }
             } catch (Exception ex) {
             }
 
+            if (existeDepto) {
+                throw new ErrorServiceException("Existe un departamento con el nombre para la provincia indicada");
+            }
             Departamento departamento = new Departamento();
             departamento.setId(UUID.randomUUID().toString());
             departamento.setNombre(nombre);
             departamento.setEliminado(false);
             departamento.setProvincia(provincia);
-            
+
             dao.guardarDepartamento(departamento);
 
         } catch (IllegalArgumentException e) {
+            throw new ErrorServiceException(e.getMessage());
+        } catch (ErrorServiceException e) {
             throw e;
-        }catch (Exception ex){
-            throw ex;
+        } catch (Exception e) {
+            throw new Exception("Error de sistema");
         }
 
     }
 
-    public Departamento buscarDepartamento(String id) {
+    public Departamento buscarDepartamento(String id) throws ErrorServiceException {
 
         try {
             if (id == null) {
@@ -77,12 +82,12 @@ public class DepartamentoServiceBean {
             }
         } catch (IllegalArgumentException | NoResultException e) {
             e.getMessage();
-            throw e;
+            throw new ErrorServiceException(e.getMessage());
         }
         return null;
     }
 
-    public void modificarDepartamento(String nombreDepartamento, String idDepartamento, String idProvincia) {
+    public void modificarDepartamento(String nombreDepartamento, String idDepartamento, String idProvincia) throws Exception {
 
         try {
 
@@ -93,18 +98,26 @@ public class DepartamentoServiceBean {
                 throw new IllegalArgumentException("Indique el nombre del departamento");
             }
 
+            boolean existeDepto = false;
             try {
                 Departamento departamentoExistente = dao.buscarDepartamentoPorProvinciaYNombre(nombreDepartamento, idProvincia);
-                if (departamentoExistente != null && !departamentoExistente.getId().equals(idDepartamento)) {
-                    throw new IllegalArgumentException("Ya existe una provincia con ese nombre");
+                if (departamentoExistente != null) {
+                    existeDepto = true;
                 }
-            } catch (NoResultException e) {
+            } catch (Exception ex) {
+            }
+
+            if (existeDepto) {
+                throw new ErrorServiceException("Existe un departamento con el nombre para la provincia indicada");
             }
 
             departamento.setNombre(nombreDepartamento);
             departamento.setProvincia(provincia);
             dao.actualizarDepartamento(departamento);
 
+        } catch (ErrorServiceException e) {
+            e.getMessage();
+            throw e;
         } catch (Exception e) {
             e.getMessage();
             throw e;

@@ -64,7 +64,7 @@ public class ProvinciaServiceBean {
 
     }
 
-    public Provincia buscarProvincia(String id) {
+    public Provincia buscarProvincia(String id) throws ErrorServiceException, Exception {
 
         try {
             if (id == null) {
@@ -77,8 +77,9 @@ public class ProvinciaServiceBean {
                 return provincia;
             }
         } catch (IllegalArgumentException | NoResultException e) {
-            e.getMessage();
-            throw e;
+            throw new ErrorServiceException(e.getMessage());
+        } catch(Exception e){
+            throw new Exception("Error de sistemas");
         }
         return null;
     }

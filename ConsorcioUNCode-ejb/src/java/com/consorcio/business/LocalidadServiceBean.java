@@ -30,7 +30,7 @@ public class LocalidadServiceBean {
     private @EJB
     DepartamentoServiceBean departamentoService;
 
-    public void crearLocalidad(String nombre,String codigoPostal, String idDpto) {
+    public void crearLocalidad(String nombre,String codigoPostal, String idDpto) throws ErrorServiceException {
 
         try {
 
@@ -84,7 +84,7 @@ public class LocalidadServiceBean {
         return null;
     }
 
-    public void modificarLocalidad(String id, String nombre , String codigoPostal, String idDpto) {
+    public void modificarLocalidad(String id, String nombre , String codigoPostal, String idDpto) throws Exception {
 
         try {
 

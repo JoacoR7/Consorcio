@@ -6,6 +6,7 @@
 package com.consorcio.persist;
 
 import com.consorcio.entity.Departamento;
+import com.consorcio.persist.error.NoResultDAOException;
 import java.util.Collection;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -48,16 +49,18 @@ public class DAODepartamento {
         return em.find(Departamento.class, id);
     }
 
-    public Departamento buscarDepartamentoPorNombre(String nombre) {
-        TypedQuery<Departamento> query = em.createQuery("SELECT d FROM Departamento d "
-                + "WHERE d.nombre = :nombre AND d.eliminado = FALSE", Departamento.class);
-        query.setParameter("nombre", nombre);
-        List<Departamento> resultados = query.getResultList();
+    public Departamento buscarDepartamentoPorNombre(String nombre) throws NoResultDAOException, Exception {
+        try {
+            TypedQuery<Departamento> query = em.createQuery("SELECT d FROM Departamento d "
+                    + "WHERE d.nombre = :nombre AND d.eliminado = FALSE", Departamento.class);
+            query.setParameter("nombre", nombre);
+            return query.getSingleResult();
 
-        if (resultados.isEmpty()) {
-            return null;  // Devuelve null si no hay resultados
-        } else {
-            return resultados.get(0);  // Devuelve el primer resultado
+        } catch (NoResultException e) {
+            throw new NoResultDAOException("No se encontró ningún .");
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Error de sistemas");
         }
     }
 
@@ -84,7 +87,7 @@ public class DAODepartamento {
         }
     }
 
-    public Departamento buscarDepartamentoPorProvinciaYNombre(String nombreDpto, String idProvincia) {
+    public Departamento buscarDepartamentoPorProvinciaYNombre(String nombreDpto, String idProvincia) throws NoResultDAOException, Exception {
         try {
             TypedQuery<Departamento> query = em.createQuery("SELECT d FROM Departamento d "
                     + "WHERE d.provincia.id = :idProvincia AND d.nombre = :nombreDpto "
@@ -92,8 +95,11 @@ public class DAODepartamento {
             query.setParameter("nombreDpto", nombreDpto);
             query.setParameter("idProvincia", idProvincia);
             return query.getSingleResult();
+        } catch (NoResultException e) {
+            throw new NoResultDAOException("No se encontró ningúna provincia.");
         } catch (Exception e) {
-            return null;
+            e.printStackTrace();
+            throw new Exception("Error de sistemas");
         }
     }
 
