@@ -5,8 +5,11 @@
  */
 package com.consorcio.controller;
 
+import com.consorcio.business.ErrorServiceException;
 import com.consorcio.business.PaisServiceBean;
 import com.consorcio.business.ProvinciaServiceBean;
+import com.consorcio.controller.messages.Messages;
+import com.consorcio.controller.messages.TypeMessages;
 import com.consorcio.entity.Pais;
 import com.consorcio.entity.Provincia;
 import java.util.ArrayList;
@@ -14,6 +17,7 @@ import java.util.Collection;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
@@ -87,9 +91,14 @@ public class ControllerEditProvincia {
             }
 
             return "listarProvincia";
-
-        } catch (Exception e) {
+        
+        }catch (ErrorServiceException e){
             e.printStackTrace();
+            Messages.show(e.getMessage(), TypeMessages.ERROR);
+            return null;
+        }catch (Exception e) {
+            e.printStackTrace();
+            Messages.show(e.getMessage(), TypeMessages.ERROR);
             return null;
         }
     }

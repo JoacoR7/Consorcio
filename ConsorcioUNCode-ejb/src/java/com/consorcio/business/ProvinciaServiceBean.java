@@ -9,6 +9,7 @@ import com.consorcio.entity.Provincia;
 import com.consorcio.persist.DAOProvincia;
 import com.consorcio.entity.Pais;
 import com.consorcio.business.PaisServiceBean;
+import com.consorcio.persist.error.NoResultDAOException;
 import java.util.Collection;
 import java.util.UUID;
 import javax.ejb.EJB;
@@ -29,7 +30,7 @@ public class ProvinciaServiceBean {
     private @EJB
     PaisServiceBean paisService;
 
-    public void crearProvincia(String nombre, String idPais) {
+    public void crearProvincia(String nombre, String idPais) throws Exception {
 
         try {
 
@@ -38,14 +39,12 @@ public class ProvinciaServiceBean {
             if (nombre == null || nombre.isEmpty()) {
                 throw new IllegalArgumentException("Ingrese el nombre de la provincia");
             }
-
             try {
                 Provincia provinciaExistente = dao.buscarProvinciaPorPaisYNombre(idPais, nombre);
                 if (provinciaExistente != null) {
                     throw new IllegalArgumentException("Existe una provincia con el nombre para el país indicado");
                 }
-            } catch (Exception ex) {
-            }
+            } catch (NoResultDAOException e) {}
 
             Provincia provincia = new Provincia();
             provincia.setId(UUID.randomUUID().toString());
@@ -56,7 +55,11 @@ public class ProvinciaServiceBean {
             dao.guardarProvincia(provincia);
 
         } catch (IllegalArgumentException e) {
+            throw new ErrorServiceException(e.getMessage());
+        } catch (ErrorServiceException e) {
             throw e;
+        } catch (Exception e) {
+            throw new Exception("Error de sistema");
         }
 
     }
@@ -80,7 +83,7 @@ public class ProvinciaServiceBean {
         return null;
     }
 
-    public void modificarProvincia(String id, String nombre) {
+    public void modificarProvincia(String id, String nombre) throws Exception {
 
         try {
 

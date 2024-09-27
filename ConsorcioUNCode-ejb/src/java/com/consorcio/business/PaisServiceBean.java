@@ -64,8 +64,7 @@ public class PaisServiceBean {
                 throw new ErrorServiceException("El país se encuentra eliminado");
             }
         } catch (IllegalArgumentException | NoResultException | ErrorServiceException e) {
-            e.getMessage();
-            throw new Exception(e.getMessage());
+            throw new ErrorServiceException(e.getMessage());
         } catch(Exception e){
             throw new Exception("Error de sistemas");
         }

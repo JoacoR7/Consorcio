@@ -1,6 +1,7 @@
 package com.consorcio.persist;
 
 import com.consorcio.entity.Provincia;
+import com.consorcio.persist.error.NoResultDAOException;
 import java.util.Collection;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -35,13 +36,15 @@ public class DAOProvincia {
         return em.find(Provincia.class, id);
     }
 
-    public Provincia buscarProvinciaPorNombre(String nombre) {
+    public Provincia buscarProvinciaPorNombre(String nombre) throws NoResultDAOException, Exception {
         try {
             TypedQuery<Provincia> query = em.createQuery("SELECT p FROM Provincia p WHERE p.nombre = :nombre AND p.eliminado = FALSE", Provincia.class);
             query.setParameter("nombre", nombre);
             return query.getSingleResult();
         } catch (NoResultException e) {
-            return null;
+            throw new NoResultDAOException("No se encontró ningúna provincia con ese nombre.");
+        } catch (Exception e){
+            throw new Exception("Error de sistemas");
         }
     }
 
@@ -50,7 +53,7 @@ public class DAOProvincia {
         return query.getResultList();
     }
 
-    public Provincia buscarProvinciaPorPaisYNombre(String idPais, String nombre) {
+    public Provincia buscarProvinciaPorPaisYNombre(String idPais, String nombre) throws NoResultDAOException, Exception {
 
         try {
 
@@ -63,12 +66,11 @@ public class DAOProvincia {
                     setParameter("nombre", nombre).
                     getSingleResult();
 
-        } catch (NoResultException ex) {
-            ex.getMessage();
-            return null;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
+        } catch (NoResultException e) {
+            throw new NoResultDAOException("No se encontró ningúna provincia.");
+        } catch (Exception e){
+            e.printStackTrace();
+            throw new Exception("Error de sistemas");
         }
     }
 
