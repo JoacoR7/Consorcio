@@ -5,15 +5,23 @@
  */
 package com.consorcio.controller;
 
+import com.consorcio.business.ErrorServiceException;
 import com.consorcio.business.ExpensaServiceBean;
+import com.consorcio.controller.messages.Messages;
+import com.consorcio.controller.messages.TypeMessages;
 import com.consorcio.entity.Expensa;
+import com.consorcio.enums.Mes;
+import com.consorcio.util.UtilFechaBean;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 
 /**
  *
@@ -58,6 +66,11 @@ public class ControllerEditExpensa {
 
     public String aceptar() {
         try {
+            if (fechaDesde == null) {
+                throw new IllegalArgumentException("Seleccione una fecha");
+            }
+            fechaDesde = UtilFechaBean.llevarInicioMes(fechaDesde);
+            fechaDesde = UtilFechaBean.llevarInicioDia(fechaDesde);
             if (casoDeUso.equals("ALTA")) {
                 expensaService.crearExpensa(fechaDesde, fechaHasta, importe);
             } else if (casoDeUso.equals("MODIFICAR")) {
@@ -66,10 +79,12 @@ public class ControllerEditExpensa {
 
             return "listarExpensa";
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+        } catch (ErrorServiceException | IllegalArgumentException e) {
+            Messages.show(e.getMessage(), TypeMessages.ERROR);
+        } catch (Exception ex) {
+            Messages.show(ex.getMessage(), TypeMessages.ERRORFATAL);
         }
+        return null;
     }
 
     public String cancelar() {

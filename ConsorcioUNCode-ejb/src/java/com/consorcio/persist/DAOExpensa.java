@@ -6,7 +6,10 @@
 package com.consorcio.persist;
 
 import com.consorcio.entity.Expensa;
+import com.consorcio.persist.error.ErrorDAOException;
+import com.consorcio.persist.error.NoResultDAOException;
 import java.util.Collection;
+import java.util.Date;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
@@ -28,8 +31,13 @@ public class DAOExpensa {
     @PersistenceContext
     EntityManager em;
 
-    public void guardarExpensa(Expensa expensa) {
-        em.persist(expensa);
+    public void guardarExpensa(Expensa expensa) throws ErrorDAOException {
+        try {
+            em.persist(expensa);
+        } catch (Exception e) {
+            throw new ErrorDAOException("Error de sistema");
+        }
+
     }
 
     public void actualizarExpensa(Expensa expensa) {
@@ -47,13 +55,24 @@ public class DAOExpensa {
         return query.getResultList();
     }
 
-    public Expensa buscarExpensaActual() {
+    public Expensa buscarExpensaActual() throws NoResultDAOException {
         try {
             TypedQuery<Expensa> query = em.createQuery("SELECT e FROM Expensa e "
                     + " WHERE e.eliminado = FALSE AND e.fechaHasta IS NULL", Expensa.class);
             return query.getSingleResult();
         } catch (NoResultException e) {
-            return null;
+            throw new NoResultDAOException("No se encontró una expensa actual");
+        }
+    }
+
+    public Expensa buscarExpensaPorFechaDesde(Date date) throws NoResultDAOException {
+        try {
+            TypedQuery<Expensa> query = em.createQuery("SELECT e FROM Expensa e "
+                    + "WHERE e.eliminado = FALSE AND e.fechaDesde = :fechaDesde", Expensa.class);
+            query.setParameter("fechaDesde", date);
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            throw new NoResultDAOException("No se encontró una expensa con esa fecha de inicio");
         }
     }
 

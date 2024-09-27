@@ -4,75 +4,95 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <h:head>
         <h:outputStylesheet name="rio-layout/css/rio-font.css" />
         <h:outputStylesheet name="css/listar.css" />
+        <h:outputStylesheet name="css/sidebar.css" />
     </h:head>
 
     <h:body>
         <h:form>
-            <!-- Botón para agregar nuevo país -->
-            <div class="Responsive50">
-                <div class="EmptyBox20"></div>
-                <p:commandButton id="nuevo" icon="fa fa-plus" value="Agregar Expensa" 
-                                 styleClass="add-button" action="#{controllerExpensa.alta()}"/>
-                <p:tooltip id="toolTipNuevo" for="nuevo" value="Agregar nueva expensa" position="bottom"/>
-            </div>
+            <div class="container">
+                <!-- Sidebar -->
+                <div class="sidebar">
+                    <p:menu>
+                        <c:forEach items="#{ControllerMenu.menues}" var="menu">
+                            <p:submenu label="#{menu.nombre}" icon="fa fa-list">
+                                <c:forEach items="#{ControllerMenu.listarSubMenus(menu.id)}" var="subMenu">
+                                    <p:menuitem value="#{subMenu.nombre}" 
+                                                action="#{ControllerMenu.redirectToUrl(subMenu.url)}" 
+                                                ajax="false" />
+                                </c:forEach>
+                            </p:submenu>
+                        </c:forEach>
+                    </p:menu>
+                </div>
 
-            <!-- Tabla de países -->
-            <p:dataTable id="expensaTable" 
-                         var="expensa" 
-                         value="#{controllerExpensa.expensas}" 
-                         styleClass="responsive-table">
-                <!-- Columna de nombres de localidades -->
-                <p:column headerText="Fecha inicio" styleClass="table-header">
-                    <h:outputText value="#{expensa.fechaDesde}">
-                        <f:convertDateTime pattern="dd/MM/yyyy" />
-                    </h:outputText>
-                </p:column>
-                
-                <p:column headerText="Importe" styleClass="table-header">
-                    <h:outputText value="#{expensa.importe}" />
-                </p:column>
-
-                <!-- Columna de acciones -->
-                <p:column headerText="Acción" styleClass="table-header">
-                    <div class="actions-menu">
-                        <p:commandButton icon="fa fa-ellipsis-v" 
-                                         styleClass="GrayButton action-button" 
-                                         id="opciones" />
-                        <p:slideMenu overlay="true" 
-                                     my="left top" at="left top" 
-                                     trigger="opciones" 
-                                     style="height: 150px">
-                            <p:menuitem value="Modificar"
-                                        icon="fa fa-pencil-square-o Purple"
-                                        action="#{controllerExpensa.modificar(expensa)}"/>
-                            <p:menuitem value="Consultar"
-                                        icon="fa fa-eye Green"
-                                        action="#{controllerExpensa.consultar(expensa)}"/>
-                            <p:menuitem value="Eliminar"
-                                        icon="fa fa-trash Red"
-                                        actionListener="#{controllerExpensa.prepararBaja(expensa)}"
-                                        oncomplete="PF('confirmDialog').show()"
-                                        update="expensaTable" />
-                        </p:slideMenu>
+                <!-- Main Content -->
+                <div class="main-content">
+                    <!-- Botón para agregar nueva expensa -->
+                    <div>
+                        <p:commandButton id="nuevo" icon="fa fa-plus" value="Agregar Expensa" 
+                                         styleClass="add-button" action="#{controllerExpensa.alta()}"/>
+                        <p:tooltip id="toolTipNuevo" for="nuevo" value="Agregar nueva expensa" position="bottom"/>
                     </div>
-                </p:column>
-            </p:dataTable>
-            <p:confirmDialog id="confirmDialog" widgetVar="confirmDialog" 
-                             header="Confirmación" 
-                             message="¿Está seguro de que desea eliminar esta expensa?" 
-                             severity="alert">
-                <p:commandButton value="Sí" 
-                                 action="#{controllerExpensa.baja()}" 
-                                 update="expensaTable" 
-                                 oncomplete="PF('confirmDialog').hide()" />
-                <p:commandButton value="No" 
-                                 onclick="PF('confirmDialog').hide()" type="button" />
-            </p:confirmDialog>
+
+                    <!-- Tabla de expensas -->
+                    <p:dataTable id="expensaTable" var="expensa" value="#{controllerExpensa.expensas}" styleClass="responsive-table">
+                        <!-- Columna de fecha inicio -->
+                        <p:column headerText="Inicio" styleClass="table-header">
+                            <h:outputText value="#{expensa.fechaDesde}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Finalización" styleClass="table-header">
+                            <h:outputText value="#{expensa.fechaHasta != null ? expensa.fechaHasta : 'Vigente'}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" rendered="#{expensa.fechaHasta != null}" />
+                            </h:outputText>
+                        </p:column>
+
+
+                        <!-- Columna de importe -->
+                        <p:column headerText="Importe" styleClass="table-header">
+                            <h:outputText value="#{expensa.importe}" />
+                        </p:column>
+
+                        <!-- Columna de acciones -->
+                        <p:column headerText="Acción" styleClass="table-header">
+                            <div class="actions-menu">
+                                <p:commandButton icon="fa fa-ellipsis-v" styleClass="GrayButton action-button" id="opciones" />
+                                <p:slideMenu overlay="true" my="left top" at="left top" trigger="opciones" style="height: 150px">
+                                    <p:menuitem value="Modificar"
+                                                icon="fa fa-pencil-square-o Purple"
+                                                action="#{controllerExpensa.modificar(expensa)}"/>
+                                    <p:menuitem value="Consultar"
+                                                icon="fa fa-eye Green"
+                                                action="#{controllerExpensa.consultar(expensa)}"/>
+                                    <p:menuitem value="Eliminar"
+                                                icon="fa fa-trash Red"
+                                                actionListener="#{controllerExpensa.prepararBaja(expensa)}"
+                                                oncomplete="PF('confirmDialog').show()"
+                                                update="expensaTable" />
+                                </p:slideMenu>
+                            </div>
+                        </p:column>
+                    </p:dataTable>
+
+                    <!-- Dialog de confirmación -->
+                    <p:confirmDialog id="confirmDialog" widgetVar="confirmDialog" header="Confirmación" message="¿Está seguro de que desea eliminar esta expensa?" severity="alert">
+                        <p:commandButton value="Sí" 
+                                         action="#{controllerExpensa.baja()}" 
+                                         update="expensaTable" 
+                                         oncomplete="PF('confirmDialog').hide()" />
+                        <p:commandButton value="No" 
+                                         onclick="PF('confirmDialog').hide()" type="button" />
+                    </p:confirmDialog>
+                </div>
+            </div>
         </h:form>
     </h:body>
 </ui:composition>

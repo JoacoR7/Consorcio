@@ -7,6 +7,8 @@ package com.consorcio.business;
 
 import com.consorcio.entity.Expensa;
 import com.consorcio.persist.DAOExpensa;
+import com.consorcio.persist.error.ErrorDAOException;
+import com.consorcio.persist.error.NoResultDAOException;
 import com.consorcio.util.UtilFechaBean;
 import java.util.Collection;
 import java.util.Date;
@@ -34,13 +36,13 @@ public class ExpensaServiceBean {
         try {
 
             // Busco alguna expensa q tenga fechaHasta = null
-            Expensa expensaActual = dao.buscarExpensaActual();
-
-            // Le cambio la fecha a fin de mes a la fecha actual
-            if (expensaActual != null) {
+            try {
+                Expensa expensaActual = dao.buscarExpensaActual();
                 Date fechaHastaExpensaActual = UtilFechaBean.restarDiasAFecha(fechaDesde, 1);
                 expensaActual.setFechaHasta(fechaHastaExpensaActual);
+            } catch (NoResultDAOException e) {
             }
+
             // El fechaDesde siempre es inicio de mes y el importe > 0
             validarDatos(fechaDesde, importe);
             Expensa expensa = new Expensa();
@@ -53,20 +55,22 @@ public class ExpensaServiceBean {
 
             dao.guardarExpensa(expensa);
 
-        } catch (IllegalArgumentException e) {
+        } catch (ErrorDAOException e) {
+            throw new ErrorServiceException("Se produjo un error");
+        } catch (ErrorServiceException e){
             throw e;
         } catch (Exception ex) {
             throw ex;
         }
     }
 
-    public void modificarExpensa(String idExpensa, Date fechaDesde, Date fechaHasta, double importe) {
+    public void modificarExpensa(String idExpensa, Date fechaDesde, Date fechaHasta, double importe) throws ErrorServiceException {
 
         try {
             validarDatos(fechaDesde, importe);
 
             if (idExpensa == null) {
-                throw new IllegalArgumentException("Seleccione una expensa");
+                throw new ErrorServiceException("Seleccione una expensa");
             }
 
             Expensa expensa = dao.buscarExpensaId(idExpensa);
@@ -77,10 +81,10 @@ public class ExpensaServiceBean {
 
             dao.actualizarExpensa(expensa);
 
-        } catch (IllegalArgumentException e) {
+        } catch (ErrorServiceException e) {
             throw e;
-        } catch (Exception ex) {
-            throw ex;
+        } catch (Exception e) {
+            throw e;
         }
 
     }
@@ -92,7 +96,7 @@ public class ExpensaServiceBean {
             if (penultimaExpensa != null) {
                 penultimaExpensa.setFechaHasta(null);
             }
-            
+
             Expensa expensa = dao.buscarExpensaId(id);
             expensa.setEliminado(true);
             dao.actualizarExpensa(expensa);
@@ -102,35 +106,35 @@ public class ExpensaServiceBean {
 
     }
 
-    public void validarDatos(Date fechaDesde, double importe) {
+    public void validarDatos(Date fechaDesde, double importe) throws ErrorServiceException {
 
         if (fechaDesde == null) {
             throw new IllegalArgumentException("Ingrese una fecha de inicio");
         }
-        Date fechaInicioMes = UtilFechaBean.llevarInicioDia(UtilFechaBean.llevarInicioMes(fechaDesde));
-        Date fechaDesdeInicioDia = UtilFechaBean.llevarInicioDia(fechaDesde);
-        
-        if (!fechaDesdeInicioDia.equals(fechaInicioMes)){
-            throw new IllegalArgumentException("La fecha de inicio debe ser el 1 de cada mes");
+
+        try {
+            dao.buscarExpensaPorFechaDesde(fechaDesde);
+            throw new ErrorServiceException("Ya hay una expensa con esa mes de inicio");
+        } catch (NoResultDAOException e) {
         }
 
         if (importe <= 0.0) {
-            throw new IllegalArgumentException("El importe debe ser mayor a 0");
+            throw new ErrorServiceException("El importe debe ser mayor a 0");
         }
     }
 
-    public Expensa buscarExpensaPorId(String id) throws ErrorServiceException{
-    
+    public Expensa buscarExpensaPorId(String id) throws ErrorServiceException {
+
         try {
             Expensa expensa = dao.buscarExpensaId(id);
             return expensa;
         } catch (NoResultException e) {
             throw new ErrorServiceException("Debe indicar la expensa");
-        } catch (Exception ex){
+        } catch (Exception ex) {
             throw ex;
         }
     }
-    
+
     public Collection<Expensa> listarExpensas() {
         try {
             return dao.listarExpensas();
@@ -140,7 +144,8 @@ public class ExpensaServiceBean {
             throw e;
         }
     }
-    public Expensa expensaActual(){
+
+    public Expensa expensaActual() throws Exception {
         try {
             return dao.buscarExpensaActual();
         } catch (Exception e) {

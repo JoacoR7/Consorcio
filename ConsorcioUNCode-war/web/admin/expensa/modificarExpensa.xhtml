@@ -20,22 +20,27 @@
                                 mindate="01/01/1920" effect="drop" styleClass="Wid80" 
                                 disabled="#{controllerEditExpensa.disableButton}"/>
                 </div>
-
+                
                 <div class="form-row">
                     <h:outputLabel value="Importe: " />
                     <p:inputText id="idImporte"  value="#{controllerEditExpensa.importe}"
                                  disabled="#{controllerEditExpensa.disableButton}" />
                 </div>
 
+                <div class="col-lg-12" style="z-index: 9999">
+                    <p:growl id="msj" autoUpdate="true" showDetail="true" />
+                </div>
+                
                 <div>
                     <p:commandButton value="Aceptar"
                                      action="#{controllerEditExpensa.aceptar()}"
-                                     update="@form" />
+                                     update="msj" />
                     <p:commandButton value="Volver"
                                      action="#{controllerEditExpensa.cancelar()}"
                                      update="@form" />
 
                 </div>
+                
             </p:panel>
         </div>   
     </h:form>
