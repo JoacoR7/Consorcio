@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <h:head>
+        <h:outputStylesheet name="rio-layout/css/rio-font.css" />
+        <h:outputStylesheet name="css/listar.css" />
+        <h:outputStylesheet name="css/sidebar.css" />
+    </h:head>
+
+    <h:body>
+        <h:form>
+            <div class="container">
+                <!-- Sidebar -->
+                <div class="sidebar">
+                    <p:menu>
+                        <c:forEach items="#{ControllerMenu.menues}" var="menu">
+                            <p:submenu label="#{menu.nombre}" icon="fa fa-list">
+                                <c:forEach items="#{ControllerMenu.listarSubMenus(menu.id)}" var="subMenu">
+                                    <p:menuitem value="#{subMenu.nombre}" 
+                                                action="#{ControllerMenu.redirectToUrl(subMenu.url)}" 
+                                                ajax="false" />
+                                </c:forEach>
+                            </p:submenu>
+                        </c:forEach>
+                    </p:menu>
+                </div>
+
+                <!-- Main Content -->
+                <div class="main-content">
+                    <!-- Botón para agregar nuevo país -->
+                    <div>
+                        <p:commandButton id="nuevo" icon="fa fa-plus" value="Asignar Expensa" 
+                                         styleClass="add-button" action="#{controllerExpensaInmueble.alta()}"/>
+                        <p:tooltip id="toolTipNuevo" for="nuevo" value="Asignar Expensa a Inmueble" position="bottom"/>
+                    </div>
+
+                    <p:dataTable id="expensaInmuebleTable" var="expensaInmueble" value="#{controllerExpensaInmueble.expensasInmuebles}" styleClass="responsive-table">
+                        <!-- Columna de nombres de países -->
+
+                        <p:column headerText="Mes" styleClass="table-header">
+                            <h:outputText value="#{expensaInmueble.mes}" />
+                        </p:column>
+
+                        <p:column headerText="Año" styleClass="table-header">
+                            <h:outputText value="#{expensaInmueble.anio}" />
+                        </p:column>
+
+                        <p:column headerText="Estado" styleClass="table-header">
+                            <h:outputText value="#{expensaInmueble.estado}" />
+                        </p:column>
+
+                        <p:column headerText="Importe" styleClass="table-header">
+                            <h:outputText value="#{expensaInmueble.expensa.importe}" />
+                        </p:column>
+
+                        <p:column headerText="Inquilino" styleClass="table-header">
+                            <h:outputText value="#{expensaInmueble.inmueble.inquilino.nombre}" />
+                        </p:column>
+                        <p:column headerText="Propietario" styleClass="table-header">
+                            <h:outputText value="#{expensaInmueble.inmueble.propietario.nombre}" />
+                        </p:column>
+
+                        <!-- Columna de acciones -->
+                        <p:column headerText="Acción" styleClass="table-header">
+                            <div class="actions-menu">
+                                <p:commandButton icon="fa fa-ellipsis-v" styleClass="GrayButton action-button" id="opciones" />
+                                <p:slideMenu overlay="true" my="left top" at="left top" trigger="opciones" style="height: 150px">
+                                    <p:menuitem value="Modificar"
+                                                icon="fa fa-pencil-square-o Purple"
+                                                action="#{controllerExpensaInmueble.modificar(expensaInmueble)}"/>
+                                    <p:menuitem value="Consultar"
+                                                icon="fa fa-eye Green"
+                                                action="#{controllerExpensaInmueble.consultar(expensaInmueble)}"/>
+                                    <p:menuitem value="Eliminar"
+                                                icon="fa fa-trash Red"
+                                                actionListener="#{controllerExpensaInmueble.prepararBaja(expensaInmueble)}" 
+                                                oncomplete="PF('confirmDialog').show()"
+                                                update="expensaInmuebleTable" />
+                                </p:slideMenu>
+                            </div>
+                        </p:column>
+                    </p:dataTable>
+
+
+                    <p:confirmDialog id="confirmDialog" widgetVar="confirmDialog" header="Confirmación" message="¿Está seguro de que desea eliminar este País?" severity="alert">
+                        <p:commandButton value="Sí" 
+                                         action="#{controllerExpensaInmueble.baja()}" 
+                                         update="expensaInmuebleTable" 
+                                         oncomplete="PF('confirmDialog').hide()" />
+                        <p:commandButton value="No" 
+                                         onclick="PF('confirmDialog').hide()" type="button" />
+                    </p:confirmDialog>
+                </div>
+            </div>
+        </h:form>
+    </h:body>
+</ui:composition>

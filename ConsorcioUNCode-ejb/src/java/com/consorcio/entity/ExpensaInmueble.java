@@ -8,11 +8,11 @@ package com.consorcio.entity;
 import com.consorcio.enums.EstadoExpensaInmueble;
 import com.consorcio.enums.Mes;
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -29,6 +29,26 @@ public class ExpensaInmueble implements Serializable {
     private Mes mes;
     private long anio;
     private EstadoExpensaInmueble estado;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date fechaVencimiento;
+    private boolean eliminado;
+
+    public boolean isEliminado() {
+        return eliminado;
+    }
+
+    public void setEliminado(boolean eliminado) {
+        this.eliminado = eliminado;
+    }
+
+    
+    public Date getFechaVencimiento() {
+        return fechaVencimiento;
+    }
+
+    public void setFechaVencimiento(Date fechaVencimiento) {
+        this.fechaVencimiento = fechaVencimiento;
+    }
 
     public Expensa getExpensa() {
         return expensa;

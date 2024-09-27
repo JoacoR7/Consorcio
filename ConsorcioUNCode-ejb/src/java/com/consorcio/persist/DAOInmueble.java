@@ -40,7 +40,7 @@ public class DAOInmueble {
         em.flush();
     }
 
-    public Inmueble buscarInmuebleId(String id) throws DAOException {
+    public Inmueble buscarInmuebleId(String id) throws NoResultException {
         return em.find(Inmueble.class, id);
     }
 

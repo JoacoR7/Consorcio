@@ -15,5 +15,5 @@ public enum EstadoExpensaInmueble {
     PAGADO_VENCIDO,
     PENDIENTE,
     PENDIENTE_VENCIDO,
-    ANALUADO,
+    ANULADO,
 }

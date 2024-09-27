@@ -95,12 +95,12 @@ public class InmuebleServiceBean {
             if (idPropietario == null || idPropietario.isEmpty()) {
                 throw new ErrorServiceException("Debe indicar el propietario");
             }
-            
+
             Inquilino inquilino = inquiliService.buscarInquilino(idInquilino);
             Propietario propietario = propietarioService.buscarPropietario(idPropietario);
 
             try {
-                Inmueble inmuebleExistente = dao.buscarInmueblePorPisoYPuerta(piso,puerta);
+                Inmueble inmuebleExistente = dao.buscarInmueblePorPisoYPuerta(piso, puerta);
                 if (inmuebleExistente != null && !inmuebleExistente.getId().equals(idInmueble)) {
                     throw new ErrorServiceException("Ya existe un inmueble con ese piso y puerta");
                 }
@@ -117,7 +117,7 @@ public class InmuebleServiceBean {
 
         } catch (ErrorServiceException e) {
             throw e;
-        }catch (Exception ex){
+        } catch (Exception ex) {
             throw new ErrorServiceException("Error de Sistemas");
         }
     }
@@ -130,6 +130,18 @@ public class InmuebleServiceBean {
             dao.actualizarInmueble(inmueble);
         } catch (Exception e) {
             throw new ErrorServiceException("Error al eliminar el inmueble");
+        }
+    }
+
+    public Inmueble buscarInmueblePorId(String id) throws ErrorServiceException {
+
+        try {
+            Inmueble inmueble = dao.buscarInmuebleId(id);
+            return inmueble;
+        } catch (NoResultException e) {
+            throw new ErrorServiceException("Debe indicar el inmueble");
+        } catch (Exception ex) {
+            throw ex;
         }
     }
 
