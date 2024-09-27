@@ -35,6 +35,7 @@ public class ExpensaServiceBean {
 
         try {
 
+            validarDatos(fechaDesde, importe);
             // Busco alguna expensa q tenga fechaHasta = null
             try {
                 Expensa expensaActual = dao.buscarExpensaActual();
@@ -44,7 +45,6 @@ public class ExpensaServiceBean {
             }
 
             // El fechaDesde siempre es inicio de mes y el importe > 0
-            validarDatos(fechaDesde, importe);
             Expensa expensa = new Expensa();
 
             expensa.setId(UUID.randomUUID().toString());
@@ -57,7 +57,7 @@ public class ExpensaServiceBean {
 
         } catch (ErrorDAOException e) {
             throw new ErrorServiceException("Se produjo un error");
-        } catch (ErrorServiceException e){
+        } catch (ErrorServiceException e) {
             throw e;
         } catch (Exception ex) {
             throw ex;
@@ -67,10 +67,12 @@ public class ExpensaServiceBean {
     public void modificarExpensa(String idExpensa, Date fechaDesde, Date fechaHasta, double importe) throws ErrorServiceException {
 
         try {
-            validarDatos(fechaDesde, importe);
 
             if (idExpensa == null) {
                 throw new ErrorServiceException("Seleccione una expensa");
+            }
+            if (importe <= 0.0) {
+                throw new ErrorServiceException("El importe debe ser mayor a 0");
             }
 
             Expensa expensa = dao.buscarExpensaId(idExpensa);
@@ -114,7 +116,7 @@ public class ExpensaServiceBean {
 
         try {
             dao.buscarExpensaPorFechaDesde(fechaDesde);
-            throw new ErrorServiceException("Ya hay una expensa con esa mes de inicio");
+            throw new ErrorServiceException("Ya hay una expensa con ese mes de inicio");
         } catch (NoResultDAOException e) {
         }
 

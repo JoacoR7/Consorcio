@@ -4,69 +4,110 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <h:head>
         <h:outputStylesheet name="rio-layout/css/rio-font.css" />
+        <h:outputStylesheet name="css/listar.css" />
+        <h:outputStylesheet name="css/sidebar.css" />
     </h:head>
+
     <h:body>
         <h:form>
-            <div class="Container50 Responsive50" style="margin-bottom: 15px;">
-                <p:commandButton id="nuevo" icon="fa fa-plus" styleClass="Fleft" 
-                 action="#{ControllerInquilino.alta()}" ajax="false"/>
-                <p:tooltip id="toolTipInquilinoNuevo" for="nuevo" value="Alta" position="top"/>
-            </div>
-            
-            <!-- Tabla de inquilinos -->
-            <div class="card">
-                <p:dataTable id="inquilinoTable" var="inquilino" value="#{ControllerInquilino.inquilinos}">
-                    <p:column headerText="Documento">
-                        <h:outputText value="#{inquilino.documento}" />
-                    </p:column>
-                    <p:column headerText="Tipo de documento">
-                        <h:outputText value="#{inquilino.tipoDocumento}" />
-                    </p:column>
-                    <p:column headerText="Nombre">
-                        <h:outputText value="#{inquilino.nombre}" />
-                    </p:column>
-                    <p:column headerText="Apellido">
-                        <h:outputText value="#{inquilino.apellido}" />
-                    </p:column>
-                    <p:column headerText="Fecha de nacimiento">
-                        <h:outputText value="#{inquilino.fechaNacimiento}" />
-                    </p:column>
-                    <p:column headerText="Sexo">
-                        <h:outputText value="#{inquilino.sexo}" />
-                    </p:column>
-                    <p:column headerText="Teléfono">
-                        <h:outputText value="#{inquilino.telefono}" />
-                    </p:column>
-                    <p:column headerText="Correo electrónico">
-                        <h:outputText value="#{inquilino.correoElectronico}" />
-                    </p:column>
-                    <p:column headerText="Acción">
-                        <p:commandButton  icon="fa fa-ellipsis-v" styleClass="Fright GrayButton" id="opciones"/>
-                        <p:slideMenu overlay="true" my="left top" at="left top" trigger="opciones" style="height: 150px">
-                            <p:menuitem value="Modificar" icon="fa fa-pencil-square-o Purple" action="#{ControllerInquilino.modificar(inquilino)}"/>
-                            <p:menuitem value="Consultar" icon="fa fa-eye Green" action="#{ControllerInquilino.consultar(inquilino)}"/>
-                            <p:menuitem value="Eliminar" icon="fa fa-trash Red" 
-                                        actionListener="#{ControllerInquilino.prepararBaja(inquilino)}" 
-                                        oncomplete="PF('confirmDialog').show()"
-                                        update="inquilinoTable" />
-                        </p:slideMenu>
-                    </p:column>
-                </p:dataTable>
-            </div>
+            <div class="container">
+                <!-- Sidebar -->
+                <div class="sidebar">
+                    <p:menu>
+                        <c:forEach items="#{ControllerMenu.menues}" var="menu">
+                            <p:submenu label="#{menu.nombre}" icon="fa fa-list">
+                                <c:forEach items="#{ControllerMenu.listarSubMenus(menu.id)}" var="subMenu">
+                                    <p:menuitem value="#{subMenu.nombre}" 
+                                                action="#{ControllerMenu.redirectToUrl(subMenu.url)}" 
+                                                ajax="false" />
+                                </c:forEach>
+                            </p:submenu>
+                        </c:forEach>
+                    </p:menu>
+                </div>
 
-            <!-- Confirmación para eliminación -->
-            <p:confirmDialog id="confirmDialog" widgetVar="confirmDialog" header="Confirmación" message="¿Está seguro de que desea eliminar este inquilino?" severity="alert">
-                <p:commandButton value="Sí" 
-                                 action="#{ControllerInquilino.baja()}" 
-                                 update="inquilinoTable" 
-                                 oncomplete="PF('confirmDialog').hide()" />
-                <p:commandButton value="No" 
-                                 onclick="PF('confirmDialog').hide()" type="button" />
-            </p:confirmDialog>
+                <!-- Main Content -->
+                <div class="main-content">
+                    <!-- Botón para agregar nuevo inquilino -->
+                    <div>
+                        <p:commandButton id="nuevo" icon="fa fa-plus" value="Agregar Inquilino" 
+                                         styleClass="add-button" action="#{ControllerInquilino.alta()}" ajax="false"/>
+                        <p:tooltip id="toolTipInquilinoNuevo" for="nuevo" value="Alta" position="bottom"/>
+                    </div>
+
+                    <!-- Tabla de inquilinos -->
+                    <p:dataTable id="inquilinoTable" var="inquilino" value="#{ControllerInquilino.inquilinos}" styleClass="responsive-table">
+                        <p:column headerText="Documento" styleClass="table-header">
+                            <h:outputText value="#{inquilino.documento}" />
+                        </p:column>
+
+                        <p:column headerText="Tipo de documento" styleClass="table-header">
+                            <h:outputText value="#{inquilino.tipoDocumento}" />
+                        </p:column>
+
+                        <p:column headerText="Nombre" styleClass="table-header">
+                            <h:outputText value="#{inquilino.nombre}" />
+                        </p:column>
+
+                        <p:column headerText="Apellido" styleClass="table-header">
+                            <h:outputText value="#{inquilino.apellido}" />
+                        </p:column>
+
+                        <p:column headerText="Fecha de nacimiento" styleClass="table-header">
+                            <h:outputText value="#{inquilino.fechaNacimiento}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Sexo" styleClass="table-header">
+                            <h:outputText value="#{inquilino.sexo}" />
+                        </p:column>
+
+                        <p:column headerText="Teléfono" styleClass="table-header">
+                            <h:outputText value="#{inquilino.telefono}" />
+                        </p:column>
+
+                        <p:column headerText="Correo electrónico" styleClass="table-header">
+                            <h:outputText value="#{inquilino.correoElectronico}" />
+                        </p:column>
+
+                        <!-- Columna de acciones -->
+                        <p:column headerText="Acción" styleClass="table-header">
+                            <div class="actions-menu">
+                                <p:commandButton icon="fa fa-ellipsis-v" styleClass="GrayButton action-button" id="opciones" />
+                                <p:slideMenu overlay="true" my="left top" at="left top" trigger="opciones" style="height: 150px">
+                                    <p:menuitem value="Modificar" 
+                                                icon="fa fa-pencil-square-o Purple" 
+                                                action="#{ControllerInquilino.modificar(inquilino)}"/>
+                                    <p:menuitem value="Consultar" 
+                                                icon="fa fa-eye Green" 
+                                                action="#{ControllerInquilino.consultar(inquilino)}"/>
+                                    <p:menuitem value="Eliminar" 
+                                                icon="fa fa-trash Red" 
+                                                actionListener="#{ControllerInquilino.prepararBaja(inquilino)}" 
+                                                oncomplete="PF('confirmDialog').show()"
+                                                update="inquilinoTable" />
+                                </p:slideMenu>
+                            </div>
+                        </p:column>
+                    </p:dataTable>
+
+                    <!-- Dialog de confirmación -->
+                    <p:confirmDialog id="confirmDialog" widgetVar="confirmDialog" header="Confirmación" message="¿Está seguro de que desea eliminar este inquilino?" severity="alert">
+                        <p:commandButton value="Sí" 
+                                         action="#{ControllerInquilino.baja()}" 
+                                         update="inquilinoTable" 
+                                         oncomplete="PF('confirmDialog').hide()" />
+                        <p:commandButton value="No" 
+                                         onclick="PF('confirmDialog').hide()" type="button" />
+                    </p:confirmDialog>
+                </div>
+            </div>
         </h:form>
     </h:body>
 </ui:composition>

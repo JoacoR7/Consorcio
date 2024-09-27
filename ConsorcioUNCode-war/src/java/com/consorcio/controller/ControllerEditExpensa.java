@@ -43,6 +43,7 @@ public class ControllerEditExpensa {
     private Date fechaDesde;
     private Date fechaHasta;
     private boolean disableButton;
+    private boolean disableDate;
 
     @PostConstruct
     public void init() {
@@ -54,9 +55,13 @@ public class ControllerEditExpensa {
                 importe = expensa.getImporte();
                 fechaDesde = expensa.getFechaDesde();
                 fechaHasta = expensa.getFechaHasta();
+                if (casoDeUso.equals("MODIFICAR")) {
+                    disableDate = true;
+                }
 
                 if (casoDeUso.equals("CONSULTAR")) {
                     disableButton = true;
+                    disableDate = true;
                 }
             }
         } catch (Exception e) {
@@ -89,6 +94,14 @@ public class ControllerEditExpensa {
 
     public String cancelar() {
         return "listarExpensa";
+    }
+
+    public boolean isDisableDate() {
+        return disableDate;
+    }
+
+    public void setDisableDate(boolean disableDate) {
+        this.disableDate = disableDate;
     }
 
     public String getCasoDeUso() {

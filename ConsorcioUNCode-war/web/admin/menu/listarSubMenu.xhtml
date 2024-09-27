@@ -9,36 +9,14 @@
 
     <h:head>
         <h:outputStylesheet name="rio-layout/css/rio-font.css" />
-        <h:outputStylesheet name="css/abm.css" />
-        <style>
-            html, body {
-                height: 100%;
-                margin: 0;
-            }
-
-            .container {
-                display: flex;
-                height: 100vh;
-            }
-
-            .sidebar {
-                width: 250px;
-                background-color: #f4f4f4;
-                padding: 15px;
-            }
-
-            .main-content {
-                flex-grow: 1;
-                padding: 15px;
-                background-color: #ffffff;
-                overflow-y: auto;
-            }
-        </style>
+        <h:outputStylesheet name="css/listar.css" />
+        <h:outputStylesheet name="css/sidebar.css" />
     </h:head>
 
     <h:body>
         <h:form>
-            <div class="container"> <!-- Contenedor para flexbox -->
+            <div class="container">
+                <!-- Sidebar -->
                 <div class="sidebar">
                     <p:menu>
                         <c:forEach items="#{ControllerMenu.menues}" var="menu">
@@ -53,39 +31,48 @@
                     </p:menu>
                 </div>
 
-
+                <!-- Main Content -->
                 <div class="main-content">
-                    <div class="Container50 Responsive50" style="margin-bottom: 15px;">
-                        <p:commandButton id="nuevo" icon="fa fa-plus" styleClass="Fleft" 
-                                         action="#{ControllerSubMenu.alta()}" ajax="false"/>
-                        <p:tooltip id="toolTipSubMenuNuevo" for="nuevo" value="Alta" position="top"/>
+                    <!-- Botón para agregar nuevo submenu -->
+                    <div>
+                        <p:commandButton id="nuevo" icon="fa fa-plus" value="Agregar Submenú" 
+                                         styleClass="add-button" action="#{ControllerSubMenu.alta()}" ajax="false"/>
+                        <p:tooltip id="toolTipSubMenuNuevo" for="nuevo" value="Alta" position="bottom"/>
                     </div>
 
                     <!-- Tabla de submenues -->
-                    <div class="card">
-                        <p:dataTable id="subMenuTable" var="subMenu" value="#{ControllerSubMenu.submenues}">
-                            <p:column headerText="Nombre">
-                                <h:outputText value="#{subMenu.nombre}" />
-                            </p:column>
-                            <p:column headerText="Orden">
-                                <h:outputText value="#{subMenu.orden}" />
-                            </p:column>
-                            <p:column headerText="Acción">
-                                <p:commandButton icon="fa fa-ellipsis-v" styleClass="Fright GrayButton" id="opciones"/>
+                    <p:dataTable id="subMenuTable" var="subMenu" value="#{ControllerSubMenu.submenues}" styleClass="responsive-table">
+                        <p:column headerText="Nombre" styleClass="table-header">
+                            <h:outputText value="#{subMenu.nombre}" />
+                        </p:column>
+
+                        <p:column headerText="Orden" styleClass="table-header">
+                            <h:outputText value="#{subMenu.orden}" />
+                        </p:column>
+
+                        <!-- Columna de acciones -->
+                        <p:column headerText="Acción" styleClass="table-header">
+                            <div class="actions-menu">
+                                <p:commandButton icon="fa fa-ellipsis-v" styleClass="GrayButton action-button" id="opciones" />
                                 <p:slideMenu overlay="true" my="left top" at="left top" trigger="opciones" style="height: 150px">
-                                    <p:menuitem value="Modificar" icon="fa fa-pencil-square-o Purple" action="#{ControllerSubMenu.modificar(subMenu)}"/>
-                                    <p:menuitem value="Consultar" icon="fa fa-eye Green" action="#{ControllerSubMenu.consultar(subMenu)}"/>
-                                    <p:menuitem value="Eliminar" icon="fa fa-trash Red" 
+                                    <p:menuitem value="Modificar" 
+                                                icon="fa fa-pencil-square-o Purple" 
+                                                action="#{ControllerSubMenu.modificar(subMenu)}"/>
+                                    <p:menuitem value="Consultar" 
+                                                icon="fa fa-eye Green" 
+                                                action="#{ControllerSubMenu.consultar(subMenu)}"/>
+                                    <p:menuitem value="Eliminar" 
+                                                icon="fa fa-trash Red" 
                                                 actionListener="#{ControllerSubMenu.prepararBaja(subMenu)}" 
                                                 oncomplete="PF('confirmDialog').show()"
                                                 update="subMenuTable" />
                                 </p:slideMenu>
-                            </p:column>
-                        </p:dataTable>
-                    </div>
+                            </div>
+                        </p:column>
+                    </p:dataTable>
 
-                    <!-- Confirmación para eliminación -->
-                    <p:confirmDialog id="confirmDialog" widgetVar="confirmDialog" header="Confirmación" message="¿Está seguro de que desea eliminar este submenu?" severity="alert">
+                    <!-- Dialog de confirmación -->
+                    <p:confirmDialog id="confirmDialog" widgetVar="confirmDialog" header="Confirmación" message="¿Está seguro de que desea eliminar este submenú?" severity="alert">
                         <p:commandButton value="Sí" 
                                          action="#{ControllerSubMenu.baja()}" 
                                          update="subMenuTable" 
@@ -94,7 +81,7 @@
                                          onclick="PF('confirmDialog').hide()" type="button" />
                     </p:confirmDialog>
                 </div>
-            </div> <!-- Fin del contenedor flex -->
+            </div>
         </h:form>
     </h:body>
 </ui:composition>

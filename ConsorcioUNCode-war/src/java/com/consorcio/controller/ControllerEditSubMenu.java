@@ -91,7 +91,7 @@ public class ControllerEditSubMenu {
     }
     
     public String cancelar() {
-        return "listSubMenu";
+        return "listarSubMenu";
     }
 
     public void limpiarSession() {
