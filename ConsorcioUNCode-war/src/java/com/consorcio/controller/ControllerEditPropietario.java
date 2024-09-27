@@ -11,6 +11,8 @@ import com.consorcio.business.LocalidadServiceBean;
 import com.consorcio.business.PaisServiceBean;
 import com.consorcio.business.PropietarioServiceBean;
 import com.consorcio.business.ProvinciaServiceBean;
+import com.consorcio.controller.messages.Messages;
+import com.consorcio.controller.messages.TypeMessages;
 import com.consorcio.entity.Departamento;
 import com.consorcio.entity.Localidad;
 import com.consorcio.entity.Pais;
@@ -107,7 +109,7 @@ public class ControllerEditPropietario {
         }
     }
     
-    public String search(){
+    public String search() throws Exception{
         Localidad localidad = localidadService.buscarLocalidad(idLocalidad);
         Provincia provincia = provinciaService.buscarProvincia(idProvincia);
         return direccionService.search(calle, numeracion, localidad.getNombre(),localidad.getCodigoPostal(), provincia.getNombre());
@@ -212,6 +214,7 @@ public class ControllerEditPropietario {
 
         } catch (Exception e) {
             e.printStackTrace();
+            Messages.show(e.getMessage(), TypeMessages.ERROR);
             return null;
         }
     }

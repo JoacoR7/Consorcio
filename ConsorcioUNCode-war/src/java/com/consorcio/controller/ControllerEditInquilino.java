@@ -6,6 +6,8 @@
 package com.consorcio.controller;
 
 import com.consorcio.business.InquilinoServiceBean;
+import com.consorcio.controller.messages.Messages;
+import com.consorcio.controller.messages.TypeMessages;
 import com.consorcio.entity.Inquilino;
 import com.consorcio.enums.SexoEnum;
 import javax.annotation.PostConstruct;
@@ -72,13 +74,14 @@ public class ControllerEditInquilino {
         try {
             if (casoDeUso.equals("ALTA")) {
                 inquilinoService.crearInquilino(nombre, apellido, telefono, correoElectronico, documento, tipoDocumento, sexo, fechaNacimiento);
-
             } else {
                 inquilinoService.modificarInquilino(inquilino.getId(), nombre, apellido, telefono, correoElectronico, documento, tipoDocumento, sexo, fechaNacimiento);
             }
             limpiarSession();
             return "listarInquilino";
         } catch (Exception e) {
+            e.printStackTrace();
+            Messages.show(e.getMessage(), TypeMessages.ERROR);
             return null;
         }
     }

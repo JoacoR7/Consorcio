@@ -110,7 +110,7 @@ public class ControllerEditConsorcio {
         }
     }
     
-    public String search(){
+    public String search() throws Exception{
         Localidad localidad = localidadService.buscarLocalidad(idLocalidad);
         Provincia provincia = provinciaService.buscarProvincia(idProvincia);
         return direccionService.search(calle, numeracion, localidad.getNombre(),localidad.getCodigoPostal(), provincia.getNombre());

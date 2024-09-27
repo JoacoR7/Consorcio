@@ -24,7 +24,7 @@ public class PropietarioServiceBean {
     private @EJB DAOPropietario dao;
     
     public void crearPropietario(String nombre, String apellido, String telefono,
-            String correoElectronico, boolean habitaConsorcio, Direccion direccion){
+            String correoElectronico, boolean habitaConsorcio, Direccion direccion) throws Exception{
         try {
             if (nombre == null || nombre.isEmpty()) {
                 throw new IllegalArgumentException("Ingrese el nombre del propietario");
@@ -53,8 +53,10 @@ public class PropietarioServiceBean {
             
             dao.guardarPropietario(propietario);
             
+        } catch (IllegalArgumentException e) {
+            throw new Exception(e.getMessage());
         } catch (Exception e) {
-            throw e;
+            throw new Exception("Error de sistema");
         }
     }
     

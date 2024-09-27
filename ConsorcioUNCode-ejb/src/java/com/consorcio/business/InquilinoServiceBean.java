@@ -8,7 +8,7 @@ package com.consorcio.business;
 import com.consorcio.entity.Inquilino;
 import com.consorcio.persist.DAOInquilino;
 import com.consorcio.enums.SexoEnum;
-import com.consorcio.entity.Persona;
+import com.consorcio.persist.error.NoResultDAOException;
 import java.util.Collection;
 import java.util.UUID;
 import javax.ejb.EJB;
@@ -25,8 +25,14 @@ public class InquilinoServiceBean {
     private @EJB DAOInquilino dao;
     
     public void crearInquilino(String nombre, String apellido, String telefono, String correoElectronico, 
-            String documento, String tipoDocumento, SexoEnum sexo, String fechaNacimiento) {
+            String documento, String tipoDocumento, SexoEnum sexo, String fechaNacimiento) throws ErrorServiceException, Exception {
         try {
+            if (documento == null || documento.isEmpty()) {
+                throw new IllegalArgumentException("Ingrese el documento del inquilino");
+            }
+            if (tipoDocumento == null || tipoDocumento.isEmpty()) {
+                throw new IllegalArgumentException("Ingrese el tipo de documento del inquilino");
+            }
             if (nombre == null || nombre.isEmpty()) {
                 throw new IllegalArgumentException("Ingrese el nombre del inquilino");
             }
@@ -38,12 +44,6 @@ public class InquilinoServiceBean {
             }
             if (correoElectronico == null || correoElectronico.isEmpty()) {
                 throw new IllegalArgumentException("Ingrese el correo electrónico del inquilino");
-            }
-            if (documento == null || documento.isEmpty()) {
-                throw new IllegalArgumentException("Ingrese el documento del inquilino");
-            }
-            if (tipoDocumento == null || tipoDocumento.isEmpty()) {
-                throw new IllegalArgumentException("Ingrese el tipo de documento del inquilino");
             }
             if (sexo == null) {
                 throw new IllegalArgumentException("Ingrese el sexo del inquilino");
@@ -66,13 +66,13 @@ public class InquilinoServiceBean {
             dao.guardarInquilino(inquilino);
 
         } catch (IllegalArgumentException e) {
-            throw e;
+            throw new Exception(e.getMessage());
         } catch (Exception e) {
-            throw e;
+            throw new Exception("Error al crear el inquilino: " + e.getMessage());
         }
     }
     
-    public Inquilino buscarInquilino(String id){
+    public Inquilino buscarInquilino(String id) throws NoResultDAOException{
         try {
             if (id == null){
                 throw new IllegalArgumentException("Seleccione un inquilino");
@@ -91,7 +91,7 @@ public class InquilinoServiceBean {
     
     public void modificarInquilino(String id, String nombre, String apellido, String telefono, 
             String correoElectronico, String documento, String tipoDocumento, 
-            SexoEnum sexo, String fechaNacimiento) {
+            SexoEnum sexo, String fechaNacimiento) throws Exception {
         try {
             Inquilino inquilino = buscarInquilino(id);
             
@@ -127,7 +127,7 @@ public class InquilinoServiceBean {
         }
     }
     
-    public void eliminarInquilino (String id) {
+    public void eliminarInquilino (String id) throws Exception {
         try {
             Inquilino inquilino = buscarInquilino(id);
             inquilino.setEliminado(true);

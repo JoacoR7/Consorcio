@@ -11,6 +11,9 @@
     </h:head>
     <h:form>
         <div class="card">
+            <div class="col-lg-12" style="z-index: 9999">
+                <p:growl id="msj" autoUpdate="true" showDetail="true" />
+            </div>
             <p:panel header="ABM Inquilino" styleClass="ui-panel ui-widget ui-widget-content ui-corner-all">
                 <div class="form-row">
                     <h:outputLabel for="documentoInquilino" value="Documento" />
@@ -57,7 +60,7 @@
                 </div>
 
                 <p:commandButton value="Aceptar" action="#{controllerEditInquilino.aceptar()}"
-                                 update="@form" icon="pi pi-check" styleClass="ui-button-success" />
+                                 update="msj" icon="pi pi-check" styleClass="ui-button-success" />
             </p:panel>
         </div>   
     </h:form>

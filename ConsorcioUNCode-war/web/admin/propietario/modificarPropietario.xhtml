@@ -10,6 +10,9 @@
         <h:outputStylesheet name="css/abm.css" />
     </h:head>
     <h:form>
+        <div class="col-lg-12" style="z-index: 9999">
+                <p:growl id="msj" autoUpdate="true" showDetail="true" />
+        </div>
         <div class="card">
             <p:panel header="ABM Propietario" styleClass="ui-panel ui-widget ui-widget-content ui-corner-all">
 
@@ -153,7 +156,7 @@
                 <div>
                     <p:commandButton value="Aceptar"
                                      action="#{controllerEditPropietario.aceptar()}"
-                                     update="@form" />
+                                     update="msj" />
                     <p:commandButton value="Volver"
                                      action="#{controllerEditPropietario.cancelar()}"
                                      update="@form" />

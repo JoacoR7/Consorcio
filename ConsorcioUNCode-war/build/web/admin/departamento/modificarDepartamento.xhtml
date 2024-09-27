@@ -10,6 +10,7 @@
         <h:outputStylesheet name="css/abm.css" />
     </h:head>
     <h:form>
+
         <div class="card">
             <p:panel header="ABM Departamento" styleClass="ui-panel ui-widget ui-widget-content ui-corner-all">
 
@@ -18,11 +19,11 @@
                     <p:selectOneMenu id="pais" styleClass="Wid80"
                                      value="#{controllerEditDepartamento.idPais}" 
                                      disabled="#{controllerEditDepartamento.disableButton}">
-                        
+
                         <f:selectItems  value="#{controllerEditDepartamento.paises}" />
                         <p:ajax listener="#{controllerEditDepartamento.comboPaisProvincia()}"
                                 update="provincia"/>
-                        
+
                     </p:selectOneMenu> 
                 </div>
 
@@ -32,21 +33,24 @@
                                      styleClass="Wid80" 
                                      value="#{controllerEditDepartamento.idProvincia}" 
                                      disabled="#{controllerEditDepartamento.disableButton}">
-                        
+
                         <f:selectItems  value="#{controllerEditDepartamento.provincias}" />
-                        
+
                     </p:selectOneMenu> 
                 </div>
-                
+
                 <div class="form-row">
                     <h:outputLabel value="Nombre: " />
                     <p:inputText id="idNombre"  value="#{controllerEditDepartamento.nombre}"
                                  disabled="#{controllerEditDepartamento.disableButton}" />
                 </div>
+                <div class="col-lg-12" style="z-index: 9999">
+                    <p:growl id="msj" autoUpdate="true" showDetail="true" />
+                </div>
                 <div>
                     <p:commandButton value="Aceptar"
                                      action="#{controllerEditDepartamento.aceptar()}"
-                                     update="@form" />
+                                     update="msj" />
                     <p:commandButton value="Volver"
                                      action="#{controllerEditDepartamento.cancelar()}"
                                      update="@form" />

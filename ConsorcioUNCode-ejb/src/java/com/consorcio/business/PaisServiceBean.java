@@ -42,14 +42,14 @@ public class PaisServiceBean {
             Pais pais = new Pais(UUID.randomUUID().toString(), nombre, false);
             dao.guardarPais(pais);
 
-        } catch (ErrorServiceException e) {
-            throw e;
-        } catch (Exception e){
+        } catch (IllegalArgumentException | ErrorServiceException e) {
+            throw new Exception(e.getMessage());
+        } catch (Exception e) {
             throw new Exception("Error de sistema");
         }
     }
 
-    public Pais buscarPais(String id) {
+    public Pais buscarPais(String id) throws Exception {
 
         try {
             if (id == null) {
@@ -60,12 +60,15 @@ public class PaisServiceBean {
 
             if (!pais.isEliminado()) {
                 return pais;
+            }else{
+                throw new ErrorServiceException("El país se encuentra eliminado");
             }
-        } catch (IllegalArgumentException | NoResultException e) {
+        } catch (IllegalArgumentException | NoResultException | ErrorServiceException e) {
             e.getMessage();
-            throw e;
+            throw new Exception(e.getMessage());
+        } catch(Exception e){
+            throw new Exception("Error de sistemas");
         }
-        return null;
     }
 
     public Pais buscarPaisPorNombre(String nombre) throws Exception {
@@ -103,9 +106,12 @@ public class PaisServiceBean {
 
             pais.setNombre(nombre);
             dao.actualizarPais(pais);
-        } catch (Exception e) {
-            e.getMessage();
-            throw e;
+        } catch(IllegalArgumentException e){
+            e.printStackTrace();
+            throw new Exception(e.getMessage());
+        }catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Error de sistemas");
         }
     }
 
